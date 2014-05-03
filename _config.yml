@@ -2,10 +2,10 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://yoursite.com
-title: My Octopress Blog
-subtitle: A blogging framework for hackers.
-author: Your Name
+url: http://tolleiv.github.io
+title: the fancy part of the web
+subtitle: is elsewhere – this is just about all sorts of web related work with a small factor of fanciness
+author: Tolleiv Nietsch
 simple_search: https://www.google.com/search
 description:
 
