@@ -4,7 +4,7 @@
   <title><![CDATA[the fancy part of the web]]></title>
   <link href="http://tolleiv.github.io/atom.xml" rel="self"/>
   <link href="http://tolleiv.github.io/"/>
-  <updated>2014-05-04T01:05:15+02:00</updated>
+  <updated>2014-05-04T01:12:21+02:00</updated>
   <id>http://tolleiv.github.io/</id>
   <author>
     <name><![CDATA[Tolleiv Nietsch]]></name>
@@ -628,7 +628,7 @@ A complete list of the included features and changes can be found on <a href="ht
 
 <p>The full list of HTML5 tags is now supported in TemplaVoila. The restrictions to specific tags was removed and the TYPO3 integrator is now able to use the full bandwidth of modern HTML. With this change also the tag-icons themself were replaced and the coloring schema was changed. The inspiration for the current color schema came from <a href="http://joshduck.com/periodic-table.html">Josh Duck&rsquo;s &ldquo;Periodic Table of the Elements&rdquo;</a>. In additon same mapping bugs have been resolved too &ndash; for details see <a href="http://bugs.typo3.org/view.php?id=13974">#13974</a> and <a href="http://bugs.typo3.org/view.php?id=14881">#14881</a>.</p>
 
-<p>[caption id=&ldquo;attachment_710&rdquo; align=&ldquo;alignright&rdquo; width=&ldquo;150&rdquo; caption=&ldquo;Page module with TYPO3 4.4 look&amp;feel&rdquo;]<a href="http://blog.tolleiv.de/wp-content/uploads/2010/09/tv15-page-module.png"><img src="http://blog.tolleiv.de/wp-content/uploads/2010/09/tv15-page-module-300x190.png" alt="TemplaVoila 1.5 page module" /></a>[/caption]</p>
+<p><a href="http://blog.tolleiv.de/wp-content/uploads/2010/09/tv15-page-module.png"><img src="http://blog.tolleiv.de/wp-content/uploads/2010/09/tv15-page-module-300x190.png" alt="TemplaVoila 1.5 page module" /></a></p>
 
 <h4>TYPO3 4.4 Look&amp;Feel and docHeader integration</h4>
 
