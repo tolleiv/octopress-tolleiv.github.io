@@ -459,8 +459,16 @@
         <lastmod>2014-05-04T01:02:05+02:00</lastmod>
     </url>
     <url>
+        <loc>http://tolleiv.github.io/blog/about/</loc>
+        <lastmod>2014-05-04T01:15:58+02:00</lastmod>
+    </url>
+    <url>
         <loc>http://tolleiv.github.io/blog/archives/</loc>
         <lastmod>2014-05-04T01:11:52+02:00</lastmod>
+    </url>
+    <url>
+        <loc>http://tolleiv.github.io/blog/imprint/</loc>
+        <lastmod>2014-05-04T01:16:08+02:00</lastmod>
     </url>
     <url>
         <loc>http://tolleiv.github.io/</loc>
