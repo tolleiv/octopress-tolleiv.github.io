@@ -9,7 +9,7 @@
   <meta name="author" content="Tolleiv Nietsch">
 
   
-  <meta name="description" content="[caption id=&ldquo;attachment_1160&rdquo; align=&ldquo;alignright&rdquo; width=&ldquo;150&rdquo;] Configuration interface.[/caption]One thing I took &hellip;">
+  <meta name="description" content="Configuration interface.One thing I took along from last year&rsquo;s ApacheCon was the idea to combine Apache Solr along with some mathematical &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,7 +89,7 @@
   </header>
 
 
-<div class="entry-content"><p>[caption id=&ldquo;attachment_1160&rdquo; align=&ldquo;alignright&rdquo; width=&ldquo;150&rdquo;]<a href="http://blog.tolleiv.de/wp-content/uploads/2013/06/Bildschirmfoto-2013-05-29-um-18.08.18.png"><img src="http://blog.tolleiv.de/wp-content/uploads/2013/06/Bildschirmfoto-2013-05-29-um-18.08.18-150x150.png" alt="Configuration interface." /></a> Configuration interface.[/caption]One thing I took along from last year&rsquo;s ApacheCon was the idea to combine Apache Solr along with some mathematical search algorithms to figure out boost factor values. I did some work on that back then and on the way to this year&rsquo;s BerlinBuzzwords. Now I finally have a proof-of-concept working which I&rsquo;d like to share. If you want to have a look right away &ndash; the code can be found on <a href="http://github.com/tolleiv/boostgenetics">Github</a>.</p>
+<div class="entry-content"><p><a href="http://blog.tolleiv.de/wp-content/uploads/2013/06/Bildschirmfoto-2013-05-29-um-18.08.18.png"><img src="http://blog.tolleiv.de/wp-content/uploads/2013/06/Bildschirmfoto-2013-05-29-um-18.08.18-150x150.png" alt="Configuration interface." /></a> Configuration interface.One thing I took along from last year&rsquo;s ApacheCon was the idea to combine Apache Solr along with some mathematical search algorithms to figure out boost factor values. I did some work on that back then and on the way to this year&rsquo;s BerlinBuzzwords. Now I finally have a proof-of-concept working which I&rsquo;d like to share. If you want to have a look right away &ndash; the code can be found on <a href="http://github.com/tolleiv/boostgenetics">Github</a>.</p>
 
 <h2>The problem to solve:</h2>
 
@@ -128,7 +128,7 @@ While it&rsquo;s not clear to compare both with just the normal error value comp
 
 <h2>Implementation:</h2>
 
-<p>[caption id=&ldquo;attachment_1161&rdquo; align=&ldquo;alignright&rdquo; width=&ldquo;150&rdquo;]<a href="http://blog.tolleiv.de/wp-content/uploads/2013/06/Bildschirmfoto-2013-05-29-um-18.10.43.png"><img src="http://blog.tolleiv.de/wp-content/uploads/2013/06/Bildschirmfoto-2013-05-29-um-18.10.43-150x150.png" alt="10 generation optimization" /></a> 10 generation optimization[/caption]There&rsquo;s really not too much to say other than that the code can be found in <a href="http://github.com/tolleiv/boostgenetics">Github</a>. I used NodeJS with ExpressJs, SocketIO and an Twitter Bootstrap interface to have a relatively good looking and somewhat performing proof-of-concept. I used that setup, because NodeJS seems to me as the most easiest way to talk to Solr and it &ldquo;promises&rdquo; to be performant even with larger examples. SocketIO helped a lot to ease the pain when it comes to Server &lt;> Client communication. The only drawback of that setup is the that everything had to be turned into something which is able to deal with asynchronous processing. This makes the algorithmic parts look a bit odd and bloated &ndash; but for me the benefits outweigh the odds.</p>
+<p><a href="http://blog.tolleiv.de/wp-content/uploads/2013/06/Bildschirmfoto-2013-05-29-um-18.10.43.png"><img src="http://blog.tolleiv.de/wp-content/uploads/2013/06/Bildschirmfoto-2013-05-29-um-18.10.43-150x150.png" alt="10 generation optimization" /></a> 10 generation optimizationThere&rsquo;s really not too much to say other than that the code can be found in <a href="http://github.com/tolleiv/boostgenetics">Github</a>. I used NodeJS with ExpressJs, SocketIO and an Twitter Bootstrap interface to have a relatively good looking and somewhat performing proof-of-concept. I used that setup, because NodeJS seems to me as the most easiest way to talk to Solr and it &ldquo;promises&rdquo; to be performant even with larger examples. SocketIO helped a lot to ease the pain when it comes to Server &lt;> Client communication. The only drawback of that setup is the that everything had to be turned into something which is able to deal with asynchronous processing. This makes the algorithmic parts look a bit odd and bloated &ndash; but for me the benefits outweigh the odds.</p>
 
 <h2>Final thoughts:</h2>
 
