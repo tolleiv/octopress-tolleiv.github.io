@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: offtopic | the fancy part of the web]]></title>
+  <link href="http://tolleiv.github.io/blog/categories/offtopic/atom.xml" rel="self"/>
+  <link href="http://tolleiv.github.io/"/>
+  <updated>2014-05-04T01:05:15+02:00</updated>
+  <id>http://tolleiv.github.io/</id>
+  <author>
+    <name><![CDATA[Tolleiv Nietsch]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Working from home.]]></title>
+    <link href="http://tolleiv.github.io/blog/2008/07/15/working-from-home/"/>
+    <updated>2008-07-15T19:26:00+02:00</updated>
+    <id>http://tolleiv.github.io/blog/2008/07/15/working-from-home</id>
+    <content type="html"><![CDATA[<p>There&rsquo;s so much work in this week that I can&rsquo;t publish a article in the next days.<br/>
+But Natalie Jost from <a href="http://www.alistapart.com/">A List Apart</a> just published a very nice article which you really should read if you&rsquo;re (like me) working from home <a href="http://www.alistapart.com/articles/walkingthelinewhenyouworkfromhome">read on..</a> &hellip; you&rsquo;ll like it.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[track time for a subroutine within a shell-script]]></title>
+    <link href="http://tolleiv.github.io/blog/2008/07/10/track-time-for-a-subroutine-within-a-shell-script/"/>
+    <updated>2008-07-10T23:55:00+02:00</updated>
+    <id>http://tolleiv.github.io/blog/2008/07/10/track-time-for-a-subroutine-within-a-shell-script</id>
+    <content type="html"><![CDATA[<p>The following code-snippet is a shell-script which does the following:</p>
+
+<ol>
+<li><p> Track the time for a block of shell commands</p></li>
+<li><p> Check if the time was less than x seconds (the example uses 10 seconds)</p></li>
+<li><p> If the block run through too fast the script waits/sleeps a few seconds</p></li>
+<li><p> Run all this within a loop so that the block of shell-commands is executed periodically</p></li>
+</ol>
+
+
+<p>I used the script combined with a PHP script which processes a queue. The PHP script processes 1000 elements from the queue and takes about 30 seconds for that. Since just having a cronjob per minute would be not efficient enought I used this script.
+The waiting-block is necessary because now and then the queue is empty &hellip; but I think there are lot&rsquo;s of situations where a script like this can be usefull:</p>
+
+<pre><code>#!/bin/bash
+while [ 1 -ge 0 ]; do
+time_begin=`date +%s`
+
+
+###BLOCK 2 TRACK - BEGIN
+number=$RANDOM
+let "number %= 20"
+sleep $number
+###BLOCK 2 TRACK - END
+
+time_end=`date +%s`
+total=$((time_end-time_begin))
+
+if [[ $total -ge 10 ]]; then
+echo "time taken was: $number : $total"
+else
+echo "time take was too less  $number : $total"
+sleep 10
+fi
+done
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[YSlow - powerful FF extension]]></title>
+    <link href="http://tolleiv.github.io/blog/2008/06/30/yslow-powerful-ff-extension/"/>
+    <updated>2008-06-30T19:30:00+02:00</updated>
+    <id>http://tolleiv.github.io/blog/2008/06/30/yslow-powerful-ff-extension</id>
+    <content type="html"><![CDATA[<p>I use <a href="http://www.getfirebug.com/">firebug</a> for a while and I love it especially for CSS and JS debugging. Today I stumbled over <a href="http://developer.yahoo.com/yslow/">Yslow</a> and did some tests with it one some of my clients pages and I love the results.<br/>
+YSlow can help you to analyze all the referenced elements on a webpage. It shows their sizes, how they behave when a page is taken from the browser-cache, shows optimization hints and enables a easy way to optimize the output of your dynamically created webpage :) &hellip; you&rsquo;ll love it.<br/>
+<a href="http://developer.yahoo.com/yslow/">Get YSlow here :)</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[PHP FastCGI vs. PHP as a module]]></title>
+    <link href="http://tolleiv.github.io/blog/2008/05/24/php-fastcgi-vs-php-as-a-module/"/>
+    <updated>2008-05-24T19:40:00+02:00</updated>
+    <id>http://tolleiv.github.io/blog/2008/05/24/php-fastcgi-vs-php-as-a-module</id>
+    <content type="html"><![CDATA[<p>The apachelounge.org guy published a very interesting stat which compares the <a href="http://www.apachelounge.com/forum/viewtopic.php?p=10991">memory-usage of PHP/FastCGI and PHP/as module</a> and that&rsquo;s really interesting:</p>
+
+<p><a href="http://bp0.blogger.com/_l5fIZzJyYfc/SDfQbt7tygI/AAAAAAAAABY/D72W5ZIj22c/s1600-h/httpd-ram-week.png"><img src="http://bp0.blogger.com/_l5fIZzJyYfc/SDfQbt7tygI/AAAAAAAAABY/D72W5ZIj22c/s400/httpd-ram-week.png" alt="" /></a></p>
+
+<p>There&rsquo;s no comment about performance and in early versions FastCGI/PHP was a bottleneck but maybe these days are gone :)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Firefox 3 RC1]]></title>
+    <link href="http://tolleiv.github.io/blog/2008/05/18/firefox-3-rc1/"/>
+    <updated>2008-05-18T18:11:00+02:00</updated>
+    <id>http://tolleiv.github.io/blog/2008/05/18/firefox-3-rc1</id>
+    <content type="html"><![CDATA[<p>I just saw that the first Release Candidate of Firefox 3 is available for <a href="http://www.mozilla.com/en-US/firefox/all-rc.html">download</a> . As with the most of the Beta-versions I also checked this update because I&rsquo;m really excited to get the <a href="http://www.mozilla.com/en-US/firefox/3.0rc1/releasenotes/#whatsnew">new features</a>, but after 5 minutes (again) I removed it from my PC. Non of my extensions is working in FF3 (except the dictionary), it still destroys the Frames in TYPO3 (<a href="http://typo3.org/extensions/repository/view/mn_ff3_be_bugfix/0.0.2/">there&rsquo;s a bugfix-extension for that</a>) and the memory-usage is still very high,10% lower than in FF2 but still high.<br/>
+So I postponed the update and  kept on running <a href="http://www.mozilla.com/en-US/firefox/all.html">Firefox 2</a>, at least until the next Release Candidate ;)</p>
+]]></content>
+  </entry>
+  
+</feed>

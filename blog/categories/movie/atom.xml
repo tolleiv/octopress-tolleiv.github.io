@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: movie | the fancy part of the web]]></title>
+  <link href="http://tolleiv.github.io/blog/categories/movie/atom.xml" rel="self"/>
+  <link href="http://tolleiv.github.io/"/>
+  <updated>2014-05-04T01:05:15+02:00</updated>
+  <id>http://tolleiv.github.io/</id>
+  <author>
+    <name><![CDATA[Tolleiv Nietsch]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[our wonderful nature]]></title>
+    <link href="http://tolleiv.github.io/blog/2008/07/02/our-wonderful-nature/"/>
+    <updated>2008-07-02T21:30:00+02:00</updated>
+    <id>http://tolleiv.github.io/blog/2008/07/02/our-wonderful-nature</id>
+    <content type="html"><![CDATA[<p>Nice video I just found on some german page:</p>
+
+<p><a href="http://vids.myspace.com/index.cfm?fuseaction=vids.individual&amp;videoid=33359537">Our wonderful nature by Tomer Eshed</a></p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: prototype | the fancy part of the web]]></title>
+  <link href="http://tolleiv.github.io/blog/categories/prototype/atom.xml" rel="self"/>
+  <link href="http://tolleiv.github.io/"/>
+  <updated>2014-05-04T01:05:15+02:00</updated>
+  <id>http://tolleiv.github.io/</id>
+  <author>
+    <name><![CDATA[Tolleiv Nietsch]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Using genetic algorithms to optimize Apache Solr boost factors.]]></title>
+    <link href="http://tolleiv.github.io/blog/2013/06/06/genetic-algorithms-boosting-solr/"/>
+    <updated>2013-06-06T20:47:56+02:00</updated>
+    <id>http://tolleiv.github.io/blog/2013/06/06/genetic-algorithms-boosting-solr</id>
+    <content type="html"><![CDATA[<p>[caption id=&ldquo;attachment_1160&rdquo; align=&ldquo;alignright&rdquo; width=&ldquo;150&rdquo;]<a href="http://blog.tolleiv.de/wp-content/uploads/2013/06/Bildschirmfoto-2013-05-29-um-18.08.18.png"><img src="http://blog.tolleiv.de/wp-content/uploads/2013/06/Bildschirmfoto-2013-05-29-um-18.08.18-150x150.png" alt="Configuration interface." /></a> Configuration interface.[/caption]One thing I took along from last year&rsquo;s ApacheCon was the idea to combine Apache Solr along with some mathematical search algorithms to figure out boost factor values. I did some work on that back then and on the way to this year&rsquo;s BerlinBuzzwords. Now I finally have a proof-of-concept working which I&rsquo;d like to share. If you want to have a look right away &ndash; the code can be found on <a href="http://github.com/tolleiv/boostgenetics">Github</a>.</p>
+
+<h2>The problem to solve:</h2>
+
+<p>When running search indexes with Solr, one thing you might stumble opon is that you&rsquo;ve various fields in your documents and you&rsquo;ve to adjust their weights to get reasonable results. Finding those &ldquo;boosting&rdquo; values can be quite complex when you have many fields and many scenarios. Usually getting the values right is a task for very experienced integrators.</p>
+
+<blockquote><p>/solr/select?defType=dismax&amp;q=my+query
+&amp;qf=title^<strong>42</strong>+description^<strong>23</strong>+footnotes^<strong>5</strong>+dalmatiners^<strong>101</strong>+foo^<strong>9001</strong>+comments</p></blockquote>
+
+<p>Looking at it from a more technical perspective &ndash; when your Solr query looks like the one above, the question you&rsquo;ve to answer is how the values for the highlighted numbers should look like to get <em>reasonable</em> results.</p>
+
+<h2>Measuring &ldquo;reasonable&rdquo;:</h2>
+
+<p>In order to solve the problem, the first thing we&rsquo;ve to do, is to answer what we expect the outcome to look like. In other words, we&rsquo;ve to measure how reasonable a specific solution is. For a search engine this can be done with some sample queries and some expectations along with that. The expectation could come in a form that we explicitly tell which documents we expect in the result lists of specific queries (and at predefined positions). Once we&rsquo;ve these expectations, we can simple test agains the expectations and check whether or not specific boost factor values actually satisfy them.</p>
+
+<blockquote><p>A small example on that: In case we&rsquo;ve a sample query with the expectation that document 123 appears in the first position and document 248 appears second. We could run this with two specific boost factor combinations (a) and (b). Along with (a) we might find that, document 123 actually ranks on position 8 and document 248 is found on position 4 and with (b) we&rsquo;d find them on pos. 2 and pos. 14 &ndash; which one would we consider to be better?
+Comparing the &ldquo;error&rdquo; and &ldquo;squared error&rdquo; produced by (a) and (b) gives us a possible hint:
+(a): 8-1 + 4-2 = 7+2 = 9
+(8-1)² + (4-2)² = 49+4 = 53
+(b): 2-1 + 14-2 = 1+12 = 13
+(2-1)² + (14-2)² = 1+144 = 145
+While it&rsquo;s not clear to compare both with just the normal error value comparision, the squared error shows clearly that (a) seems to outperform (b) in those cases and we should choose (a) for further considerations.</p></blockquote>
+
+<p>Being able to determine the &ldquo;error&rdquo; introduced by a specific solution then enables us to compare various solutions and helps us to play around with all sorts of optimizations.</p>
+
+<h2>The idea:</h2>
+
+<p>With a defined &ldquo;cost function&rdquo; like the one I introduced before, you&rsquo;d be able to tackle the problem with some well known algorithmic solutions. Considering the boost factors to be represented as numerical vectors, we could use gradient methodologies to find good solutions. But having 20-40 fields per document would require to &ldquo;search&rdquo; a large numerical space and with gradient methods, this would result in a large amount of queries.</p>
+
+<p>Another approach to run these optimizations, is to utilize genetic algorithms which kind of help to find good solutions within predictable amounts of time. You might know genetic algorithms for some lectures where people solved <a href="http://www.math.hmc.edu/seniorthesis/archives/2001/kbryant/kbryant-2001-thesis.pdf">traveling salesman problems</a> and actually the only change you&rsquo;d have to make is to exchange the traveling salesman cost function with the cost function you saw before and you&rsquo;d be close to a solution already.</p>
+
+<p><strong>With some more details:</strong> Genetic algorithms take an amount of randomly generated possible solutions (called the <em>population</em>) and try to find good solutions by applying the typical methods you know from your biology class (mutations, crossovers, natural selection). <em>Natural selection</em> is done in a way that from each generation only the top 50% &ldquo;survive and the rest of the population is filled up with now solutions generated through <em>mutations</em> (random parameter changes of existing solutions) and <em>crossovers</em> (interchanging parts of two existing solutions to create a third one). All solutions are always measured and compared on their response to the defined cost function and this way we&rsquo;re always able to determine the "best known solution&rdquo; even after very short time.</p>
+
+<blockquote><p>If that sounds too high-level. For the shown query from above, the vector [42,23,5,101,9001,1] is the vector I used. In addition let&rsquo;s considering we have another vector [1,1,1,1,1,1] with equal weights for all fields. Assuming those are our fittest vectors at a given time, we could derive new possible solutions by mutating them (e.g. [42,23,5,101,9001,1] ~> [42,23,5,101,505,1] ) or creating a cross-over between both ( [42,23,5,101,9001,1] &amp; [1,1,1,1,1,1] ~> [42,23,5,1,1,1]). Even adding new random vectors to our population might add some value. Once we found enough new vectors to have a population of a decent size, we&rsquo;d compare the fitness and keep only the top 50% and continue our process until we reach convergence or a fixed iteration limit.</p></blockquote>
+
+<p>A drawback of the genetic algorithm is that it might not deliver the optimal result, because it never found it. But that&rsquo;s just how nature works too. So it&rsquo;s more that you&rsquo;ve to sacrifice &ldquo;training runtime&rdquo; over accuracy or vice versa.</p>
+
+<h2>Implementation:</h2>
+
+<p>[caption id=&ldquo;attachment_1161&rdquo; align=&ldquo;alignright&rdquo; width=&ldquo;150&rdquo;]<a href="http://blog.tolleiv.de/wp-content/uploads/2013/06/Bildschirmfoto-2013-05-29-um-18.10.43.png"><img src="http://blog.tolleiv.de/wp-content/uploads/2013/06/Bildschirmfoto-2013-05-29-um-18.10.43-150x150.png" alt="10 generation optimization" /></a> 10 generation optimization[/caption]There&rsquo;s really not too much to say other than that the code can be found in <a href="http://github.com/tolleiv/boostgenetics">Github</a>. I used NodeJS with ExpressJs, SocketIO and an Twitter Bootstrap interface to have a relatively good looking and somewhat performing proof-of-concept. I used that setup, because NodeJS seems to me as the most easiest way to talk to Solr and it &ldquo;promises&rdquo; to be performant even with larger examples. SocketIO helped a lot to ease the pain when it comes to Server &lt;> Client communication. The only drawback of that setup is the that everything had to be turned into something which is able to deal with asynchronous processing. This makes the algorithmic parts look a bit odd and bloated &ndash; but for me the benefits outweigh the odds.</p>
+
+<h2>Final thoughts:</h2>
+
+<p>The proof-of-concept, which you&rsquo;ll find on the Github repository, demonstrates that such type of optimization can work and that&rsquo;s more or less all I wanted to do with it.</p>
+
+<p>You can use the NodeJS tool with any of your Solr indexes and just go ahead and try it yourself. There are many parts which aren&rsquo;t too accurate yet, especially the measuring could maybe done better with precision and recall measurements &ndash; but I assume that any type of cost function would work for now, that&rsquo;s why P/R wasn&rsquo;t implemented along with the tool. Also I&rsquo;m not a NodeJS expert and the code might not follow best practice atm. &ndash; I&rsquo;d be very happy to change that if anyone is interested to help?</p>
+
+<hr />
+
+<p>When I did a small presentation during the <a href="http://berlinbuzzwords.de/wiki/barcamp">Berlin Buzzwords bar camp</a> I also got some other questions which don&rsquo;t necessarily relate to just this implementation but to all sorts of automated optimizations.</p>
+
+<p><em>The first question was, how to get the list of example queries and the &ldquo;expected&rdquo; documents for them.</em> For now I assume that most applications at least know their top 50 or top 100 search and they should be able to predefine &ldquo;relevant&rdquo; documents for those searches. That&rsquo;s at least what I assume everyone should have. Another way to generate the test data is to do some log file analyses and check the search and pick/weight the documents people clicked from within the results. This should also help to get some results.</p>
+
+<p><em>Another questions related to that was wether long tail would fall behind with that approach.</em> As this is only a proof-of-concept, I wasn&rsquo;t really able to answer this. But I assume that long-tail searches would still benefit a lot more from the relevance certain documents gain due to high TF-IDF scores and those should then outweigh the &ldquo;scoring bias&rdquo; in a way. Another approach (known from machine learning) could be to leave out the top 1% of the documents (and searches) and just optimize for the rest of the top X% and afterwards check wether the top 1% still performs good &ndash; this way long tail could be &ldquo;protected a bit more.</p>
+
+<p><em>And the last question was whether I tested other (gradient based) algorithms already.</em> The answer was and is, no. So far this only ran on my MacBook and I really didn&rsquo;t want to benchmark my CPU. The code itself is somewhat prepared to take other optimization methods but I didn&rsquo;t add in others. If you&rsquo;re interested to do so &ndash; I&rsquo;d be happy to accept your pull-requests.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Prototype [GoF]]]></title>
+    <link href="http://tolleiv.github.io/blog/2008/05/28/prototype-gof/"/>
+    <updated>2008-05-28T01:17:00+02:00</updated>
+    <id>http://tolleiv.github.io/blog/2008/05/28/prototype-gof</id>
+    <content type="html"><![CDATA[<p>Imagine a cookie-oven which produces tasty cookies with chocolate crumbles. How do you ensure that the 1000th cookie still has the same taste as the first?
+You might think that this is an easy task &ndash; just write down the recipe and follow the described steps&hellip;you know the result in real life &ndash; the 1000th cookie normally tasts like the 1st but you always had the &ldquo;overhead&rdquo; to read the recipe and go through the steps again and again.
+In OOP it&rsquo;s much easier to follow the recipe just instantiate a new Object and  there you go&hellip; no matter if it&rsquo;s the 1st or the 1000th &ndash; it&rsquo;ll always taste look similar.
+But the &ldquo;recipe-overhead&rdquo; is still there in a way and especially when you have larger objects whose construction is time-consuming you might want to somehow get rid of it. And that&rsquo;s where a Prototype can help you out &ndash; you just create the first Cookie Object and then you use the handy magic method <strong>clone to create new objects.
+Instead of just using </strong>clone the pattern suggests a class (some kind of a factory-class) so that you can also encapsulate the creation of the objects (and also possible adjustments you might want to make after the creation/clone).</p>
+
+<p>So the example just shows a cookie-machine which makes use of the prototype-pattern to create new cookies (depending on the cookie you throw in before)&hellip; yummy</p>
+
+<p><a href="http://bp0.blogger.com/_l5fIZzJyYfc/SDrXY97tyhI/AAAAAAAAABg/1sAhpbVe2kI/s1600-h/prototype_pattern.png"><img src="http://bp0.blogger.com/_l5fIZzJyYfc/SDrXY97tyhI/AAAAAAAAABg/1sAhpbVe2kI/s400/prototype_pattern.png" alt="" /></a></p>
+
+<p>abstract class Cookie {
+function __clone() {    }
+abstract public function printFlavor();
+}</p>
+
+<p>class CoconutCookie extends Cookie {
+public function printFlavor() {
+echo &lsquo;Coconut Flavor<br/>&rsquo;;
+}
+}
+class ChocolateCookie extends Cookie {
+public function printFlavor() {
+echo &lsquo;Chocolate Flavor<br/>&rsquo;;
+}
+}</p>
+
+<p>class CookieMachine {
+protected $cookie;
+public function __construct(Cookie $cookie) {
+$this->cookie = $cookie;
+}
+public function makeCookie() {
+return clone $this->cookie;
+}
+}</p>
+
+<p>The client-code can look like this:</p>
+
+<p>$coconutCookie = new CoconutCookie();
+$coconutCookieMachine = new CookieMachine($coconutCookie);</p>
+
+<p>$chocolateCookie = new ChocolateCookie();
+$chocolateCookieMachine = new CookieMachine($chocolateCookie);</p>
+
+<p>//while(true) {
+for($i=0;$i&lt;5;$i++) {
+$coconutCookieMachine->makeCookie()&ndash;>printFlavor();
+$chocolateCookieMachine->makeCookie()&ndash;>printFlavor();
+}</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Decorator [GoF]]]></title>
+    <link href="http://tolleiv.github.io/blog/2008/05/13/decorator-gof/"/>
+    <updated>2008-05-13T00:59:00+02:00</updated>
+    <id>http://tolleiv.github.io/blog/2008/05/13/decorator-gof</id>
+    <content type="html"><![CDATA[<p>As the first pattern I&rsquo;d like to introduce the decorator pattern &ndash; it&rsquo;s one of the [GoF]&ndash; structural patterns. It enables to extend the functionality of a existing method by wrapping a so called decorator-object.</p>
+
+<p>So maybe you already know the situation ;) , your granny  is going to bake cookies and you think of how they gonna taste &ndash; so cookie is our main-object and the different additional spices and other options which refine the taste of the cookies are the decoration for it. The cookies, pardon main-objects, are fine without the decoration but they&rsquo;re much better with and the best thing is that you&rsquo;re able to combine the decorations&hellip; yummy</p>
+
+<p>So that&rsquo;s how this would look like more technically:
+<a href="http://bp2.blogger.com/_l5fIZzJyYfc/SCjU0tPibZI/AAAAAAAAAAU/uuR_geevSdw/s1600-h/decorator-pattern.png"><img src="http://bp2.blogger.com/_l5fIZzJyYfc/SCjU0tPibZI/AAAAAAAAAAU/uuR_geevSdw/s400/decorator-pattern.png" alt="" /></a></p>
+
+<pre><code>stract class Cookie {
+    protected $flavor;
+    public function __construct($flavor) {
+        $this-&gt;flavor=$flavor;
+    }    
+    abstract public function descripeFlavor();
+}
+
+class GrannysCookie extends Cookie {
+    public function descripeFlavor() {
+        echo ‘&lt;br&gt;&lt;/br&gt;Granny baked a cookie which has a taste of ’;
+        echo $this-&gt;flavor;
+    }
+}
+
+abstract class CookieDecorator extends Cookie {
+    protected $cookie;
+    public function __construct(Cookie $cookie) {
+        $this-&gt;cookie = $cookie;
+    }    
+    //abstract public function descripeFlavor();    
+}
+
+class FreshCookieDecorator extends CookieDecorator {
+    public function descripeFlavor() {
+        $this-&gt;cookie-&gt;descripeFlavor();
+        echo ‘ which smells fresh from the oven’;
+    }
+}
+
+class CrumbleCookieDecorator extends CookieDecorator {
+    public function descripeFlavor() {        
+        $this-&gt;cookie-&gt;descripeFlavor();
+        echo ‘ it has tasty crumbles ’;
+    }
+}
+
+$cookie = new GrannysCookie(‘chocolate’);
+$cookie-&gt;descripeFlavor();
+
+$crumbleCookie = new CrumbleCookieDecorator($cookie);
+$crumbleCookie-&gt;descripeFlavor();
+
+$freshCookie = new FreshCookieDecorator($cookie);
+$freshCookie-&gt;descripeFlavor();
+
+$freshAndCrumbledCookie = new FreshCookieDecorator($crumbleCookie);
+$freshAndCrumbledCookie-&gt;descripeFlavor();
+</code></pre>
+
+<p><a href="http://en.wikipedia.org/wiki/Decorator_pattern">additional Information</a></p>
+]]></content>
+  </entry>
+  
+</feed>

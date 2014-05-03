@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: stumble | the fancy part of the web]]></title>
+  <link href="http://tolleiv.github.io/blog/categories/stumble/atom.xml" rel="self"/>
+  <link href="http://tolleiv.github.io/"/>
+  <updated>2014-05-04T01:05:15+02:00</updated>
+  <id>http://tolleiv.github.io/</id>
+  <author>
+    <name><![CDATA[Tolleiv Nietsch]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[how breakfast could look like...]]></title>
+    <link href="http://tolleiv.github.io/blog/2008/07/03/how-breakfast-could-look-like/"/>
+    <updated>2008-07-03T23:37:00+02:00</updated>
+    <id>http://tolleiv.github.io/blog/2008/07/03/how-breakfast-could-look-like</id>
+    <content type="html"><![CDATA[<p>hey that&rsquo;s great &ndash; my mom never created something like this for me:</p>
+
+<p>check out on: <a href="http://fiveprime.org/hivemind/Tags/bento">http://fiveprime.org/hivemind/Tags/bento</a></p>
+]]></content>
+  </entry>
+  
+</feed>

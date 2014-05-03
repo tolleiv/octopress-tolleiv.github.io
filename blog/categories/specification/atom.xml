@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: specification | the fancy part of the web]]></title>
+  <link href="http://tolleiv.github.io/blog/categories/specification/atom.xml" rel="self"/>
+  <link href="http://tolleiv.github.io/"/>
+  <updated>2014-05-04T01:05:15+02:00</updated>
+  <id>http://tolleiv.github.io/</id>
+  <author>
+    <name><![CDATA[Tolleiv Nietsch]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Query Object [PoEEA]]]></title>
+    <link href="http://tolleiv.github.io/blog/2008/06/20/query-object-poeea/"/>
+    <updated>2008-06-20T19:29:00+02:00</updated>
+    <id>http://tolleiv.github.io/blog/2008/06/20/query-object-poeea</id>
+    <content type="html"><![CDATA[<p>Maybe you remember the <a href="http://www.cookiepattern.com/2008/05/specification-ddd.html">Specification Pattern</a> I explained some weeks ago. It enabled a easy and intuitive  searching within large object-collections. A drawback of my example was that I stored the objects in the memory. This can be really ineffective if you want a single object out of hundreds, because you have to create all of them to see which one fits the specification.
+Normally you want to limit the number of objects and you also don&rsquo;t store large datasets in memory. The idea of the Query Object pattern is that it enables a usage, comparable to the specification pattern, for objects which are persisted in a database. The benefit is that it creates a query to exclude objects which won&rsquo;t satisfy your needs and therefore you wont mess up the memory anymore.
+Once you have a query-object in place you should not get in touch with SQL anymore because it can encapsulate SQL completely, at least if you also have some kind of data mapping (coming soon), which is a great benefit for everyone who is not so familiar with SQL. (But don&rsquo;t forget, regarding performance, SQL-optimization is a very important thing).</p>
+
+<p>So what we need for the Query Object in first place is a object, I&rsquo;ll use the Cookie out of the <a href="http://www.cookiepattern.com/2008/05/specification-ddd.html">specification pattern post</a> again. Then we need criteria-objects which hold the information for a single criteria, (determined by &ldquo;database-field&rdquo;, &ldquo;operator&rdquo; and &ldquo;value&rdquo;) and we also need the Query Objects itself to wrap up the SQL-querying and the object creation somehow.</p>
+
+<p>A very simple example could look like this:</p>
+
+<p>interface Critera {
+public function getWhereClause();
+}</p>
+
+<p>class CookieCriteria implements Critera {</p>
+
+<p>private $operator,$field,$value;</p>
+
+<p>protected function __construct($operator,$field,$value) {
+$this->operator=$operator;
+$this->field=$field;
+$this->value=$value;
+}</p>
+
+<p>public function getWhereClause() {
+return implode(&ldquo; &rdquo;,array($this->field,$this->operator,$this->value));
+}</p>
+
+<p>public static function matches($field,$value) {
+return new CookieCriteria(&ldquo;LIKE&rdquo;,$field,&lsquo;&ldquo;&rsquo;.$value.&lsquo;&rdquo;&rsquo;);
+}</p>
+
+<p>public static function greaterThan($field,$value) {
+return new CookieCriteria(&ldquo;>&rdquo;,$field,$value);
+}
+}</p>
+
+<p>class CookieFinder {
+protected $criterias;</p>
+
+<p>public function addCriteria(Critera $criteria) {
+$this->criterias[] = $criteria;
+}</p>
+
+<p>public function generateSQL() {
+$sql = &ldquo;SELECT * FROM cookies&rdquo;;</p>
+
+<p>if(sizeof($this->criterias)) {
+$where=array();
+reset($this->criterias);
+while(list(,$criteria)=each($this->criterias)) {
+$where[] = $criteria->getWhereClause();
+}
+$sql.= sizeof($where)?&ldquo; WHERE &rdquo;.implode(&ldquo; AND &rdquo;,$where):&ldquo;&rdquo;;
+}
+return $sql;
+}</p>
+
+<p>public function find() {
+$collection = array();
+if(!$result = mysql_query($this->generateSQL())) {
+throw new Exception(mysql_errno());
+}
+while($row = mysql_fetch_assoc($result)) {
+$collection[] = new Cookie($row[&lsquo;name&rsquo;],$row[&lsquo;flavor&rsquo;],$name[&lsquo;size&rsquo;]);
+}
+return $collection;
+}
+}</p>
+
+<p>Possible client code could look like this:
+$finder = new CookieFinder();
+$finder->addCriteria(CookieCriteria::matches(&ldquo;name&rdquo;,&ldquo;Granny%&rdquo;));
+$finder->addCriteria(CookieCriteria::greaterThan(&ldquo;size&rdquo;,100));
+$cookies = $finder->find();</p>
+
+<p>We just pick up the Query Object, add one or more criteria and ask it to create the objects which fit them.</p>
+
+<p>So this example is not as powerful as the one I used for the <a href="http://www.cookiepattern.com/2008/05/specification-ddd.html">Specification pattern</a>, but it should be a easy task to create some kind of &ldquo;nested criteria objects&rdquo;.
+Query objects normally make use of data-mapping so that you can handle various classes, stored in different tables/databases, with a single and generic Query Object. This also enables to avoid SQL-Injection, since you&rsquo;re able to validate the fields and values before you sent them to your database, also some kind of database abstraction would be possible.
+With the &ldquo;Query Object by example&rdquo;, which requires to build up a single object which is used as blueprint for the required objects, exists another flavor of this pattern which is very handy to use and more descriptive.
+But no matter which flavor you prefer, Query Objects bring some real benefits when you&rsquo;ve to handle complex datasets &ndash; for smaller projects the effort might be to much so be careful where you use it.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Specification [DDD]]]></title>
+    <link href="http://tolleiv.github.io/blog/2008/05/15/specification-ddd/"/>
+    <updated>2008-05-15T16:00:00+02:00</updated>
+    <id>http://tolleiv.github.io/blog/2008/05/15/specification-ddd</id>
+    <content type="html"><![CDATA[<p>Maybe sometimes the cookie tin is filled with all sorts of cookies and only some of them are what you&rsquo;d like in this special moment. Often it&rsquo;s very easy to specify which cookie you like, but sometimes your wishes are very complex, for example if you look for grannies special cookie with chocolate, coconut and vanilla crumbles. This could lead into a real crumby problem if you try to sort all the cookies and then select eat the right one.</p>
+
+<p>In the world of OOP it&rsquo;s often much harder to collect a few objects out of a large number of different objects, also combining different requirements isn&rsquo;t easy and that&rsquo;s where the specification pattern can help you out. It implements some basic operations to combine requirements (AND, OR, NOT) and the only thing a concrete specification for a concrete class has to do is to implement a method (isSatisfied()) which is able to determine whether a object meats a requirement or not.</p>
+
+<p>I splitted the generic part of the script and the cookie-example. The first part just implements the methods which are needed for the combination and provides a abstract class which is extended by the specifications in the second part. As you see the specification is combined which normally encapsulates the retrieval of the objects ,for example from a database. &hellip;.just have a look it&rsquo;s really easy to select the right cookie &hellip; yummy</p>
+
+<p><a href="http://bp2.blogger.com/_l5fIZzJyYfc/SC115dPibfI/AAAAAAAAABQ/ZZfCsWJAwDA/s1600-h/specification_sequenze.png"><img src="http://bp2.blogger.com/_l5fIZzJyYfc/SC115dPibfI/AAAAAAAAABQ/ZZfCsWJAwDA/s400/specification_sequenze.png" alt="" /></a></p>
+
+<pre><code>interface Specification {
+    public function isSatisfiedBy($obj);
+    public function _and(Specification $spec);
+    public function _or(Specification $spec);
+    public function _not();
+}
+
+abstract class AbstractSpecification implements Specification {
+    public function isSatisfiedBy($obj) { }
+    public function _and(Specification $spec) {
+        return new AndSpecification($this, $spec);
+    }
+    public function _or(Specification $spec) {
+        return new OrSpecification($this, $spec);
+    }
+    public function _not() {
+        return new NotSpecification($this);
+    }
+}
+
+class AndSpecification extends AbstractSpecification {
+    private $spec1, $spec2;
+    public function __construct(Specification $spec1, Specification $spec2) {
+        $this-&gt;spec1 = $spec1;
+        $this-&gt;spec2 = $spec2;
+    }
+    public function isSatisfiedBy($obj) {
+        return $this-&gt;spec1-&gt;isSatisfiedBy($obj) &amp;&amp; $this-&gt;spec2-&gt;isSatisfiedBy($obj);
+    }
+}
+
+class OrSpecification extends AbstractSpecification {
+    private $spec1, $spec2;
+    public function __construct(Specification $spec1, Specification $spec2) {
+        $this-&gt;spec1 = $spec1;
+        $this-&gt;spec2 = $spec2;
+    }
+    public function isSatisfiedBy($obj) {
+        return $this-&gt;spec1-&gt;isSatisfiedBy($obj) || $this-&gt;spec2-&gt;isSatisfiedBy($obj);
+    }
+}
+
+class NotSpecification extends AbstractSpecification {
+    private $spec;
+    public function __construct(Specification $spec) {
+        $this-&gt;spec = $spec;
+    }
+    public function isSatisfiedBy($obj) {
+        return !$this-&gt;spec-&gt;isSatisfiedBy($obj);
+    }
+}
+
+
+
+
+
+
+/**
+* Cookie object just a container for the relevant data.
+*
+*/
+class Cookie {
+    protected $name,$flavor,$size;
+    public function __construct($name=”,$flavor=‘chocolate’,$size=100) {
+    $this-&gt;name=$name;
+    $this-&gt;flavor = $flavor;
+    $this-&gt;size = abs($size); // avoid negative size
+    }
+    public function getName() { return $this-&gt;name; }
+    public function getFlavor() { return $this-&gt;flavor; }
+    public function getSize() { return $this-&gt;size; }
+}
+/**
+* Cookie service delivers cookies, offers some ways to select specific types of cookies
+*
+*/
+class CookieService {
+    protected $cookies = array();
+    /**
+    * Add a cookie to the collection
+    * name is used as identifier, thats not the best choice
+    * but it’s ok for the example
+    *
+    * @param Cookie $cookie
+    */
+    public function add(Cookie $cookie) {
+        $this-&gt;cookies[$cookie-&gt;getName()]=$cookie;
+    }
+    /**
+    * Generic method to check which objects fit the spec
+    *
+    * @param Specification $spec
+    */
+    private function filter(Specification $spec) {
+        $result=array();
+        reset($this-&gt;cookies);
+        foreach($this-&gt;cookies as $name=&gt;$cookie) {
+            if($spec-&gt;isSatisfiedBy($cookie)) {
+                $result[]=$cookie;
+            }
+        }
+        return $result;
+    }
+
+    public function getLargeCookies() {
+        $spec = new SmallCookieSpecification();
+        $spec = $spec-&gt;_not();
+        return $this-&gt;filter($spec);
+    }
+    public function getSmallChocolateCookies() {
+        $spec = new SmallCookieSpecification();
+        $spec = $spec-&gt;_and(new ChocolateCookieSpecification());
+        return $this-&gt;filter($spec);
+    }
+    public function loadDummyData() {
+        $this-&gt;add(new Cookie(‘Granny\’s classic’,‘chocolate’,60));
+        $this-&gt;add(new Cookie(‘Modern Jumbo’,‘moca,chocolate’,180));
+        $this-&gt;add(new Cookie(‘Kitchen Sink’,‘macadamia,cranberrie’,90));
+        $this-&gt;add(new Cookie(‘Vanilla Cloud’,‘vanilla’,120));
+        $this-&gt;add(new Cookie(‘Chocolate chip’,‘coconut,chocolate’,160));
+    }
+}
+
+class SmallCookieSpecification extends AbstractSpecification {
+    public function isSatisfiedBy($obj) {
+        return $obj-&gt;getSize() &lt; 100;
+    }
+}
+
+class ChocolateCookieSpecification extends AbstractSpecification {
+    public function isSatisfiedBy($obj) {
+        return stristr(strtolower($obj-&gt;getFlavor()),‘chocolate’) !== FALSE;
+    }
+}
+
+/**
+* Client code
+*/
+$service = new CookieService();
+$service-&gt;loadDummyData();
+echo ‘
+
+’;
+var_dump($service-&gt;getLargeCookies());
+var_dump($service-&gt;getSmallChocolateCookies());
+echo ‘
+</code></pre>
+
+<p>’;</p>
+
+<p><a href="http://martinfowler.com/apsupp/spec.pdf">more information by E.Evans and M.Fowler</a></p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,247 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>TemplaVoila 1.4.2 released - the fancy part of the web</title>
+  <meta name="author" content="Tolleiv Nietsch">
+
+  
+  <meta name="description" content="Yesterday the 2nd team release of TemplaVoila was uploaded into the TER. It&rsquo;s basically a maintenance release which fixes more than 100 bugs. &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://tolleiv.github.io/blog/2010/03/16/templavoila-1-4-2-released">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="the fancy part of the web" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:tolleiv.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+  
+    
+      <h1 class="entry-title">TemplaVoila 1.4.2 Released</h1>
+    
+  
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-03-16T00:39:53+01:00" pubdate data-updated="true">Mar 16<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Yesterday the 2nd team release of TemplaVoila was uploaded into the <a href="http://typo3.org/extensions/repository/view/templavoila/current/">TER</a>. It&rsquo;s basically a maintenance release which fixes more than 100 bugs. But since we haven&rsquo;t been that straight distinguishing between bug and usability feature, you&rsquo;ll see a couple of new things within this release.</p>
+
+<p>The high level release notes are:</p>
+
+<ul>
+<li><p>page module is now customizable with CSS and JavaScript</p></li>
+<li><p>handling of static data structures are improved and fully working now</p></li>
+<li><p>wizards are improved, new page wizard is more explaining</p></li>
+<li><p>visual cleanups</p></li>
+<li><p>new hooks for eTypes (elements added by mapping interface)</p></li>
+<li><p>new classes for preview in page module, easy to override by extensions</p></li>
+<li><p>added missing localisations</p></li>
+<li><p>enhanced drag-and-drop in page module</p></li>
+<li><p>over 100 Bugs are fixed</p></li>
+<li><p>updated manual</p></li>
+</ul>
+
+
+<p>During the installation your TYPO3 Extension Manager will ask to perform a couple of database upgrades. These upgrades aren&rsquo;t really critical because they just enlarge some database fields, which will make sure that your data really fit&rsquo;s in.</p>
+
+<p>Just to point one thing out &ndash; especially the page module has been improved to be more flexible in certain parts.</p>
+
+<p>These lines of TSConfig can be used to add CSS or JavaScript into the page module and enable easy customizations:</p>
+
+<pre><code>mod.web_txtemplavoilaM1.stylesheet = ../fileadmin/css/tvpagemodule.css
+
+mod.web_txtemplavoilaM1.javascript {
+  file1 = ../fileadmin/templates/js/jquery.js
+  file2 = ../fileadmin/templates/css/backend.js
+}
+</code></pre>
+
+<p> Further customizations is provided using the &ldquo;<strong>mod.web_txtemplavoilaM1.blindIcons</strong>&rdquo; configuration or with individual content preview classes (configured though &ldquo;<strong>$GLOBALS[&lsquo;TYPO3_CONF_VARS&rsquo;][&lsquo;EXTCONF&rsquo;][&lsquo;templavoila&rsquo;][&lsquo;mod1&rsquo;][&lsquo;renderPreviewContent&rsquo;]</strong>&rdquo; &ndash; see ext_localconf.php).</p>
+
+<p>We haven&rsquo;t discussed what the direction for the next versions really looks like. From my perspective better TYPO3 integration, some kind of code cleanup and also the integration of some features which arise with TYPO3 4.4 will be somehow on our schedule. But since <a href="http://blog.tolleiv.de/2010/03/re-farewell-templavoila/">TemplaVoila isn&rsquo;t a one man show anymore</a>, this isn&rsquo;t just my decision and in addition I&rsquo;d like to encourage everyone to send feedback, bugfixes or new features just to give us an impression what you like or dislike in the current version.</p>
+
+<p>Last but not least, I&rsquo;d like to thank everyone who was somehow involved in the release, especially Steffen Kamper who shared lot of inspiration and who has spent many hours to debug and fix some really tricky issues.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">tolleiv</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-03-16T00:39:53+01:00" pubdate data-updated="true">Mar 16<span>th</span>, 2010</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://tolleiv.github.io/blog/2010/03/16/templavoila-1-4-2-released/" data-via="" data-counturl="http://tolleiv.github.io/blog/2010/03/16/templavoila-1-4-2-released/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2010/03/04/re-farewell-templavoila/" title="Previous Post: Re: Farewell, TemplaVoila!">&laquo; Re: Farewell, TemplaVoila!</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2010/04/01/crawler-3-1-release-and-podcast/" title="Next Post: Crawler 3.1 release + podcast">Crawler 3.1 release + podcast &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/06/14/templavoila-followup/">TemplaVoila - followup</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/06/08/templavoila-future/">TemplaVoila future</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/06/06/genetic-algorithms-boosting-solr/">Using genetic algorithms to optimize Apache Solr boost factors.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/22/re-how-to-move-on-typo3/">Re: How to move on? #TYPO3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/10/typo3-login-state-and-varnish-cache/">TYPO3 login state and Varnish cache</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Tolleiv Nietsch <br/>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>, customized with <a href="https://github.com/mjhea0/whiterspace">whiterspace</a>.</span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

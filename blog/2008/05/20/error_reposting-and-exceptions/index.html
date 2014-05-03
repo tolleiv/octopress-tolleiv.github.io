@@ -1,0 +1,259 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>error_reposting and exceptions.... - the fancy part of the web</title>
+  <meta name="author" content="Tolleiv Nietsch">
+
+  
+  <meta name="description" content="I just found this line: set_error_handler(create_function(&lsquo;$x, $y&rsquo;, &lsquo;throw new Exception($y, $x);&rsquo;), E_ALL~E_NOTICE); in the &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://tolleiv.github.io/blog/2008/05/20/error_reposting-and-exceptions">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="the fancy part of the web" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:tolleiv.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+  
+    
+      <h1 class="entry-title">Error_reposting and Exceptions....</h1>
+    
+  
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-05-20T23:40:00+02:00" pubdate data-updated="true">May 20<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I just found this line:</p>
+
+<p>set_error_handler(create_function(&lsquo;$x, $y&rsquo;, &lsquo;throw new Exception($y, $x);&rsquo;), E_ALL~E_NOTICE);</p>
+
+<p>in the comments on php.net and did a short test to see whether it works. Normally I used to have a global function which passes all the errors through a logging-chain (FILE/MAIL/DISPLAY) but having exceptions could be more comfortable because you might sometimes want to make decisions locally and not on a global scope and just setting and re-setting the error-handler is not the best idea for this&hellip; I&rsquo;m not sure if I get used to it, because the error-handling function did a good job for the last years &hellip; we&rsquo;ll see :)<br/>
+So that&rsquo;s the full example code:</p>
+
+<p>set_error_handler(create_function(&lsquo;$x, $y&rsquo;, &lsquo;throw new Exception($y, $x);&rsquo;), E_ALL);<br/>
+try {</p>
+
+<p>$errors = array(</p>
+
+<pre><code>                E_USER_WARNING =&gt; "something might be wrong",  
+                E_USER_NOTICE =&gt; "it works but I don't like it",  
+                E_USER_ERROR =&gt; "something went completly wrong",  
+</code></pre>
+
+<p>);</p>
+
+<p>//    echo $name; //should cause a E_NOTICE</p>
+
+<p>foreach($errors as $code=>$msg) {</p>
+
+<pre><code>try {  
+    trigger_error($msg,$code);  
+}  
+catch (Exception $e) {  
+    if(!in_array($e-&gt;getCode(),array(E_USER_WARNING,E_USER_NOTICE))) {  
+        throw $e;  
+    }  
+    else {  
+        // not a big deal we can push this into a log-file and continue or work...  
+        echo "local exception: (".$e-&gt;getCode(). ") ".$e-&gt;getMessage()."&lt;br/&gt;";  
+    }   
+}  
+</code></pre>
+
+<p>}</p>
+
+<p>}<br/>
+catch (Exception $e) {<br/>
+echo &ldquo;global exception:&rdquo;.$e->getMessage().&ldquo;<br/>&rdquo;;<br/>
+}</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">tolleiv</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-05-20T23:40:00+02:00" pubdate data-updated="true">May 20<span>th</span>, 2008</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/errors/'>errors</a>, <a class='category' href='/blog/categories/exceptions/'>exceptions</a>, <a class='category' href='/blog/categories/php/'>php</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://tolleiv.github.io/blog/2008/05/20/error_reposting-and-exceptions/" data-via="" data-counturl="http://tolleiv.github.io/blog/2008/05/20/error_reposting-and-exceptions/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2008/05/19/preview-to-php-5-3/" title="Previous Post: Preview to PHP 5.3">&laquo; Preview to PHP 5.3</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2008/05/22/php-sucks-not-really/" title="Next Post: PHP sucks? not really!">PHP sucks? not really! &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/06/14/templavoila-followup/">TemplaVoila - followup</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/06/08/templavoila-future/">TemplaVoila future</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/06/06/genetic-algorithms-boosting-solr/">Using genetic algorithms to optimize Apache Solr boost factors.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/22/re-how-to-move-on-typo3/">Re: How to move on? #TYPO3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/10/typo3-login-state-and-varnish-cache/">TYPO3 login state and Varnish cache</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Tolleiv Nietsch <br/>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>, customized with <a href="https://github.com/mjhea0/whiterspace">whiterspace</a>.</span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

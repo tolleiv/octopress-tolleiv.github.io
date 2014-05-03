@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: typo3 | the fancy part of the web]]></title>
+  <link href="http://tolleiv.github.io/blog/categories/typo3/atom.xml" rel="self"/>
+  <link href="http://tolleiv.github.io/"/>
+  <updated>2014-05-04T01:05:15+02:00</updated>
+  <id>http://tolleiv.github.io/</id>
+  <author>
+    <name><![CDATA[Tolleiv Nietsch]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Signal / Slots in Extbase]]></title>
+    <link href="http://tolleiv.github.io/blog/2011/11/30/signal-slots-in-extbase/"/>
+    <updated>2011-11-30T18:17:02+01:00</updated>
+    <id>http://tolleiv.github.io/blog/2011/11/30/signal-slots-in-extbase</id>
+    <content type="html"><![CDATA[<p>A nice thing to have at hand is definately <a href="http://en.wikipedia.org/wiki/Signals_and_slots">Signal and Slots</a>. I heard <a href="http://f.oer.tel">Felix</a> talking about them quite often and I finally found a nice usecase and came to play with them a little bit this afternoon. And just to avoid that others have to look around too much to find how they can get them to work here&rsquo;s how it&rsquo;s working for me.</p>
+
+<p>First of all you should understand the concept. This nice little &ldquo;definition&rdquo; (from <a href="http://flow3.typo3.org/documentation/guide/partiii/signalsandslots.html">flow3.typo3.org</a>) sums it up pretty well:</p>
+
+<blockquote><p>A signal, which contains event information as it makes sense in the case at hand, can be emitted (sent) by any part of the code and is received by one or more slots, which can be any function<del> in FLOW3</del> in extbase.</p></blockquote>
+
+<p>To get this running in extbase, you&rsquo;ve to get hold of the <em>Tx_Extbase_SignalSlot_Dispatcher</em>, which is the central instance to manage all of it. Within Extbase that&rsquo;s done easily with this snippet within your classes:</p>
+
+<pre><code>   ...
+    /**
+     * @var Tx_Extbase_SignalSlot_Dispatcher
+     */
+    protected $signalSlotDispatcher;
+
+    /**
+     * @param Tx_Extbase_SignalSlot_Dispatcher $signalSlotDispatcher
+     */
+    public function injectSignalSlotDispatcher(Tx_Extbase_SignalSlot_Dispatcher $signalSlotDispatcher) {
+        $this-&gt;signalSlotDispatcher = $signalSlotDispatcher;
+    }
+   ...
+</code></pre>
+
+<p>Next thing is to make use of it. The Slot (listener) part could look like one of following blocks. In all cases you define the Signal by it&rsquo;s class (not necessarily a PHP Class) and it&rsquo;s name. Next to that the Slot can either be defined by a Closure, an object with a method name or a PHP-Class and a method name.</p>
+
+<pre><code>   ...
+// Using a closure
+$this-&gt;signalSlotDispatcher-&gt;connect(
+      'Crunching', 'emitDataReady', function($data) { crunch($data) }, NULL, FALSE
+);
+   ...
+// Using a method of the current object
+$this-&gt;signalSlotDispatcher-&gt;connect(
+     'Crunching', 'emitDataReady', $this, 'crunch', FALSE
+);
+   ...
+// Using a method of the specified class
+$this-&gt;signalSlotDispatcher-&gt;connect(
+     'Crunching', 'emitDataReady', 'Cruncher', 'crunch', FALSE
+);
+   ...
+</code></pre>
+
+<p>To trigger the Signal which invokes the Slots registered above, you&rsquo;ve to run the following code.</p>
+
+<pre><code>$this-&gt;signalSlotDispatcher-&gt;dispatch('Crunching', 'emitDataReady', array($data));
+</code></pre>
+
+<p>One thing I found was that by default the <em>Tx_Extbase_SignalSlot_Dispatcher</em> it not a Singleton in older extbase versions. Bastian fixed that already in the <a href="https://review.typo3.org/#change,6785">master</a> and <a href="https://review.typo3.org/#change,6786">1-4</a> branches and lucky enough this change was part within the TYPO3 4.6.1 release. But I think it&rsquo;s still important to mention that this wasn&rsquo;t the default from the beginning on.</p>
+
+<p>Even if <a href="http://flow3.typo3.org/documentation/guide/partiii/signalsandslots.html">AOP is a nicer way to implement this feature</a>, the extbase backport still works pretty straigh forward.</p>
+
+<p>Edit: One thing I&rsquo;ve to add &ndash; Felix is not &ldquo;just&rdquo; talking about Signal/Slots &ndash; he&rsquo;s the one to thank for the <a href="https://review.typo3.org/1563">backport</a>. And now that his <a href="http://blog.foertel.com/2011/10/using-signalslots-in-extbase/">blog</a> is running again &ndash; this post seems like a summary ;)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[new TYPO releases]]></title>
+    <link href="http://tolleiv.github.io/blog/2008/06/11/new-typo-releases/"/>
+    <updated>2008-06-11T16:18:00+02:00</updated>
+    <id>http://tolleiv.github.io/blog/2008/06/11/new-typo-releases</id>
+    <content type="html"><![CDATA[<p>I just saw that the TYPO3 guys released a new version of the popular Enterprise CMS (<a href="http://www.typo3.org">www.typo3.org</a>). The changelog shows that they mainly changed some security issues and that a lot of  smaller changes in the backend happend &ndash; one change relates to the problems in the new Firefox 3 where all the frames in the backend are mixed up for some compatibility reason&hellip; this was also the reason why the also updates the 4.0.x branch and the 4.1.x branch &hellip;</p>
+
+<p><a href="http://typo3.org/download/packages/">TYPO3 source package downloads</a> / <a href="http://wiki.typo3.org/index.php/Upgrade">TYPO3 upgrading guide</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[TYPO3 API...]]></title>
+    <link href="http://tolleiv.github.io/blog/2008/05/15/typo3-api/"/>
+    <updated>2008-05-15T16:40:00+02:00</updated>
+    <id>http://tolleiv.github.io/blog/2008/05/15/typo3-api</id>
+    <content type="html"><![CDATA[<p>The API documentation on <a href="http://typo3.org/fileadmin/typo3api-4.0.0/">typo3.org</a> is not very up-to-date, but the typo3-unleashed.net guys just provided some links to the API documentation of the current TYPO3 versions &ndash; <a href="http://www.typo3-unleashed.net/api_online.html">http://www.typo3-unleashed.net/api_online.html</a> &ndash; thanks a lot :)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[T3DD08]]></title>
+    <link href="http://tolleiv.github.io/blog/2008/05/14/t3dd08/"/>
+    <updated>2008-05-14T00:15:00+02:00</updated>
+    <id>http://tolleiv.github.io/blog/2008/05/14/t3dd08</id>
+    <content type="html"><![CDATA[<p>The last weekend was great, I joined the T3DD in Elmshorn, Germany and meet a lot of interesting people, the beer was cheap and the weather was amazing. So I&rsquo;m looking forward to the T3CON in autumn&hellip;  :)</p>
+
+<p>It also seems that some of the guys got some new spirit &ndash; today 4 official and some inofficial bugs in some extensions had been fixed in a very short sequence &hellip; great!</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,317 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Self-extracting PHP archive - the fancy part of the web</title>
+  <meta name="author" content="Tolleiv Nietsch">
+
+  
+  <meta name="description" content="The __halt_compiler(); function in php enables to store some additional data in a php-file without blowing up the memory. A very nice possibility is &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://tolleiv.github.io/blog/2008/06/07/self-extracting-php-archive">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="the fancy part of the web" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:tolleiv.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+  
+    
+      <h1 class="entry-title">Self-extracting PHP Archive</h1>
+    
+  
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-06-07T23:30:00+02:00" pubdate data-updated="true">Jun 7<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>The __halt_compiler(); function in php enables to store some additional data in a php-file without blowing up the memory. A very nice possibility is to use this for a self-extracting php file as installation-packages of your php application.
+A wile ago I created a script which automatically creates such a archive and I think you might like it&hellip;.for the impatient ones: <a href="http://588299e40f6cb98516d7458.googlepages.com/createziparchive-0.5.1.php">Download</a> / <a href="http://588299e40f6cb98516d7458.googlepages.com/createziparchive-0.5.1.zip">Download as Zip</a>.</p>
+
+<p>Before I start to show how the entire script works I&rsquo;d like to show you a small example so that you can see how the __halt_compiler(); function can be used to store some data at the end of a file:</p>
+
+<pre><code>$fp = fopen(__FILE__, ‘r’);
+fseek($fp, __COMPILER_HALT_OFFSET__);
+$i=0;
+while($buffer = fgets($fp)) {
+    echo ($i++). “:”. $buffer.“&lt;br&gt;&lt;/br&gt;”;
+};
+__HALT_COMPILER();Line 1
+Line 2
+Line 3
+Last line 
+</code></pre>
+
+<p>The first thing you might mention is, that the closing &ldquo;?>&rdquo; is missing, but since the function-name is nearly self-explaining you should realize very fast what the output of the script might be ;)</p>
+
+<p>If that&rsquo;s working the question is what&rsquo;s needed for a script which is meant to create and extract a archive? The first thing is a way to create the archive itself. I used the PHP-builtin <a href="http://de3.php.net/manual/en/ref.zip.php">ZipArchive</a> for that. The second thing is a script which is able to extract this archiv (using the method show above). That&rsquo;s handled by the following snippet:</p>
+
+<pre><code>try {
+    $zipfilename = md5(time()).‘archive.zip’; //remove with tempname()
+    $fp_tmp = fopen($zipfilename,‘w’);
+    $fp_cur = fopen(__FILE__, ‘r’);
+    fseek($fp_cur, __COMPILER_HALT_OFFSET__);
+    $i=0;
+    while($buffer = fread($fp_cur,10240)) {
+        fwrite($fp_tmp,$buffer);
+    }
+    fclose($fp_cur);
+    fclose($fp_tmp);
+    $zipfile = new ZipArchive();
+    if($zipfile-&gt;open($zipfilename)===true) { 
+        if(!$zipfile-&gt;extractTo(‘.’)) throw new Exception(‘extraction failed…’);
+    } else throw new Exception(‘reading archive failed’);
+    $zipfile-&gt;close();
+    unlink($zipfilename);
+} catch (Exception $e) {
+    printf(“Error:&lt;br&gt;&lt;/br&gt;%s&lt;br&gt;%s&gt;”,$e-&gt;getMessage(),$e-&gt;getTraceAsString());
+};
+__HALT_COMPILER();[zipdata is appended here later] 
+</code></pre>
+
+<p>As you see that&rsquo;s no rocket-science just read the data, pass it to the ZipArchive object via a temporary file and extract the archive.
+If that&rsquo;s working then you need a script which brings the PHP extraction script and the zip-data together. And since we want to have a single script for the creation of our self extracting php archive, it would be very odd if we&rsquo;d place the &ldquo;template&rdquo; for the extraction in a separate file. That&rsquo;s the reason why I just use the same method as above for this script and this time the data is php code instead of zip-data:</p>
+
+<pre><code>try {
+    $sourcefolder = ‘compressthis/’;                 // maybe you want to get this via CLI argument …
+    $targetname = ‘phparchive.php’;                    
+    $zipfilename = md5(time()).‘archive.zip’;         // replace with tempname()
+
+    // create a archive from the submitted folder
+    $zipfile = new ZipArchive();
+    $zipfile-&gt;open($zipfilename,ZipArchive::CREATE);
+    addFiles2Zip($zipfile,$sourcefolder,true);
+    $zipfile-&gt;close();
+
+    // compile the selfextracting php-archive
+    $fp_dest =fopen($targetname,‘w’);    
+    $fp_cur = fopen(__FILE__, ‘r’);
+    fseek($fp_cur, __COMPILER_HALT_OFFSET__);
+    $i=0;
+    while($buffer = fgets($fp_cur)) {
+        fwrite($fp_dest,$buffer);
+    }
+    fclose($fp_cur);
+    $fp_zip = fopen($zipfilename,‘r’);
+    while($buffer = fread($fp_zip,10240)) {
+        fwrite($fp_dest,$buffer);
+    }
+    fclose($fp_zip);
+    fclose($fp_dest);
+    unlink($zipfilename);
+
+} catch (Exception $e) {
+ echo $e-&gt;getTraceAsString();
+}
+
+function 
+addFiles2Zip(ZipArchive $zip,$path,$removeFirstFolder=false) {
+    $d = opendir($path);
+    while($file = readdir($d)) {
+        if ($file == “.” || $file == “..”) continue;
+        $curfile=($removeFirstFolder)?substr($path.$file,strpos($path,‘/’)+1):$path.$file;
+        if(is_dir($path.$file)) {
+            $zip-&gt;addEmptyDir($curfile);
+            addFiles2Zip($zip,$path.$file.‘/’,$removeFirstFolder);    
+        } else {
+            $zip-&gt;addFile($path.$file,$curfile);
+        }    
+    }
+    closedir($d);
+}
+
+
+__HALT_COMPILER();[the script shown above]
+</code></pre>
+
+<p>If you all wrap up into a single script the you&rsquo;ll have something like the <a href="http://588299e40f6cb98516d7458.googlepages.com/createziparchive-0.5.1.php">script I already mentioned.</a>
+I think that it could be useful to have a version with a better error-handling and maybe also some CLI functions so that there&rsquo;s no need to edit the script itself everytime&hellip; I&rsquo;ll keep you updated as soon as I have something like that :)</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">tolleiv</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-06-07T23:30:00+02:00" pubdate data-updated="true">Jun 7<span>th</span>, 2008</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/compression/'>compression</a>, <a class='category' href='/blog/categories/extracting/'>extracting</a>, <a class='category' href='/blog/categories/php/'>php</a>, <a class='category' href='/blog/categories/zip/'>zip</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://tolleiv.github.io/blog/2008/06/07/self-extracting-php-archive/" data-via="" data-counturl="http://tolleiv.github.io/blog/2008/06/07/self-extracting-php-archive/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2008/06/07/dunno-why-but-i-love-this-song/" title="Previous Post: dunno why but I love this song...">&laquo; dunno why but I love this song...</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2008/06/11/new-typo-releases/" title="Next Post: new TYPO releases">new TYPO releases &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/06/14/templavoila-followup/">TemplaVoila - followup</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/06/08/templavoila-future/">TemplaVoila future</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/06/06/genetic-algorithms-boosting-solr/">Using genetic algorithms to optimize Apache Solr boost factors.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/22/re-how-to-move-on-typo3/">Re: How to move on? #TYPO3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/10/typo3-login-state-and-varnish-cache/">TYPO3 login state and Varnish cache</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Tolleiv Nietsch <br/>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>, customized with <a href="https://github.com/mjhea0/whiterspace">whiterspace</a>.</span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

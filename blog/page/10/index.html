@@ -1,0 +1,798 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>the fancy part of the web</title>
+  <meta name="author" content="Tolleiv Nietsch">
+
+  
+  <meta name="description" content="
+">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://tolleiv.github.io/blog/page/10">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="the fancy part of the web" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:tolleiv.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2008/06/07/dunno-why-but-i-love-this-song/">Dunno Why but I Love This Song&#8230;</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-06-07T17:45:00+02:00" pubdate data-updated="true">Jun 7<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2008/06/05/plugin-poeaa/">Plugin [PoEAA]</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-06-05T03:11:00+02:00" pubdate data-updated="true">Jun 5<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I&rsquo;m sure you&rsquo;re pretty often in the situation that you have to switch something depending on the context you&rsquo;re currently in. For example most people change their eating habits before summer &ndash; I also do :P</p>
+
+<p>Sometimes this is what you also want to have in your software. To achieve different behaviour you normally just implement two different classes or aggregates and since they have the same &ldquo;meaning&rdquo; they normally share a interface (a.k.a Separated Interface). But who decides which implementation fits into the current environment/context?</p>
+
+<p>The easiest way is to have a Factory Method with a small condition to decide this, but this method might grow very fast if you have various options. In this situation its also a matter of form to move this decision into some kind of configuration(-file) so that there&rsquo;s only on file which differs in various environments.</p>
+
+<p><a href="http://martinfowler.com/eaaCatalog/plugin.html">Martin Fowler</a> suggests to place some kind of mapping into the configuration-file, so that your Factory knows which implementation to instantiate in the current context. The key for the mapping in this case is the name of the Separated Interface.</p>
+
+<p>As you see in the example code below, there are Cookie Tins which create contain Cookies and depending on the current month you want to use a more or less restrictive Cookie Tin. In May, June and July you restrict your application to create max. 5 cookies, the rest of the year you don&rsquo;t care :P</p>
+
+<pre><code>    // The Separated Interface
+interface CookieTin {
+    public function getCookieInstance();
+}
+
+class NormalTin implements CookieTin {
+    public function getCookieInstance() {
+        return new Cookie();
+    }
+}
+
+class DietTin implements CookieTin {
+    protected $i=0;
+    public function getCookieInstance() {
+        return ($this-&gt;i++ &lt; 5)?new Cookie():new NullCookie();
+    }
+}
+
+// The Factory which supports Plugin-Creation
+class CookieTinFactory {
+    public static function getPlugin( $class ) {
+        try {
+            return new $GLOBALS['Plugins'][$class]();
+        } catch( Exception $e) {
+            // maybe call some default implementation if the mapping is wrong
+        }
+    }
+}
+
+
+
+
+
+
+
+class Cookie {
+    public function printCalories() {
+        echo ’200 ‘;
+    }
+}
+
+class NullCookie extends Cookie{
+    public function printCalories() { }
+}
+
+
+
+
+
+
+
+// This is usually in a configuration-file, normally this should
+// also sit in a XML structure….
+
+// That’s what it would be in 300 days/year
+$GLOBALS['Plugins']['CookieTin'] = “NormalTin”;
+// That’s what we have to turn it to before summer
+if(in_array(date(‘n’),array(5,6,7))) {
+    $GLOBALS['Plugins']['CookieTin'] = “DietTin”;
+}
+
+$tin = CookieTinFactory::getPlugin(‘CookieTin’);
+$i=10;
+while($i–) {
+    $cookie = $tin-&gt;getCookieInstance();
+    $cookie-&gt;printCalories();
+}
+</code></pre>
+
+<p>A very common use-case for this is the changed behaviour in a testing-environment compared to the production-environment.
+There&rsquo;s something else in the example beside the Plugin Pattern &ndash; I also made use of the Special Case (the NullCookie) pattern  which I&rsquo;m going to show in a future post&hellip;.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2008/06/02/comparing-php-best-practises/">Comparing PHP Best Practises</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-06-02T17:37:00+02:00" pubdate data-updated="true">Jun 2<span>nd</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>If you&rsquo;re still wondering whether the single- or double quotes are processed faster in PHP you might want to look at <a href="http://www.phpbench.com/">phpbench.com</a>. They don&rsquo;t provide any ground breaking new insights, but they show in a very nice way what&rsquo;s best pratice when it comes to arrays, strings and loops&hellip;</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2008/05/30/value-object-ddd/">Value Object [DDD]</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-05-30T06:39:00+02:00" pubdate data-updated="true">May 30<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>This metaphor does not fit completely, and the &ldquo;Money-Example&rdquo; is omnipresent, but I really like the pattern and so that&rsquo;s the story:</p>
+
+<p>Let&rsquo;s say you have your grannies recipe for a chocolate cookie and you want to keep this in mind, but also you like to somehow experiment with some new or different ingredients. Normally you just keep in mind what you changed and later you write down the new recipe. But from time to time you might want to compare the two recipes or maybe you want to make cookies with the new and the changed recipes. In this situation it&rsquo;s really good to have both written down on paper. ;)</p>
+
+<p>In the world of OOP you could think of a solution using the <a href="http://cookiepattern.blogspot.com/search/label/memento?max-results=100">Memento-Pattern</a> but this doesn&rsquo;t really fit the situation and it&rsquo;s also some kind of overhead. That&rsquo;s the reason why the Value Object is the pattern of my choice.</p>
+
+<p>So let&rsquo;s look at the recipes again &ndash; we want to add and remove ingredients without modifying the original recipe and we want to compare the resulting recipes. We don&rsquo;t need to track a special identity of our recipes since we&rsquo;re only &ldquo;collecting&rdquo; ingredients.</p>
+
+<p>The idea of the Value Object is that every every method which somehow transforms the state of a object always returns a new object and the old object stays untouched. Whenever needed you should also implement a method to compare objects, I must concede that the common &ldquo;Money Example&rdquo; shows much better when that&rsquo;s needed &hellip;</p>
+
+<p>Another edge of this pattern in PHP is that you can use method-chaining to perform multiple actions within a single line of code. So just have a look at the example you will like it&rsquo;s taste :)</p>
+
+<pre><code>class Recipe {
+    protected $ingredients;
+
+    public function __construct($ingred=”) {
+        $this-&gt;ingredients = implode(‘,’,array_unique(explode(‘,’,$ingred)));
+    }
+
+    public function addIncredient($ingred=”) {
+        return new Recipe($this-&gt;ingredients.‘,’.$ingred);
+    }
+
+    public function removeIncredien($ingred=”) {
+        return new Recipe(preg_replace(‘/,{0,1}’.$ingred.‘,{0,1}/’,”,$this-&gt;ingredients.‘,’));
+    }
+
+    public function printIncredients() {
+        echo str_replace(‘,’,‘&lt;br&gt;&lt;/br&gt;’,$this-&gt;ingredients);
+    }
+
+    public function equals(Recipe $recipe) {
+        return (strcmp($this-&gt;ingredients,$recipe-&gt;ingredients)===0)?true:false;
+    }
+}
+
+
+$granniesRecipe = new Recipe(‘flour,baking soda,sugar,salt,butter,vanilla,chocolate’);
+$aNewRecipe = $granniesRecipe-&gt;addIncredient(‘lemon’);
+$coconutRecipe = $granniesRecipe-&gt;removeIncredien(‘chocolate’)-&gt;addIncredient(‘coconut’);
+
+// check if that worked:
+echo ‘&lt;br&gt;&lt;/br&gt;&lt;strong&gt; Grannies Cookie Recipe – Incredients are:&lt;/strong&gt;&lt;br&gt;&lt;/br&gt;’;
+$granniesRecipe-&gt;printIncredients();
+echo ‘&lt;br&gt;&lt;/br&gt;&lt;strong&gt; A new Cookie Recipe could look like:&lt;/strong&gt;&lt;br&gt;&lt;/br&gt;’;
+$aNewRecipe-&gt;printIncredients();
+echo ‘&lt;br&gt;&lt;/br&gt;&lt;strong&gt; A coconut cookie would look like:&lt;/strong&gt;&lt;br&gt;&lt;/br&gt;’;
+$coconutRecipe-&gt;printIncredients();
+</code></pre>
+
+<p>The implementation is a bit odd, since it only collects the names of the ingredients but not the amount, but including the amounts of incredients would not change the concept  and that&rsquo;s why I left it out. I hope you got a idea how the pattern works &ndash; the main thing is that there&rsquo;s no identity and that new objects are instantiated as soon as the state of the old one would change.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2008/05/29/todays-rofl/">Today&#8217;s Rofl</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-05-29T23:11:00+02:00" pubdate data-updated="true">May 29<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>These two storries passed my day and I really like them Oo<br/>
+<a href="http://uk.reuters.com/article/oddlyEnoughNews/idUKT16575820080526?feedType=RSS">Calls for free and how this can get back to you</a>&hellip; and I hope that I never meet the officer in <a href="http://news.bbc.co.uk/2/hi/asia-pacific/7419969.stm">this story</a>.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2008/05/28/prototype-gof/">Prototype [GoF]</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-05-28T01:17:00+02:00" pubdate data-updated="true">May 28<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Imagine a cookie-oven which produces tasty cookies with chocolate crumbles. How do you ensure that the 1000th cookie still has the same taste as the first?
+You might think that this is an easy task &ndash; just write down the recipe and follow the described steps&hellip;you know the result in real life &ndash; the 1000th cookie normally tasts like the 1st but you always had the &ldquo;overhead&rdquo; to read the recipe and go through the steps again and again.
+In OOP it&rsquo;s much easier to follow the recipe just instantiate a new Object and  there you go&hellip; no matter if it&rsquo;s the 1st or the 1000th &ndash; it&rsquo;ll always taste look similar.
+But the &ldquo;recipe-overhead&rdquo; is still there in a way and especially when you have larger objects whose construction is time-consuming you might want to somehow get rid of it. And that&rsquo;s where a Prototype can help you out &ndash; you just create the first Cookie Object and then you use the handy magic method <strong>clone to create new objects.
+Instead of just using </strong>clone the pattern suggests a class (some kind of a factory-class) so that you can also encapsulate the creation of the objects (and also possible adjustments you might want to make after the creation/clone).</p>
+
+<p>So the example just shows a cookie-machine which makes use of the prototype-pattern to create new cookies (depending on the cookie you throw in before)&hellip; yummy</p>
+
+<p><a href="http://bp0.blogger.com/_l5fIZzJyYfc/SDrXY97tyhI/AAAAAAAAABg/1sAhpbVe2kI/s1600-h/prototype_pattern.png"><img src="http://bp0.blogger.com/_l5fIZzJyYfc/SDrXY97tyhI/AAAAAAAAABg/1sAhpbVe2kI/s400/prototype_pattern.png" alt="" /></a></p>
+
+<p>abstract class Cookie {
+function __clone() {    }
+abstract public function printFlavor();
+}</p>
+
+<p>class CoconutCookie extends Cookie {
+public function printFlavor() {
+echo &lsquo;Coconut Flavor<br/>&rsquo;;
+}
+}
+class ChocolateCookie extends Cookie {
+public function printFlavor() {
+echo &lsquo;Chocolate Flavor<br/>&rsquo;;
+}
+}</p>
+
+<p>class CookieMachine {
+protected $cookie;
+public function __construct(Cookie $cookie) {
+$this->cookie = $cookie;
+}
+public function makeCookie() {
+return clone $this->cookie;
+}
+}</p>
+
+<p>The client-code can look like this:</p>
+
+<p>$coconutCookie = new CoconutCookie();
+$coconutCookieMachine = new CookieMachine($coconutCookie);</p>
+
+<p>$chocolateCookie = new ChocolateCookie();
+$chocolateCookieMachine = new CookieMachine($chocolateCookie);</p>
+
+<p>//while(true) {
+for($i=0;$i&lt;5;$i++) {
+$coconutCookieMachine->makeCookie()&ndash;>printFlavor();
+$chocolateCookieMachine->makeCookie()&ndash;>printFlavor();
+}</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2008/05/26/wii-head-tracking/">Wii Head-tracking</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-05-26T17:33:00+02:00" pubdate data-updated="true">May 26<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>The page and the experiments with the Wii-Remote controll are really great: <a href="http://www.cs.cmu.edu/%7Ejohnny/projects/wii/">http://www.cs.cmu.edu/~johnny/projects/wii/</a></p>
+
+<p>And for the spare time a cool video &ndash; I watch it every monday morning to get into the new week with a smile:</p>
+
+<p>[youtube]<a href="http://www.youtube.com/?v=HIicO-e0hic">http://www.youtube.com/?v=HIicO-e0hic</a>[/youtube]</p>
+
+<p>The second one is also cool:<br/>
+[youtube]<a href="http://www.youtube.com/watch?v=6VKE_VoXzNI">http://www.youtube.com/watch?v=6VKE_VoXzNI</a>[/youtube]</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2008/05/24/php-fastcgi-vs-php-as-a-module/">PHP FastCGI vs. PHP as a Module</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-05-24T19:40:00+02:00" pubdate data-updated="true">May 24<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>The apachelounge.org guy published a very interesting stat which compares the <a href="http://www.apachelounge.com/forum/viewtopic.php?p=10991">memory-usage of PHP/FastCGI and PHP/as module</a> and that&rsquo;s really interesting:</p>
+
+<p><a href="http://bp0.blogger.com/_l5fIZzJyYfc/SDfQbt7tygI/AAAAAAAAABY/D72W5ZIj22c/s1600-h/httpd-ram-week.png"><img src="http://bp0.blogger.com/_l5fIZzJyYfc/SDfQbt7tygI/AAAAAAAAABY/D72W5ZIj22c/s400/httpd-ram-week.png" alt="" /></a></p>
+
+<p>There&rsquo;s no comment about performance and in early versions FastCGI/PHP was a bottleneck but maybe these days are gone :)</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2008/05/23/singelton-gof/">Singelton [GoF]</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-05-23T23:40:00+02:00" pubdate data-updated="true">May 23<span>rd</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Tis pattern is a very well know and a often discussed one.</p>
+
+<p>Explaining it the tasty way: let&rsquo;s say you have exactly one well know place where you store all your cookies and whenever you need one you can easy point to that place. Normally that&rsquo;s really comfortable because whatever you do with it, you don&rsquo;t have to search some place where you can find a cookie, you just go to that single &ldquo;cookie tin&rdquo; (or wherever you store cookies) and put a new cookie into it ;)</p>
+
+<p>In modern OOP the singleton is not very popular, Eric Evans simple calls it anti-pattern. It makes it much harder to test your software and normally the user of the class, not the class itself, should know how many instances are needed.</p>
+
+<p>But nevertheless for small applications it&rsquo;s very comfortable to use it in some situations and as long as you&rsquo;re also familiar with the drawbacks I think it&rsquo;s ok to consider using it&hellip;.</p>
+
+<p>So the example shows a cookie tin and how to use it and by the way it also implements some kind of lowlevel registry by using the <a href="http://www.php.net/manual/en/language.oop5.magic.php">PHP5 magic methods</a>, but that&rsquo;s another story ;)</p>
+
+<pre><code>/**
+* CookieTin a.k.a Singleton object
+* we want to force our application
+* to hold exactly one CookieTin object
+*/
+class CookieTin {
+    private $_cookies=array();
+
+    /* generic singleton part start*/
+
+    private static $_instance=NULL;
+    // prevent instatiation from the outside
+    private function __construct() { }
+
+    // prevent cloning
+    private function __clone() {}
+
+    public static function getInstance() {
+        if(!self::$_instance) {
+            self::$_instance = new self();
+        }
+        return self::$_instance;
+    }
+    /* generic singleton part end */
+
+    /* registry part start */
+    public static function __set($key,Cookie $value) {
+        echo “call setter\n”;
+        self::$_instance-&gt;_cookies[$key] = $value;
+    }
+
+    public static function __get($key) {
+        echo “call getter\n”;
+        return self::$_instance-&gt;_cookies[$key];
+    }
+
+    public static function __isset($key) {
+        echo “call isset\n”;
+        return isset(self::$_instance-&gt;_cookies[$key]);
+    }
+
+    public static function __unset($key) {
+        echo “call unset\n”;
+        unset(self::$_instance-&gt;_cookies[$key]);
+    }
+/* registry part end */
+}
+/**
+* Dummy Cookie
+*/
+class Cookie {
+    public $name,$flavor;
+}
+
+
+
+
+
+
+
+$tin = CookieTin::getInstance();
+if(!isset($tin-&gt;granniescookie)) {
+    $tin-&gt;granniescookie = new Cookie();
+    $tin-&gt;granniescookie-&gt;name=“Grannies chocolate wonder”;
+    $tin-&gt;granniescookie-&gt;flavor=“chocolate”;
+}
+
+CookieTin::getInstance()-&gt;granniescookie-&gt;flavor = “chocolte chips”;
+
+var_dump($tin);
+unset(CookieTin::getInstance()-&gt;granniescookie);
+var_dump($tin);
+</code></pre>
+
+<p>The really important things happen in the last lines where the CookieTin is accessed statically and this change also (as you will see yourself) is reflected in the local instance if the $tin.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2008/05/22/php-sucks-not-really/">PHP Sucks? Not Really!</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-05-22T08:35:00+02:00" pubdate data-updated="true">May 22<span>nd</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>There are so many people from outside of the PHP World and lots of them are complaining about PHP and their reasons are mostly so ridiculous. In most cases they just say that PHP code sucks.<br/>
+The PHP 10.0 Blog brought up some good arguments about that and I fully agree &ndash; it&rsquo;s not the language that produces sucking code, it&rsquo;s the guy who wrote it down. <a href="http://php100.wordpress.com/2008/05/21/secret-of-php/">Click</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/11/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/9/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/06/14/templavoila-followup/">TemplaVoila - followup</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/06/08/templavoila-future/">TemplaVoila future</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/06/06/genetic-algorithms-boosting-solr/">Using genetic algorithms to optimize Apache Solr boost factors.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/22/re-how-to-move-on-typo3/">Re: How to move on? #TYPO3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/10/typo3-login-state-and-varnish-cache/">TYPO3 login state and Varnish cache</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Tolleiv Nietsch <br/>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>, customized with <a href="https://github.com/mjhea0/whiterspace">whiterspace</a>.</span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

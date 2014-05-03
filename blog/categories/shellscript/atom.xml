@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: shellscript | the fancy part of the web]]></title>
+  <link href="http://tolleiv.github.io/blog/categories/shellscript/atom.xml" rel="self"/>
+  <link href="http://tolleiv.github.io/"/>
+  <updated>2014-05-04T01:05:15+02:00</updated>
+  <id>http://tolleiv.github.io/</id>
+  <author>
+    <name><![CDATA[Tolleiv Nietsch]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[track time for a subroutine within a shell-script]]></title>
+    <link href="http://tolleiv.github.io/blog/2008/07/10/track-time-for-a-subroutine-within-a-shell-script/"/>
+    <updated>2008-07-10T23:55:00+02:00</updated>
+    <id>http://tolleiv.github.io/blog/2008/07/10/track-time-for-a-subroutine-within-a-shell-script</id>
+    <content type="html"><![CDATA[<p>The following code-snippet is a shell-script which does the following:</p>
+
+<ol>
+<li><p> Track the time for a block of shell commands</p></li>
+<li><p> Check if the time was less than x seconds (the example uses 10 seconds)</p></li>
+<li><p> If the block run through too fast the script waits/sleeps a few seconds</p></li>
+<li><p> Run all this within a loop so that the block of shell-commands is executed periodically</p></li>
+</ol>
+
+
+<p>I used the script combined with a PHP script which processes a queue. The PHP script processes 1000 elements from the queue and takes about 30 seconds for that. Since just having a cronjob per minute would be not efficient enought I used this script.
+The waiting-block is necessary because now and then the queue is empty &hellip; but I think there are lot&rsquo;s of situations where a script like this can be usefull:</p>
+
+<pre><code>#!/bin/bash
+while [ 1 -ge 0 ]; do
+time_begin=`date +%s`
+
+
+###BLOCK 2 TRACK - BEGIN
+number=$RANDOM
+let "number %= 20"
+sleep $number
+###BLOCK 2 TRACK - END
+
+time_end=`date +%s`
+total=$((time_end-time_begin))
+
+if [[ $total -ge 10 ]]; then
+echo "time taken was: $number : $total"
+else
+echo "time take was too less  $number : $total"
+sleep 10
+fi
+done
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: css | the fancy part of the web]]></title>
+  <link href="http://tolleiv.github.io/blog/categories/css/atom.xml" rel="self"/>
+  <link href="http://tolleiv.github.io/"/>
+  <updated>2014-05-04T01:05:15+02:00</updated>
+  <id>http://tolleiv.github.io/</id>
+  <author>
+    <name><![CDATA[Tolleiv Nietsch]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Homer Simpson as ASCII-Art]]></title>
+    <link href="http://tolleiv.github.io/blog/2008/05/15/homer-simpson-as-ascii-art/"/>
+    <updated>2008-05-15T00:02:00+02:00</updated>
+    <id>http://tolleiv.github.io/blog/2008/05/15/homer-simpson-as-ascii-art</id>
+    <content type="html"><![CDATA[<p>The rebirth of ASCII-Art that&rsquo;s how one of the comments called it &ndash; Homer-Simpson as ASCII-Art with modern and valid CSS &ndash; that&rsquo;s so awesome: <a href="http://www.romancortes.com/blog/homer-css/">http://www.romancortes.com/blog/homer-css/</a></p>
+]]></content>
+  </entry>
+  
+</feed>

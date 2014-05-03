@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: factory | the fancy part of the web]]></title>
+  <link href="http://tolleiv.github.io/blog/categories/factory/atom.xml" rel="self"/>
+  <link href="http://tolleiv.github.io/"/>
+  <updated>2014-05-04T01:05:15+02:00</updated>
+  <id>http://tolleiv.github.io/</id>
+  <author>
+    <name><![CDATA[Tolleiv Nietsch]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Factory [GoF]]]></title>
+    <link href="http://tolleiv.github.io/blog/2008/06/23/factory-gof/"/>
+    <updated>2008-06-23T20:20:00+02:00</updated>
+    <id>http://tolleiv.github.io/blog/2008/06/23/factory-gof</id>
+    <content type="html"><![CDATA[<p>Do you remember the <a href="http://www.cookiepattern.com/2008/06/faade-gof.html">Fa</a><a href="http://www.cookiepattern.com/2008/06/faade-gof.html">ç</a><a href="http://www.cookiepattern.com/2008/06/faade-gof.html">ade pattern</a> post? Sure you do :) &ndash; I described a child which asked his granny whether she could bake some cookies. So how this happens in a formal way was describe within the<a href="http://www.cookiepattern.com/2008/06/faade-gof.html"> Fa</a><a href="http://www.cookiepattern.com/2008/06/faade-gof.html">ç</a><a href="http://www.cookiepattern.com/2008/06/faade-gof.html">ade pattern</a> post ;) but the basic action &ldquo;to ask for sth.&rdquo; is described here&hellip;</p>
+
+<p>As you might remember we had a child, probably a lazy one, which was in the mood to eat some cookies but since the cookie tin was empty it asked his granny to bake some new. In OOP thats nearly the same &ndash; when you&rsquo;d to have a (complex) object and if you don&rsquo;t already have one you need someone who creates it or you do it yourself but since you need remember all the steps to create it, that&rsquo;s something for programmers who likes to type :P</p>
+
+<p>So normally you create a method which wraps up all the code to create the complex object. Or maybe you have  a Aggregate and you don&rsquo;t want that everyone needs to know how it is build up then this method should be the only way to access the Aggregate.</p>
+
+<p>You see now how you can benefit when you have a Factory available &ndash; but there are also some drawbacks. Factories tend to be hard to extend &ndash; this happens because the factory has a very deep (mostly hard-coded) knowledge of the objects it creates and normally all the wiring happens statically. If you&rsquo;re looking for a dynamic way to wire up your objects you might end making heavy use of reflection. In normal projects this might be a bit too much ;)</p>
+
+<p>A normal factory method, for a cookie which requires to have 3 flavors, a predefined size and that it&rsquo;s baked before anyone consumes it, could look like this:</p>
+
+<p>class Cookie {</p>
+
+<p> // &hellip;</p>
+
+<p> /<em><br/>
+  * Create a Cookie object which consists<br/>
+  * of 3 flavors and has a defined size.<br/>
+  </em>/ <br/>
+ public function getInstance() {</p>
+
+<pre><code> $c = new Cookie();  
+ $c-&gt;setFlavor(Cookie::randomFlavor());  
+ $c-&gt;setFlavor(Cookie::randomFlavor());  
+ $c-&gt;setFlavor(Cookie::randomFlavor());  
+ $c-&gt;setSize(Cookie::randomSize());  
+ $c-&gt;bakeIt();  
+ return $c;       
+</code></pre>
+
+<p> }</p>
+
+<p>}</p>
+
+<p>If your software contains some complexity where you want to switch the used objects (created by a factory) without modifying the clients, which make use of the factory, you&rsquo;ll end up with the so called Abtract factory.</p>
+
+<p>Let&rsquo;s say you have two types of Cookies &ndash; the first one is a high-quality cookie with a bunch of different flavors and the second one is a normal chocolate-cookie. The high-quality cookie is created by your granny (slow but mind-blowing taste), the cookies with the lower quality are the result of mass-production. Your &ldquo;client&rdquo; is a wrapping machine which does everything to deliver the cookies to some customers.<br/>
+So the wrapping machine won&rsquo;t care what kind of cookies are prepared for delivering and so it doesn&rsquo;t matter who the creator is &ndash; the only thing it has to know is how it can access the cookies&hellip; some kind of interface.<br/>
+So the entire szenario could look like this:</p>
+
+<p>class Cookie {</p>
+
+<p>}</p>
+
+<p>interface CookieFactory {<br/>
+ abstract function createCookie();<br/>
+}</p>
+
+<p>class Granny implements CookieFactory {<br/>
+ public function createCookie() {</p>
+
+<pre><code> $cookie = new Cookie();  
+ // do some wierd cookie-creation stuff //  
+ return $cookie;  
+</code></pre>
+
+<p> }<br/>
+}</p>
+
+<p>class MassProduction implements CookieFactory {<br/>
+ public function createCookie() {</p>
+
+<pre><code> return new Cookie();  
+</code></pre>
+
+<p> }<br/>
+}</p>
+
+<p>class wrappingMachine {<br/>
+ public function run(CookieFactory $factory) {</p>
+
+<pre><code> $i = 6;  
+ $package=array();  
+ while($i--) {  
+     $package[] = $factory-&gt;createCookie();           
+ }  
+ return $package;  
+</code></pre>
+
+<p> }<br/>
+}</p>
+
+<p>Client-code could look like this;</p>
+
+<p>$wrapper = new wrappingMachine();<br/>
+$highQualityCookiePackage = $wrapper->run(new Granny());<br/>
+$lowQualityCookiePackage = $wrapper->run(new MassProduction());</p>
+
+<p>Thats mostly what you can achieve with some normal Factories in the GoF-meaning. Some other interesting ways of object creation are the <a href="http://www.cookiepattern.com/2008/06/plugin-poeaa.html">Plugin pattern</a> and the  <a href="http://www.cookiepattern.com/2008/05/prototype-gof.html">Prototype pattern</a>. :)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Query Object [PoEEA]]]></title>
+    <link href="http://tolleiv.github.io/blog/2008/06/20/query-object-poeea/"/>
+    <updated>2008-06-20T19:29:00+02:00</updated>
+    <id>http://tolleiv.github.io/blog/2008/06/20/query-object-poeea</id>
+    <content type="html"><![CDATA[<p>Maybe you remember the <a href="http://www.cookiepattern.com/2008/05/specification-ddd.html">Specification Pattern</a> I explained some weeks ago. It enabled a easy and intuitive  searching within large object-collections. A drawback of my example was that I stored the objects in the memory. This can be really ineffective if you want a single object out of hundreds, because you have to create all of them to see which one fits the specification.
+Normally you want to limit the number of objects and you also don&rsquo;t store large datasets in memory. The idea of the Query Object pattern is that it enables a usage, comparable to the specification pattern, for objects which are persisted in a database. The benefit is that it creates a query to exclude objects which won&rsquo;t satisfy your needs and therefore you wont mess up the memory anymore.
+Once you have a query-object in place you should not get in touch with SQL anymore because it can encapsulate SQL completely, at least if you also have some kind of data mapping (coming soon), which is a great benefit for everyone who is not so familiar with SQL. (But don&rsquo;t forget, regarding performance, SQL-optimization is a very important thing).</p>
+
+<p>So what we need for the Query Object in first place is a object, I&rsquo;ll use the Cookie out of the <a href="http://www.cookiepattern.com/2008/05/specification-ddd.html">specification pattern post</a> again. Then we need criteria-objects which hold the information for a single criteria, (determined by &ldquo;database-field&rdquo;, &ldquo;operator&rdquo; and &ldquo;value&rdquo;) and we also need the Query Objects itself to wrap up the SQL-querying and the object creation somehow.</p>
+
+<p>A very simple example could look like this:</p>
+
+<p>interface Critera {
+public function getWhereClause();
+}</p>
+
+<p>class CookieCriteria implements Critera {</p>
+
+<p>private $operator,$field,$value;</p>
+
+<p>protected function __construct($operator,$field,$value) {
+$this->operator=$operator;
+$this->field=$field;
+$this->value=$value;
+}</p>
+
+<p>public function getWhereClause() {
+return implode(&ldquo; &rdquo;,array($this->field,$this->operator,$this->value));
+}</p>
+
+<p>public static function matches($field,$value) {
+return new CookieCriteria(&ldquo;LIKE&rdquo;,$field,&lsquo;&ldquo;&rsquo;.$value.&lsquo;&rdquo;&rsquo;);
+}</p>
+
+<p>public static function greaterThan($field,$value) {
+return new CookieCriteria(&ldquo;>&rdquo;,$field,$value);
+}
+}</p>
+
+<p>class CookieFinder {
+protected $criterias;</p>
+
+<p>public function addCriteria(Critera $criteria) {
+$this->criterias[] = $criteria;
+}</p>
+
+<p>public function generateSQL() {
+$sql = &ldquo;SELECT * FROM cookies&rdquo;;</p>
+
+<p>if(sizeof($this->criterias)) {
+$where=array();
+reset($this->criterias);
+while(list(,$criteria)=each($this->criterias)) {
+$where[] = $criteria->getWhereClause();
+}
+$sql.= sizeof($where)?&ldquo; WHERE &rdquo;.implode(&ldquo; AND &rdquo;,$where):&ldquo;&rdquo;;
+}
+return $sql;
+}</p>
+
+<p>public function find() {
+$collection = array();
+if(!$result = mysql_query($this->generateSQL())) {
+throw new Exception(mysql_errno());
+}
+while($row = mysql_fetch_assoc($result)) {
+$collection[] = new Cookie($row[&lsquo;name&rsquo;],$row[&lsquo;flavor&rsquo;],$name[&lsquo;size&rsquo;]);
+}
+return $collection;
+}
+}</p>
+
+<p>Possible client code could look like this:
+$finder = new CookieFinder();
+$finder->addCriteria(CookieCriteria::matches(&ldquo;name&rdquo;,&ldquo;Granny%&rdquo;));
+$finder->addCriteria(CookieCriteria::greaterThan(&ldquo;size&rdquo;,100));
+$cookies = $finder->find();</p>
+
+<p>We just pick up the Query Object, add one or more criteria and ask it to create the objects which fit them.</p>
+
+<p>So this example is not as powerful as the one I used for the <a href="http://www.cookiepattern.com/2008/05/specification-ddd.html">Specification pattern</a>, but it should be a easy task to create some kind of &ldquo;nested criteria objects&rdquo;.
+Query objects normally make use of data-mapping so that you can handle various classes, stored in different tables/databases, with a single and generic Query Object. This also enables to avoid SQL-Injection, since you&rsquo;re able to validate the fields and values before you sent them to your database, also some kind of database abstraction would be possible.
+With the &ldquo;Query Object by example&rdquo;, which requires to build up a single object which is used as blueprint for the required objects, exists another flavor of this pattern which is very handy to use and more descriptive.
+But no matter which flavor you prefer, Query Objects bring some real benefits when you&rsquo;ve to handle complex datasets &ndash; for smaller projects the effort might be to much so be careful where you use it.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Plugin [PoEAA]]]></title>
+    <link href="http://tolleiv.github.io/blog/2008/06/05/plugin-poeaa/"/>
+    <updated>2008-06-05T03:11:00+02:00</updated>
+    <id>http://tolleiv.github.io/blog/2008/06/05/plugin-poeaa</id>
+    <content type="html"><![CDATA[<p>I&rsquo;m sure you&rsquo;re pretty often in the situation that you have to switch something depending on the context you&rsquo;re currently in. For example most people change their eating habits before summer &ndash; I also do :P</p>
+
+<p>Sometimes this is what you also want to have in your software. To achieve different behaviour you normally just implement two different classes or aggregates and since they have the same &ldquo;meaning&rdquo; they normally share a interface (a.k.a Separated Interface). But who decides which implementation fits into the current environment/context?</p>
+
+<p>The easiest way is to have a Factory Method with a small condition to decide this, but this method might grow very fast if you have various options. In this situation its also a matter of form to move this decision into some kind of configuration(-file) so that there&rsquo;s only on file which differs in various environments.</p>
+
+<p><a href="http://martinfowler.com/eaaCatalog/plugin.html">Martin Fowler</a> suggests to place some kind of mapping into the configuration-file, so that your Factory knows which implementation to instantiate in the current context. The key for the mapping in this case is the name of the Separated Interface.</p>
+
+<p>As you see in the example code below, there are Cookie Tins which create contain Cookies and depending on the current month you want to use a more or less restrictive Cookie Tin. In May, June and July you restrict your application to create max. 5 cookies, the rest of the year you don&rsquo;t care :P</p>
+
+<pre><code>    // The Separated Interface
+interface CookieTin {
+    public function getCookieInstance();
+}
+
+class NormalTin implements CookieTin {
+    public function getCookieInstance() {
+        return new Cookie();
+    }
+}
+
+class DietTin implements CookieTin {
+    protected $i=0;
+    public function getCookieInstance() {
+        return ($this-&gt;i++ &lt; 5)?new Cookie():new NullCookie();
+    }
+}
+
+// The Factory which supports Plugin-Creation
+class CookieTinFactory {
+    public static function getPlugin( $class ) {
+        try {
+            return new $GLOBALS['Plugins'][$class]();
+        } catch( Exception $e) {
+            // maybe call some default implementation if the mapping is wrong
+        }
+    }
+}
+
+
+
+
+
+
+
+class Cookie {
+    public function printCalories() {
+        echo ’200 ‘;
+    }
+}
+
+class NullCookie extends Cookie{
+    public function printCalories() { }
+}
+
+
+
+
+
+
+
+// This is usually in a configuration-file, normally this should
+// also sit in a XML structure….
+
+// That’s what it would be in 300 days/year
+$GLOBALS['Plugins']['CookieTin'] = “NormalTin”;
+// That’s what we have to turn it to before summer
+if(in_array(date(‘n’),array(5,6,7))) {
+    $GLOBALS['Plugins']['CookieTin'] = “DietTin”;
+}
+
+$tin = CookieTinFactory::getPlugin(‘CookieTin’);
+$i=10;
+while($i–) {
+    $cookie = $tin-&gt;getCookieInstance();
+    $cookie-&gt;printCalories();
+}
+</code></pre>
+
+<p>A very common use-case for this is the changed behaviour in a testing-environment compared to the production-environment.
+There&rsquo;s something else in the example beside the Plugin Pattern &ndash; I also made use of the Special Case (the NullCookie) pattern  which I&rsquo;m going to show in a future post&hellip;.</p>
+]]></content>
+  </entry>
+  
+</feed>
