@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: query | the fancy part of the web]]></title>
-  <link href="http://tolleiv.github.io/blog/categories/query/atom.xml" rel="self"/>
-  <link href="http://tolleiv.github.io/"/>
-  <updated>2014-05-04T09:22:00+02:00</updated>
-  <id>http://tolleiv.github.io/</id>
+  <link href="http://blog.tolleiv.de/blog/categories/query/atom.xml" rel="self"/>
+  <link href="http://blog.tolleiv.de/"/>
+  <updated>2014-05-04T10:15:47+02:00</updated>
+  <id>http://blog.tolleiv.de/</id>
   <author>
     <name><![CDATA[Tolleiv Nietsch]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Query Object [PoEEA]]]></title>
-    <link href="http://tolleiv.github.io/2008/06/query-object-poeea/"/>
+    <link href="http://blog.tolleiv.de/2008/06/query-object-poeea/"/>
     <updated>2008-06-20T19:29:00+02:00</updated>
-    <id>http://tolleiv.github.io/2008/06/query-object-poeea</id>
+    <id>http://blog.tolleiv.de/2008/06/query-object-poeea</id>
     <content type="html"><![CDATA[<p>Maybe you remember the <a href="http://www.cookiepattern.com/2008/05/specification-ddd.html">Specification Pattern</a> I explained some weeks ago. It enabled a easy and intuitive  searching within large object-collections. A drawback of my example was that I stored the objects in the memory. This can be really ineffective if you want a single object out of hundreds, because you have to create all of them to see which one fits the specification.
 Normally you want to limit the number of objects and you also don&rsquo;t store large datasets in memory. The idea of the Query Object pattern is that it enables a usage, comparable to the specification pattern, for objects which are persisted in a database. The benefit is that it creates a query to exclude objects which won&rsquo;t satisfy your needs and therefore you wont mess up the memory anymore.
 Once you have a query-object in place you should not get in touch with SQL anymore because it can encapsulate SQL completely, at least if you also have some kind of data mapping (coming soon), which is a great benefit for everyone who is not so familiar with SQL. (But don&rsquo;t forget, regarding performance, SQL-optimization is a very important thing).</p>

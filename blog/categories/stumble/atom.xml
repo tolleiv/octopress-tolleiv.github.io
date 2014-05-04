@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: stumble | the fancy part of the web]]></title>
-  <link href="http://tolleiv.github.io/blog/categories/stumble/atom.xml" rel="self"/>
-  <link href="http://tolleiv.github.io/"/>
-  <updated>2014-05-04T09:22:00+02:00</updated>
-  <id>http://tolleiv.github.io/</id>
+  <link href="http://blog.tolleiv.de/blog/categories/stumble/atom.xml" rel="self"/>
+  <link href="http://blog.tolleiv.de/"/>
+  <updated>2014-05-04T10:15:47+02:00</updated>
+  <id>http://blog.tolleiv.de/</id>
   <author>
     <name><![CDATA[Tolleiv Nietsch]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[how breakfast could look like...]]></title>
-    <link href="http://tolleiv.github.io/2008/07/how-breakfast-could-look-like/"/>
+    <link href="http://blog.tolleiv.de/2008/07/how-breakfast-could-look-like/"/>
     <updated>2008-07-03T23:37:00+02:00</updated>
-    <id>http://tolleiv.github.io/2008/07/how-breakfast-could-look-like</id>
+    <id>http://blog.tolleiv.de/2008/07/how-breakfast-could-look-like</id>
     <content type="html"><![CDATA[<p>hey that&rsquo;s great &ndash; my mom never created something like this for me:</p>
 
 <p>check out on: <a href="http://fiveprime.org/hivemind/Tags/bento">http://fiveprime.org/hivemind/Tags/bento</a></p>

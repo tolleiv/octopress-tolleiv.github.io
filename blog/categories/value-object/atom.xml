@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: value object | the fancy part of the web]]></title>
-  <link href="http://tolleiv.github.io/blog/categories/value-object/atom.xml" rel="self"/>
-  <link href="http://tolleiv.github.io/"/>
-  <updated>2014-05-04T09:22:00+02:00</updated>
-  <id>http://tolleiv.github.io/</id>
+  <link href="http://blog.tolleiv.de/blog/categories/value-object/atom.xml" rel="self"/>
+  <link href="http://blog.tolleiv.de/"/>
+  <updated>2014-05-04T10:15:47+02:00</updated>
+  <id>http://blog.tolleiv.de/</id>
   <author>
     <name><![CDATA[Tolleiv Nietsch]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Value Object [DDD]]]></title>
-    <link href="http://tolleiv.github.io/2008/05/value-object-ddd/"/>
+    <link href="http://blog.tolleiv.de/2008/05/value-object-ddd/"/>
     <updated>2008-05-30T06:39:00+02:00</updated>
-    <id>http://tolleiv.github.io/2008/05/value-object-ddd</id>
+    <id>http://blog.tolleiv.de/2008/05/value-object-ddd</id>
     <content type="html"><![CDATA[<p>This metaphor does not fit completely, and the &ldquo;Money-Example&rdquo; is omnipresent, but I really like the pattern and so that&rsquo;s the story:</p>
 
 <p>Let&rsquo;s say you have your grannies recipe for a chocolate cookie and you want to keep this in mind, but also you like to somehow experiment with some new or different ingredients. Normally you just keep in mind what you changed and later you write down the new recipe. But from time to time you might want to compare the two recipes or maybe you want to make cookies with the new and the changed recipes. In this situation it&rsquo;s really good to have both written down on paper. ;)</p>

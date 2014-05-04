@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: service | the fancy part of the web]]></title>
-  <link href="http://tolleiv.github.io/blog/categories/service/atom.xml" rel="self"/>
-  <link href="http://tolleiv.github.io/"/>
-  <updated>2014-05-04T09:22:00+02:00</updated>
-  <id>http://tolleiv.github.io/</id>
+  <link href="http://blog.tolleiv.de/blog/categories/service/atom.xml" rel="self"/>
+  <link href="http://blog.tolleiv.de/"/>
+  <updated>2014-05-04T10:15:47+02:00</updated>
+  <id>http://blog.tolleiv.de/</id>
   <author>
     <name><![CDATA[Tolleiv Nietsch]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Specification [DDD]]]></title>
-    <link href="http://tolleiv.github.io/2008/05/specification-ddd/"/>
+    <link href="http://blog.tolleiv.de/2008/05/specification-ddd/"/>
     <updated>2008-05-15T16:00:00+02:00</updated>
-    <id>http://tolleiv.github.io/2008/05/specification-ddd</id>
+    <id>http://blog.tolleiv.de/2008/05/specification-ddd</id>
     <content type="html"><![CDATA[<p>Maybe sometimes the cookie tin is filled with all sorts of cookies and only some of them are what you&rsquo;d like in this special moment. Often it&rsquo;s very easy to specify which cookie you like, but sometimes your wishes are very complex, for example if you look for grannies special cookie with chocolate, coconut and vanilla crumbles. This could lead into a real crumby problem if you try to sort all the cookies and then select eat the right one.</p>
 
 <p>In the world of OOP it&rsquo;s often much harder to collect a few objects out of a large number of different objects, also combining different requirements isn&rsquo;t easy and that&rsquo;s where the specification pattern can help you out. It implements some basic operations to combine requirements (AND, OR, NOT) and the only thing a concrete specification for a concrete class has to do is to implement a method (isSatisfied()) which is able to determine whether a object meats a requirement or not.</p>

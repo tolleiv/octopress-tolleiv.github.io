@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: behavioral | the fancy part of the web]]></title>
-  <link href="http://tolleiv.github.io/blog/categories/behavioral/atom.xml" rel="self"/>
-  <link href="http://tolleiv.github.io/"/>
-  <updated>2014-05-04T09:22:00+02:00</updated>
-  <id>http://tolleiv.github.io/</id>
+  <link href="http://blog.tolleiv.de/blog/categories/behavioral/atom.xml" rel="self"/>
+  <link href="http://blog.tolleiv.de/"/>
+  <updated>2014-05-04T10:15:47+02:00</updated>
+  <id>http://blog.tolleiv.de/</id>
   <author>
     <name><![CDATA[Tolleiv Nietsch]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Iterator [GoF]]]></title>
-    <link href="http://tolleiv.github.io/2008/07/iterator-gof/"/>
+    <link href="http://blog.tolleiv.de/2008/07/iterator-gof/"/>
     <updated>2008-07-07T19:30:00+02:00</updated>
-    <id>http://tolleiv.github.io/2008/07/iterator-gof</id>
+    <id>http://blog.tolleiv.de/2008/07/iterator-gof</id>
     <content type="html"><![CDATA[<p>Lot&rsquo;s of people like to write down things into lists, so that they can go through that list later and check whether everything was fine. Normally every recipe has a list ~ there&rsquo;s always a list of ingredients at the beginning of the recipe.
 This short example shows how such a list can be processed in PHP. So why would you want to have something else than a array to hold your objects? &ndash; My example still uses a array to hold the objects (uni- or bidirectional lists would also be possible) but it adds a kind of a facade to the array so that the common managements-tasks are handled within the List-Object. Everything you need for this example is present in PHP since version 5.0. The basic steps you need to do is to provide a &ldquo;Object&rdquo; and an &ldquo;ObjectList&rdquo; which implements the native <a href="http://www.php.net/manual/en/language.oop5.iterations.php">&ldquo;Iterator&rdquo;</a> interface and then you&rsquo;re able to have very handy lists :)</p>
 
@@ -91,9 +91,9 @@ echo $inc->name.&ldquo; => &rdquo;.$inc->amount.&ldquo;<br/>&rdquo;;
   
   <entry>
     <title type="html"><![CDATA[Null-Object Pattern]]></title>
-    <link href="http://tolleiv.github.io/2008/07/null-object-pattern/"/>
+    <link href="http://blog.tolleiv.de/2008/07/null-object-pattern/"/>
     <updated>2008-07-01T19:58:00+02:00</updated>
-    <id>http://tolleiv.github.io/2008/07/null-object-pattern</id>
+    <id>http://blog.tolleiv.de/2008/07/null-object-pattern</id>
     <content type="html"><![CDATA[<p>Very often you create a object with a factory and before you really start using it, you check if your factory really created a object or returned NULL. Or maybe you have a method where a object is passed in and in this situation you&rsquo;ll have to do this check also.</p>
 
 <p>Instead of typing the &ldquo;if(object == null)&rdquo; phrase again and again, you could use the Null-Object pattern, you&rsquo;ll see that this can make some situations much clearer.</p>
@@ -136,9 +136,9 @@ return 0;
   
   <entry>
     <title type="html"><![CDATA[Value Object [DDD]]]></title>
-    <link href="http://tolleiv.github.io/2008/05/value-object-ddd/"/>
+    <link href="http://blog.tolleiv.de/2008/05/value-object-ddd/"/>
     <updated>2008-05-30T06:39:00+02:00</updated>
-    <id>http://tolleiv.github.io/2008/05/value-object-ddd</id>
+    <id>http://blog.tolleiv.de/2008/05/value-object-ddd</id>
     <content type="html"><![CDATA[<p>This metaphor does not fit completely, and the &ldquo;Money-Example&rdquo; is omnipresent, but I really like the pattern and so that&rsquo;s the story:</p>
 
 <p>Let&rsquo;s say you have your grannies recipe for a chocolate cookie and you want to keep this in mind, but also you like to somehow experiment with some new or different ingredients. Normally you just keep in mind what you changed and later you write down the new recipe. But from time to time you might want to compare the two recipes or maybe you want to make cookies with the new and the changed recipes. In this situation it&rsquo;s really good to have both written down on paper. ;)</p>
@@ -195,9 +195,9 @@ $coconutRecipe-&gt;printIncredients();
   
   <entry>
     <title type="html"><![CDATA[Memento [GoF]]]></title>
-    <link href="http://tolleiv.github.io/2008/05/memento-gof/"/>
+    <link href="http://blog.tolleiv.de/2008/05/memento-gof/"/>
     <updated>2008-05-13T09:59:00+02:00</updated>
-    <id>http://tolleiv.github.io/2008/05/memento-gof</id>
+    <id>http://blog.tolleiv.de/2008/05/memento-gof</id>
     <content type="html"><![CDATA[<p>Let&rsquo;s say you got a cookie from a repository your granny and you&rsquo;re not sure if you like the new taste. Wouldn&rsquo;t it be cool if you could just try it and revoke the operation first bite if you don&rsquo;t like it?</p>
 
 <p>In the world of OOP thats a easy job which can be handled by the so called memento pattern &ndash; you just save the inner state of the object  within a memento object and revoke you actions whenever you like&hellip;</p>

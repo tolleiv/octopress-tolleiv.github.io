@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: comic | the fancy part of the web]]></title>
-  <link href="http://tolleiv.github.io/blog/categories/comic/atom.xml" rel="self"/>
-  <link href="http://tolleiv.github.io/"/>
-  <updated>2014-05-04T09:22:00+02:00</updated>
-  <id>http://tolleiv.github.io/</id>
+  <link href="http://blog.tolleiv.de/blog/categories/comic/atom.xml" rel="self"/>
+  <link href="http://blog.tolleiv.de/"/>
+  <updated>2014-05-04T10:15:47+02:00</updated>
+  <id>http://blog.tolleiv.de/</id>
   <author>
     <name><![CDATA[Tolleiv Nietsch]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Today's Rofl]]></title>
-    <link href="http://tolleiv.github.io/2008/06/todays-rofl-2/"/>
+    <link href="http://blog.tolleiv.de/2008/06/todays-rofl-2/"/>
     <updated>2008-06-16T00:28:00+02:00</updated>
-    <id>http://tolleiv.github.io/2008/06/todays-rofl-2</id>
+    <id>http://blog.tolleiv.de/2008/06/todays-rofl-2</id>
     <content type="html"><![CDATA[<p>I just found this with the  Stumble-Button: <a href="http://www.lessaid.net/fun/apt-get-wife.png">http://www.lessaid.net/fun/apt-get-wife.png</a> &ndash; so true :)</p>
 ]]></content>
   </entry>

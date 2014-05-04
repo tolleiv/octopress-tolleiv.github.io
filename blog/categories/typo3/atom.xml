@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: typo3 | the fancy part of the web]]></title>
-  <link href="http://tolleiv.github.io/blog/categories/typo3/atom.xml" rel="self"/>
-  <link href="http://tolleiv.github.io/"/>
-  <updated>2014-05-04T09:22:00+02:00</updated>
-  <id>http://tolleiv.github.io/</id>
+  <link href="http://blog.tolleiv.de/blog/categories/typo3/atom.xml" rel="self"/>
+  <link href="http://blog.tolleiv.de/"/>
+  <updated>2014-05-04T10:15:47+02:00</updated>
+  <id>http://blog.tolleiv.de/</id>
   <author>
     <name><![CDATA[Tolleiv Nietsch]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Signal / Slots in Extbase]]></title>
-    <link href="http://tolleiv.github.io/2011/11/signal-slots-in-extbase/"/>
+    <link href="http://blog.tolleiv.de/2011/11/signal-slots-in-extbase/"/>
     <updated>2011-11-30T18:17:02+01:00</updated>
-    <id>http://tolleiv.github.io/2011/11/signal-slots-in-extbase</id>
+    <id>http://blog.tolleiv.de/2011/11/signal-slots-in-extbase</id>
     <content type="html"><![CDATA[<p>A nice thing to have at hand is definately <a href="http://en.wikipedia.org/wiki/Signals_and_slots">Signal and Slots</a>. I heard <a href="http://f.oer.tel">Felix</a> talking about them quite often and I finally found a nice usecase and came to play with them a little bit this afternoon. And just to avoid that others have to look around too much to find how they can get them to work here&rsquo;s how it&rsquo;s working for me.</p>
 
 <p>First of all you should understand the concept. This nice little &ldquo;definition&rdquo; (from <a href="http://flow3.typo3.org/documentation/guide/partiii/signalsandslots.html">flow3.typo3.org</a>) sums it up pretty well:</p>
@@ -76,9 +76,9 @@ $this-&gt;signalSlotDispatcher-&gt;connect(
   
   <entry>
     <title type="html"><![CDATA[new TYPO releases]]></title>
-    <link href="http://tolleiv.github.io/2008/06/new-typo-releases/"/>
+    <link href="http://blog.tolleiv.de/2008/06/new-typo-releases/"/>
     <updated>2008-06-11T16:18:00+02:00</updated>
-    <id>http://tolleiv.github.io/2008/06/new-typo-releases</id>
+    <id>http://blog.tolleiv.de/2008/06/new-typo-releases</id>
     <content type="html"><![CDATA[<p>I just saw that the TYPO3 guys released a new version of the popular Enterprise CMS (<a href="http://www.typo3.org">www.typo3.org</a>). The changelog shows that they mainly changed some security issues and that a lot of  smaller changes in the backend happend &ndash; one change relates to the problems in the new Firefox 3 where all the frames in the backend are mixed up for some compatibility reason&hellip; this was also the reason why the also updates the 4.0.x branch and the 4.1.x branch &hellip;</p>
 
 <p><a href="http://typo3.org/download/packages/">TYPO3 source package downloads</a> / <a href="http://wiki.typo3.org/index.php/Upgrade">TYPO3 upgrading guide</a></p>
@@ -87,18 +87,18 @@ $this-&gt;signalSlotDispatcher-&gt;connect(
   
   <entry>
     <title type="html"><![CDATA[TYPO3 API...]]></title>
-    <link href="http://tolleiv.github.io/2008/05/typo3-api/"/>
+    <link href="http://blog.tolleiv.de/2008/05/typo3-api/"/>
     <updated>2008-05-15T16:40:00+02:00</updated>
-    <id>http://tolleiv.github.io/2008/05/typo3-api</id>
+    <id>http://blog.tolleiv.de/2008/05/typo3-api</id>
     <content type="html"><![CDATA[<p>The API documentation on <a href="http://typo3.org/fileadmin/typo3api-4.0.0/">typo3.org</a> is not very up-to-date, but the typo3-unleashed.net guys just provided some links to the API documentation of the current TYPO3 versions &ndash; <a href="http://www.typo3-unleashed.net/api_online.html">http://www.typo3-unleashed.net/api_online.html</a> &ndash; thanks a lot :)</p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[T3DD08]]></title>
-    <link href="http://tolleiv.github.io/2008/05/t3dd08/"/>
+    <link href="http://blog.tolleiv.de/2008/05/t3dd08/"/>
     <updated>2008-05-14T00:15:00+02:00</updated>
-    <id>http://tolleiv.github.io/2008/05/t3dd08</id>
+    <id>http://blog.tolleiv.de/2008/05/t3dd08</id>
     <content type="html"><![CDATA[<p>The last weekend was great, I joined the T3DD in Elmshorn, Germany and meet a lot of interesting people, the beer was cheap and the weather was amazing. So I&rsquo;m looking forward to the T3CON in autumn&hellip;  :)</p>
 
 <p>It also seems that some of the guys got some new spirit &ndash; today 4 official and some inofficial bugs in some extensions had been fixed in a very short sequence &hellip; great!</p>

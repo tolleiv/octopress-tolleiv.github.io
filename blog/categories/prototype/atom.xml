@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: prototype | the fancy part of the web]]></title>
-  <link href="http://tolleiv.github.io/blog/categories/prototype/atom.xml" rel="self"/>
-  <link href="http://tolleiv.github.io/"/>
-  <updated>2014-05-04T09:22:00+02:00</updated>
-  <id>http://tolleiv.github.io/</id>
+  <link href="http://blog.tolleiv.de/blog/categories/prototype/atom.xml" rel="self"/>
+  <link href="http://blog.tolleiv.de/"/>
+  <updated>2014-05-04T10:15:47+02:00</updated>
+  <id>http://blog.tolleiv.de/</id>
   <author>
     <name><![CDATA[Tolleiv Nietsch]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Using genetic algorithms to optimize Apache Solr boost factors.]]></title>
-    <link href="http://tolleiv.github.io/2013/06/genetic-algorithms-boosting-solr/"/>
+    <link href="http://blog.tolleiv.de/2013/06/genetic-algorithms-boosting-solr/"/>
     <updated>2013-06-06T20:47:56+02:00</updated>
-    <id>http://tolleiv.github.io/2013/06/genetic-algorithms-boosting-solr</id>
+    <id>http://blog.tolleiv.de/2013/06/genetic-algorithms-boosting-solr</id>
     <content type="html"><![CDATA[<p><a href="http://blog.tolleiv.de/wp-content/uploads/2013/06/Bildschirmfoto-2013-05-29-um-18.08.18.png"><img src="http://blog.tolleiv.de/wp-content/uploads/2013/06/Bildschirmfoto-2013-05-29-um-18.08.18-150x150.png" alt="Configuration interface." /></a> Configuration interface.One thing I took along from last year&rsquo;s ApacheCon was the idea to combine Apache Solr along with some mathematical search algorithms to figure out boost factor values. I did some work on that back then and on the way to this year&rsquo;s BerlinBuzzwords. Now I finally have a proof-of-concept working which I&rsquo;d like to share. If you want to have a look right away &ndash; the code can be found on <a href="http://github.com/tolleiv/boostgenetics">Github</a>.</p>
 
 <h2>The problem to solve:</h2>
@@ -79,9 +79,9 @@ While it&rsquo;s not clear to compare both with just the normal error value comp
   
   <entry>
     <title type="html"><![CDATA[Prototype [GoF]]]></title>
-    <link href="http://tolleiv.github.io/2008/05/prototype-gof/"/>
+    <link href="http://blog.tolleiv.de/2008/05/prototype-gof/"/>
     <updated>2008-05-28T01:17:00+02:00</updated>
-    <id>http://tolleiv.github.io/2008/05/prototype-gof</id>
+    <id>http://blog.tolleiv.de/2008/05/prototype-gof</id>
     <content type="html"><![CDATA[<p>Imagine a cookie-oven which produces tasty cookies with chocolate crumbles. How do you ensure that the 1000th cookie still has the same taste as the first?
 You might think that this is an easy task &ndash; just write down the recipe and follow the described steps&hellip;you know the result in real life &ndash; the 1000th cookie normally tasts like the 1st but you always had the &ldquo;overhead&rdquo; to read the recipe and go through the steps again and again.
 In OOP it&rsquo;s much easier to follow the recipe just instantiate a new Object and  there you go&hellip; no matter if it&rsquo;s the 1st or the 1000th &ndash; it&rsquo;ll always taste look similar.
@@ -136,9 +136,9 @@ $chocolateCookieMachine->makeCookie()&ndash;>printFlavor();
   
   <entry>
     <title type="html"><![CDATA[Decorator [GoF]]]></title>
-    <link href="http://tolleiv.github.io/2008/05/decorator-gof/"/>
+    <link href="http://blog.tolleiv.de/2008/05/decorator-gof/"/>
     <updated>2008-05-13T00:59:00+02:00</updated>
-    <id>http://tolleiv.github.io/2008/05/decorator-gof</id>
+    <id>http://blog.tolleiv.de/2008/05/decorator-gof</id>
     <content type="html"><![CDATA[<p>As the first pattern I&rsquo;d like to introduce the decorator pattern &ndash; it&rsquo;s one of the [GoF]&ndash; structural patterns. It enables to extend the functionality of a existing method by wrapping a so called decorator-object.</p>
 
 <p>So maybe you already know the situation ;) , your granny  is going to bake cookies and you think of how they gonna taste &ndash; so cookie is our main-object and the different additional spices and other options which refine the taste of the cookies are the decoration for it. The cookies, pardon main-objects, are fine without the decoration but they&rsquo;re much better with and the best thing is that you&rsquo;re able to combine the decorations&hellip; yummy</p>

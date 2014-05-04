@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: css | the fancy part of the web]]></title>
-  <link href="http://tolleiv.github.io/blog/categories/css/atom.xml" rel="self"/>
-  <link href="http://tolleiv.github.io/"/>
-  <updated>2014-05-04T09:22:00+02:00</updated>
-  <id>http://tolleiv.github.io/</id>
+  <link href="http://blog.tolleiv.de/blog/categories/css/atom.xml" rel="self"/>
+  <link href="http://blog.tolleiv.de/"/>
+  <updated>2014-05-04T10:15:47+02:00</updated>
+  <id>http://blog.tolleiv.de/</id>
   <author>
     <name><![CDATA[Tolleiv Nietsch]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Homer Simpson as ASCII-Art]]></title>
-    <link href="http://tolleiv.github.io/2008/05/homer-simpson-as-ascii-art/"/>
+    <link href="http://blog.tolleiv.de/2008/05/homer-simpson-as-ascii-art/"/>
     <updated>2008-05-15T00:02:00+02:00</updated>
-    <id>http://tolleiv.github.io/2008/05/homer-simpson-as-ascii-art</id>
+    <id>http://blog.tolleiv.de/2008/05/homer-simpson-as-ascii-art</id>
     <content type="html"><![CDATA[<p>The rebirth of ASCII-Art that&rsquo;s how one of the comments called it &ndash; Homer-Simpson as ASCII-Art with modern and valid CSS &ndash; that&rsquo;s so awesome: <a href="http://www.romancortes.com/blog/homer-css/">http://www.romancortes.com/blog/homer-css/</a></p>
 ]]></content>
   </entry>

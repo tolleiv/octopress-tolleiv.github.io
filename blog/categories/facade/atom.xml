@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: facade | the fancy part of the web]]></title>
-  <link href="http://tolleiv.github.io/blog/categories/facade/atom.xml" rel="self"/>
-  <link href="http://tolleiv.github.io/"/>
-  <updated>2014-05-04T09:22:00+02:00</updated>
-  <id>http://tolleiv.github.io/</id>
+  <link href="http://blog.tolleiv.de/blog/categories/facade/atom.xml" rel="self"/>
+  <link href="http://blog.tolleiv.de/"/>
+  <updated>2014-05-04T10:15:47+02:00</updated>
+  <id>http://blog.tolleiv.de/</id>
   <author>
     <name><![CDATA[Tolleiv Nietsch]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Façade [GoF]]]></title>
-    <link href="http://tolleiv.github.io/2008/06/facade-gof/"/>
+    <link href="http://blog.tolleiv.de/2008/06/facade-gof/"/>
     <updated>2008-06-17T01:33:00+02:00</updated>
-    <id>http://tolleiv.github.io/2008/06/facade-gof</id>
+    <id>http://blog.tolleiv.de/2008/06/facade-gof</id>
     <content type="html"><![CDATA[<p>If a child is in the mood to eat a fresh cookie it normally asks his granny for one. Like this:</p>
 
 <p>Child: Grannyyyyy?<br/>

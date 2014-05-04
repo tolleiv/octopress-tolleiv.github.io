@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: http://tolleiv.github.io/sitemap.xml 
+Sitemap: http://blog.tolleiv.de/sitemap.xml 

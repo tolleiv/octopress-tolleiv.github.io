@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: mock | the fancy part of the web]]></title>
-  <link href="http://tolleiv.github.io/blog/categories/mock/atom.xml" rel="self"/>
-  <link href="http://tolleiv.github.io/"/>
-  <updated>2014-05-04T09:22:00+02:00</updated>
-  <id>http://tolleiv.github.io/</id>
+  <link href="http://blog.tolleiv.de/blog/categories/mock/atom.xml" rel="self"/>
+  <link href="http://blog.tolleiv.de/"/>
+  <updated>2014-05-04T10:15:47+02:00</updated>
+  <id>http://blog.tolleiv.de/</id>
   <author>
     <name><![CDATA[Tolleiv Nietsch]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Using Mocks within Tests]]></title>
-    <link href="http://tolleiv.github.io/2008/05/using-mocks-within-tests/"/>
+    <link href="http://blog.tolleiv.de/2008/05/using-mocks-within-tests/"/>
     <updated>2008-05-17T22:02:00+02:00</updated>
-    <id>http://tolleiv.github.io/2008/05/using-mocks-within-tests</id>
+    <id>http://blog.tolleiv.de/2008/05/using-mocks-within-tests</id>
     <content type="html"><![CDATA[<p>Let&rsquo;s say you have some kind of process which creates cookies and which requires the cookies to bake before you deliver them to the customers. This process somehow touches two kinds of objects the cookie itself and a object which performs the process &ndash; the cookie oven.
 When you start to develop the oven how do you check whether the cookies are really baked or not? Since you can&rsquo;t get rid of the dependency between the oven and the cookie, you have to simulate a real object and do the checks by hand &ndash; but wait there&rsquo;s already a way to resolve it:
 PHPUnit ships with a very nice and comfortable function to create and check mock-objects and that&rsquo;s exactly what we need in this situation where we somehow need to find out if our cookie really gets baked.

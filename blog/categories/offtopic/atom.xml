@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: offtopic | the fancy part of the web]]></title>
-  <link href="http://tolleiv.github.io/blog/categories/offtopic/atom.xml" rel="self"/>
-  <link href="http://tolleiv.github.io/"/>
-  <updated>2014-05-04T09:22:00+02:00</updated>
-  <id>http://tolleiv.github.io/</id>
+  <link href="http://blog.tolleiv.de/blog/categories/offtopic/atom.xml" rel="self"/>
+  <link href="http://blog.tolleiv.de/"/>
+  <updated>2014-05-04T10:15:47+02:00</updated>
+  <id>http://blog.tolleiv.de/</id>
   <author>
     <name><![CDATA[Tolleiv Nietsch]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Working from home.]]></title>
-    <link href="http://tolleiv.github.io/2008/07/working-from-home/"/>
+    <link href="http://blog.tolleiv.de/2008/07/working-from-home/"/>
     <updated>2008-07-15T19:26:00+02:00</updated>
-    <id>http://tolleiv.github.io/2008/07/working-from-home</id>
+    <id>http://blog.tolleiv.de/2008/07/working-from-home</id>
     <content type="html"><![CDATA[<p>There&rsquo;s so much work in this week that I can&rsquo;t publish a article in the next days.<br/>
 But Natalie Jost from <a href="http://www.alistapart.com/">A List Apart</a> just published a very nice article which you really should read if you&rsquo;re (like me) working from home <a href="http://www.alistapart.com/articles/walkingthelinewhenyouworkfromhome">read on..</a> &hellip; you&rsquo;ll like it.</p>
 ]]></content>
@@ -25,9 +25,9 @@ But Natalie Jost from <a href="http://www.alistapart.com/">A List Apart</a> just
   
   <entry>
     <title type="html"><![CDATA[track time for a subroutine within a shell-script]]></title>
-    <link href="http://tolleiv.github.io/2008/07/track-time-for-a-subroutine-within-a-shell-script/"/>
+    <link href="http://blog.tolleiv.de/2008/07/track-time-for-a-subroutine-within-a-shell-script/"/>
     <updated>2008-07-10T23:55:00+02:00</updated>
-    <id>http://tolleiv.github.io/2008/07/track-time-for-a-subroutine-within-a-shell-script</id>
+    <id>http://blog.tolleiv.de/2008/07/track-time-for-a-subroutine-within-a-shell-script</id>
     <content type="html"><![CDATA[<p>The following code-snippet is a shell-script which does the following:</p>
 
 <ol>
@@ -68,9 +68,9 @@ done
   
   <entry>
     <title type="html"><![CDATA[YSlow - powerful FF extension]]></title>
-    <link href="http://tolleiv.github.io/2008/06/yslow-powerful-ff-extension/"/>
+    <link href="http://blog.tolleiv.de/2008/06/yslow-powerful-ff-extension/"/>
     <updated>2008-06-30T19:30:00+02:00</updated>
-    <id>http://tolleiv.github.io/2008/06/yslow-powerful-ff-extension</id>
+    <id>http://blog.tolleiv.de/2008/06/yslow-powerful-ff-extension</id>
     <content type="html"><![CDATA[<p>I use <a href="http://www.getfirebug.com/">firebug</a> for a while and I love it especially for CSS and JS debugging. Today I stumbled over <a href="http://developer.yahoo.com/yslow/">Yslow</a> and did some tests with it one some of my clients pages and I love the results.<br/>
 YSlow can help you to analyze all the referenced elements on a webpage. It shows their sizes, how they behave when a page is taken from the browser-cache, shows optimization hints and enables a easy way to optimize the output of your dynamically created webpage :) &hellip; you&rsquo;ll love it.<br/>
 <a href="http://developer.yahoo.com/yslow/">Get YSlow here :)</a></p>
@@ -79,9 +79,9 @@ YSlow can help you to analyze all the referenced elements on a webpage. It shows
   
   <entry>
     <title type="html"><![CDATA[PHP FastCGI vs. PHP as a module]]></title>
-    <link href="http://tolleiv.github.io/2008/05/php-fastcgi-vs-php-as-a-module/"/>
+    <link href="http://blog.tolleiv.de/2008/05/php-fastcgi-vs-php-as-a-module/"/>
     <updated>2008-05-24T19:40:00+02:00</updated>
-    <id>http://tolleiv.github.io/2008/05/php-fastcgi-vs-php-as-a-module</id>
+    <id>http://blog.tolleiv.de/2008/05/php-fastcgi-vs-php-as-a-module</id>
     <content type="html"><![CDATA[<p>The apachelounge.org guy published a very interesting stat which compares the <a href="http://www.apachelounge.com/forum/viewtopic.php?p=10991">memory-usage of PHP/FastCGI and PHP/as module</a> and that&rsquo;s really interesting:</p>
 
 <p><a href="http://bp0.blogger.com/_l5fIZzJyYfc/SDfQbt7tygI/AAAAAAAAABY/D72W5ZIj22c/s1600-h/httpd-ram-week.png"><img src="http://bp0.blogger.com/_l5fIZzJyYfc/SDfQbt7tygI/AAAAAAAAABY/D72W5ZIj22c/s400/httpd-ram-week.png" alt="" /></a></p>
@@ -92,9 +92,9 @@ YSlow can help you to analyze all the referenced elements on a webpage. It shows
   
   <entry>
     <title type="html"><![CDATA[Firefox 3 RC1]]></title>
-    <link href="http://tolleiv.github.io/2008/05/firefox-3-rc1/"/>
+    <link href="http://blog.tolleiv.de/2008/05/firefox-3-rc1/"/>
     <updated>2008-05-18T18:11:00+02:00</updated>
-    <id>http://tolleiv.github.io/2008/05/firefox-3-rc1</id>
+    <id>http://blog.tolleiv.de/2008/05/firefox-3-rc1</id>
     <content type="html"><![CDATA[<p>I just saw that the first Release Candidate of Firefox 3 is available for <a href="http://www.mozilla.com/en-US/firefox/all-rc.html">download</a> . As with the most of the Beta-versions I also checked this update because I&rsquo;m really excited to get the <a href="http://www.mozilla.com/en-US/firefox/3.0rc1/releasenotes/#whatsnew">new features</a>, but after 5 minutes (again) I removed it from my PC. Non of my extensions is working in FF3 (except the dictionary), it still destroys the Frames in TYPO3 (<a href="http://typo3.org/extensions/repository/view/mn_ff3_be_bugfix/0.0.2/">there&rsquo;s a bugfix-extension for that</a>) and the memory-usage is still very high,10% lower than in FF2 but still high.<br/>
 So I postponed the update and  kept on running <a href="http://www.mozilla.com/en-US/firefox/all.html">Firefox 2</a>, at least until the next Release Candidate ;)</p>
 ]]></content>

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: shellscript | the fancy part of the web]]></title>
-  <link href="http://tolleiv.github.io/blog/categories/shellscript/atom.xml" rel="self"/>
-  <link href="http://tolleiv.github.io/"/>
-  <updated>2014-05-04T09:22:00+02:00</updated>
-  <id>http://tolleiv.github.io/</id>
+  <link href="http://blog.tolleiv.de/blog/categories/shellscript/atom.xml" rel="self"/>
+  <link href="http://blog.tolleiv.de/"/>
+  <updated>2014-05-04T10:15:47+02:00</updated>
+  <id>http://blog.tolleiv.de/</id>
   <author>
     <name><![CDATA[Tolleiv Nietsch]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[track time for a subroutine within a shell-script]]></title>
-    <link href="http://tolleiv.github.io/2008/07/track-time-for-a-subroutine-within-a-shell-script/"/>
+    <link href="http://blog.tolleiv.de/2008/07/track-time-for-a-subroutine-within-a-shell-script/"/>
     <updated>2008-07-10T23:55:00+02:00</updated>
-    <id>http://tolleiv.github.io/2008/07/track-time-for-a-subroutine-within-a-shell-script</id>
+    <id>http://blog.tolleiv.de/2008/07/track-time-for-a-subroutine-within-a-shell-script</id>
     <content type="html"><![CDATA[<p>The following code-snippet is a shell-script which does the following:</p>
 
 <ol>

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Coding | the fancy part of the web]]></title>
-  <link href="http://tolleiv.github.io/blog/categories/coding/atom.xml" rel="self"/>
-  <link href="http://tolleiv.github.io/"/>
-  <updated>2014-05-04T09:22:00+02:00</updated>
-  <id>http://tolleiv.github.io/</id>
+  <link href="http://blog.tolleiv.de/blog/categories/coding/atom.xml" rel="self"/>
+  <link href="http://blog.tolleiv.de/"/>
+  <updated>2014-05-04T10:15:47+02:00</updated>
+  <id>http://blog.tolleiv.de/</id>
   <author>
     <name><![CDATA[Tolleiv Nietsch]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Using genetic algorithms to optimize Apache Solr boost factors.]]></title>
-    <link href="http://tolleiv.github.io/2013/06/genetic-algorithms-boosting-solr/"/>
+    <link href="http://blog.tolleiv.de/2013/06/genetic-algorithms-boosting-solr/"/>
     <updated>2013-06-06T20:47:56+02:00</updated>
-    <id>http://tolleiv.github.io/2013/06/genetic-algorithms-boosting-solr</id>
+    <id>http://blog.tolleiv.de/2013/06/genetic-algorithms-boosting-solr</id>
     <content type="html"><![CDATA[<p><a href="http://blog.tolleiv.de/wp-content/uploads/2013/06/Bildschirmfoto-2013-05-29-um-18.08.18.png"><img src="http://blog.tolleiv.de/wp-content/uploads/2013/06/Bildschirmfoto-2013-05-29-um-18.08.18-150x150.png" alt="Configuration interface." /></a> Configuration interface.One thing I took along from last year&rsquo;s ApacheCon was the idea to combine Apache Solr along with some mathematical search algorithms to figure out boost factor values. I did some work on that back then and on the way to this year&rsquo;s BerlinBuzzwords. Now I finally have a proof-of-concept working which I&rsquo;d like to share. If you want to have a look right away &ndash; the code can be found on <a href="http://github.com/tolleiv/boostgenetics">Github</a>.</p>
 
 <h2>The problem to solve:</h2>
@@ -79,9 +79,9 @@ While it&rsquo;s not clear to compare both with just the normal error value comp
   
   <entry>
     <title type="html"><![CDATA[Signal / Slots in Extbase]]></title>
-    <link href="http://tolleiv.github.io/2011/11/signal-slots-in-extbase/"/>
+    <link href="http://blog.tolleiv.de/2011/11/signal-slots-in-extbase/"/>
     <updated>2011-11-30T18:17:02+01:00</updated>
-    <id>http://tolleiv.github.io/2011/11/signal-slots-in-extbase</id>
+    <id>http://blog.tolleiv.de/2011/11/signal-slots-in-extbase</id>
     <content type="html"><![CDATA[<p>A nice thing to have at hand is definately <a href="http://en.wikipedia.org/wiki/Signals_and_slots">Signal and Slots</a>. I heard <a href="http://f.oer.tel">Felix</a> talking about them quite often and I finally found a nice usecase and came to play with them a little bit this afternoon. And just to avoid that others have to look around too much to find how they can get them to work here&rsquo;s how it&rsquo;s working for me.</p>
 
 <p>First of all you should understand the concept. This nice little &ldquo;definition&rdquo; (from <a href="http://flow3.typo3.org/documentation/guide/partiii/signalsandslots.html">flow3.typo3.org</a>) sums it up pretty well:</p>
@@ -140,9 +140,9 @@ $this-&gt;signalSlotDispatcher-&gt;connect(
   
   <entry>
     <title type="html"><![CDATA[imagemap_wizard 0.5.3]]></title>
-    <link href="http://tolleiv.github.io/2009/10/imagemap_wizard-0-5-3/"/>
+    <link href="http://blog.tolleiv.de/2009/10/imagemap_wizard-0-5-3/"/>
     <updated>2009-10-22T21:18:39+02:00</updated>
-    <id>http://tolleiv.github.io/2009/10/imagemap_wizard-0-5-3</id>
+    <id>http://blog.tolleiv.de/2009/10/imagemap_wizard-0-5-3</id>
     <content type="html"><![CDATA[<p>Last Sunday I&rsquo;ve released the first official stable version of my <a href="http://blog.tolleiv.de/2009/07/typo3-extensions/">imagemap_wizard</a> extension <a href="http://typo3.org/extensions/repository/view/imagemap_wizard/current/">(TER</a>).
 I though that&rsquo;s a good moment to review the introduction text on the project-homepage and that&rsquo;s how it looks like &ndash; <a href="http://forge.typo3.org/projects/show/extension-imagemap_wizard">forge.typo3.org/projects/show/extension-imagemap_wizard</a></p>
 
@@ -154,9 +154,9 @@ I though that&rsquo;s a good moment to review the introduction text on the proje
   
   <entry>
     <title type="html"><![CDATA[multiple arguments for mocked functions....]]></title>
-    <link href="http://tolleiv.github.io/2009/08/multiple-arguments-for-mocked-functions/"/>
+    <link href="http://blog.tolleiv.de/2009/08/multiple-arguments-for-mocked-functions/"/>
     <updated>2009-08-17T23:38:45+02:00</updated>
-    <id>http://tolleiv.github.io/2009/08/multiple-arguments-for-mocked-functions</id>
+    <id>http://blog.tolleiv.de/2009/08/multiple-arguments-for-mocked-functions</id>
     <content type="html"><![CDATA[<p>If you look into the PHPUnit documentation (<a href="http://www.phpunit.de/manual/3.3/en/test-doubles.html#test-doubles.mock-objects"> http://www.phpunit.de/manual/3.3/en/test-doubles.html#test-doubles.mock-objects</a> ) you&rsquo;ll see some nice examples but non of them shows how to translate a function with multiple arguments into a mock-assumption.</p>
 
 <p>Within the examples you&rsquo;ll find:
@@ -175,9 +175,9 @@ I though that&rsquo;s a good moment to review the introduction text on the proje
   
   <entry>
     <title type="html"><![CDATA[www.encodechain.com]]></title>
-    <link href="http://tolleiv.github.io/2009/08/www-encodechain-com/"/>
+    <link href="http://blog.tolleiv.de/2009/08/www-encodechain-com/"/>
     <updated>2009-08-08T14:54:13+02:00</updated>
-    <id>http://tolleiv.github.io/2009/08/www-encodechain-com</id>
+    <id>http://blog.tolleiv.de/2009/08/www-encodechain-com</id>
     <content type="html"><![CDATA[<p><a href="http://blog.tolleiv.de/wp-content/uploads/2009/08/encodingchain-0.1.png"><img src="http://blog.tolleiv.de/wp-content/uploads/2009/08/encodingchain-0.1-300x221.png" alt="encodingchain-0.1" /></a>I just &ldquo;released&rdquo; <a href="http://www.encodechain.com">encodechain.com</a>. A little tool which enables to combine various popular PHP conversion methods and to check how they affect your input&hellip; feel free to give me some feedback :)</p>
 
 <p>I&rsquo;m also not sure whether I choose the right name for it &hellip; O_o</p>

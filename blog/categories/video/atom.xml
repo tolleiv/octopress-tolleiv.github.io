@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: video | the fancy part of the web]]></title>
-  <link href="http://tolleiv.github.io/blog/categories/video/atom.xml" rel="self"/>
-  <link href="http://tolleiv.github.io/"/>
-  <updated>2014-05-04T09:22:00+02:00</updated>
-  <id>http://tolleiv.github.io/</id>
+  <link href="http://blog.tolleiv.de/blog/categories/video/atom.xml" rel="self"/>
+  <link href="http://blog.tolleiv.de/"/>
+  <updated>2014-05-04T10:15:47+02:00</updated>
+  <id>http://blog.tolleiv.de/</id>
   <author>
     <name><![CDATA[Tolleiv Nietsch]]></name>
     
@@ -15,18 +15,18 @@
   
   <entry>
     <title type="html"><![CDATA[musique ... britisch musique :P]]></title>
-    <link href="http://tolleiv.github.io/2008/07/musique-britisch-musique-p/"/>
+    <link href="http://blog.tolleiv.de/2008/07/musique-britisch-musique-p/"/>
     <updated>2008-07-11T00:43:00+02:00</updated>
-    <id>http://tolleiv.github.io/2008/07/musique-britisch-musique-p</id>
+    <id>http://blog.tolleiv.de/2008/07/musique-britisch-musique-p</id>
     <content type="html"><![CDATA[
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[dunno why but I love this song...]]></title>
-    <link href="http://tolleiv.github.io/2008/06/dunno-why-but-i-love-this-song/"/>
+    <link href="http://blog.tolleiv.de/2008/06/dunno-why-but-i-love-this-song/"/>
     <updated>2008-06-07T17:45:00+02:00</updated>
-    <id>http://tolleiv.github.io/2008/06/dunno-why-but-i-love-this-song</id>
+    <id>http://blog.tolleiv.de/2008/06/dunno-why-but-i-love-this-song</id>
     <content type="html"><![CDATA[
 ]]></content>
   </entry>

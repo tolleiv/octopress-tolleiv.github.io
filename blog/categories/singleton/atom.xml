@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: singleton | the fancy part of the web]]></title>
-  <link href="http://tolleiv.github.io/blog/categories/singleton/atom.xml" rel="self"/>
-  <link href="http://tolleiv.github.io/"/>
-  <updated>2014-05-04T09:22:00+02:00</updated>
-  <id>http://tolleiv.github.io/</id>
+  <link href="http://blog.tolleiv.de/blog/categories/singleton/atom.xml" rel="self"/>
+  <link href="http://blog.tolleiv.de/"/>
+  <updated>2014-05-04T10:15:47+02:00</updated>
+  <id>http://blog.tolleiv.de/</id>
   <author>
     <name><![CDATA[Tolleiv Nietsch]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Singelton [GoF]]]></title>
-    <link href="http://tolleiv.github.io/2008/05/singelton-gof/"/>
+    <link href="http://blog.tolleiv.de/2008/05/singelton-gof/"/>
     <updated>2008-05-23T23:40:00+02:00</updated>
-    <id>http://tolleiv.github.io/2008/05/singelton-gof</id>
+    <id>http://blog.tolleiv.de/2008/05/singelton-gof</id>
     <content type="html"><![CDATA[<p>Tis pattern is a very well know and a often discussed one.</p>
 
 <p>Explaining it the tasty way: let&rsquo;s say you have exactly one well know place where you store all your cookies and whenever you need one you can easy point to that place. Normally that&rsquo;s really comfortable because whatever you do with it, you don&rsquo;t have to search some place where you can find a cookie, you just go to that single &ldquo;cookie tin&rdquo; (or wherever you store cookies) and put a new cookie into it ;)</p>
