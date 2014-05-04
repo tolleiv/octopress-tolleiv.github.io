@@ -16,13 +16,13 @@ tags:
 
 Using Gerrit sometimes feels quite lonesome - you don't really see who's active and you don't really get a feeling on how much is done in the TYPO3 Core at a certain point. To visualize on how active the contributors are and to show the most active members I applied a little scoring and summed up the results for the time since 2006.
 
-[caption id="attachment_917" align="alignright" width="296" caption="Early 2006 impact chart with few early contributers - click the image to see the full chart"][![Snippet of the impact chart.](http://blog.tolleiv.de/wp-content/uploads/2012/01/TYPO3-Core-impact.png)](http://blog.tolleiv.de/impact-chart)[/caption]
+[![Snippet of the impact chart.](http://blog.tolleiv.de/wp-content/uploads/2012/01/TYPO3-Core-impact.png)](http://blog.tolleiv.de/impact-chart)
 
 The scoring is quite easy - every author of a patch gets 10 points, testers get 3 and reviewers 1 point*. Looking at the stats it seems that even the statistics pulled from the old Subversion days seem to meet up with today's numbers - of course we've to keep in mind that everything which was pulled from Subversion doesn't really point to the author but to the actual committer (except if there was a "Thanks to XXXXX" reference in the commit).
 
 To visualize the numbers I choose a [Github](https://github.com/blog/219-impact-graph-speedups) like [impact chart](http://blog.tolleiv.de/impact-chart)**. Each contributor has it's own color and line in it and whenever he got active the width of the line scales up. To maintain the overview the scale of the width isn't linear and every contributor who's not within the "Top 20" had to be scaled down to "1". The line stops if the contributor didn't get active anymore. The scores are grouped and compared by month.
 
-[caption id="attachment_897" align="alignleft" width="268" caption="Taken the last 3months - see the entire stats on the referenced page."][![Snapshot of the "Top 20" stats taken Jan. 14th 2012](http://blog.tolleiv.de/wp-content/uploads/2012/01/Core-Stats-January20121.png)](http://blog.tolleiv.de/impact-chart/stat.html)[/caption]
+[![Snapshot of the "Top 20" stats taken Jan. 14th 2012](http://blog.tolleiv.de/wp-content/uploads/2012/01/Core-Stats-January20121.png)](http://blog.tolleiv.de/impact-chart/stat.html)
 
 In addition to the chart I also created a [table based overview for the "Top 20"](http://blog.tolleiv.de/impact-chart/stat.html) contributors with their score***.
 
