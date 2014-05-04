@@ -2,12 +2,13 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://tolleiv.github.io
-title: the fancy part of the web
-subtitle: is elsewhere – this is just about all sorts of web related work with a small factor of fanciness
+url: http://blog.tolleiv.de
+title: blog.tolleiv.de
+subtitle: random findings from the life of a programmers
 author: Tolleiv Nietsch
 simple_search: https://www.google.com/search
-description:
+description: "this is just about all sorts of web related work with a small factor of fanciness - it's about coding, typo3, its extensions and everything"
+keywords: typo3, community, login, solutions, product, templavoila, people, groups, solution, varnish, robert, content, cache, really, found, seems, possible, pages, specific, board, search, avoid, right, vision, documents, proof, algorithms, group, values, internal, discussions, thing, assume, change, reasonable, public, actually, results, document, boost, deliver, error, problem, concept, function, setup, clear, logged, happy, personal, everyone, enable, first, setting, comments, response, quite, parts, genetic, queries, roadmaps, vectors, decisions, population, communication, cases, nodejs, especially, complex, anything, factor, members, large, conclusion, concepts, project, fields, related, query, looking, things, kasper, specific pages, official, meeting, entire, current, share, general, field, closed, event, setups, interested, support, words, documentation, irritation, newsgroups, daniel, straight, technical, state, final, value, compare, working, optimizations, gradient, github, position, result, expectations, check, small, example, methods, approach, developer, comes, question, wanted, searches, lists, addition, gerrit, others, sense, using, vector, based, product board 8221, find good solutions, boost factor values, to the conclusion, the typo3 project
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
 # You can customize the format as defined in
@@ -50,7 +51,7 @@ titlecase: true       # Converts page and post titles to titlecase
 
 # list each of the sidebar modules you want to include, in the order you want them to appear.
 # To add custom asides, create files in /source/_includes/custom/asides/ and add them to the list like 'custom/asides/custom_aside_name.html'
-default_asides: [asides/recent_posts.html, asides/github.html, asides/delicious.html, asides/pinboard.html, asides/googleplus.html]
+default_asides: [asides/nav.html, asides/recent_posts.html, asides/github.html, asides/delicious.html, asides/pinboard.html, asides/googleplus.html]
 
 # Each layout uses the default asides, but they can have their own asides instead. Simply uncomment the lines below
 # and add an array with the asides you want to use.

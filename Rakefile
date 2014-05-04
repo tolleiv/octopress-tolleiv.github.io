@@ -58,6 +58,7 @@ task :generate do
   puts "## Generating Site with Jekyll"
   system "compass compile --css-dir #{source_dir}/stylesheets"
   system "jekyll"
+  Rake::Task[:copyfeeds].invoke
 end
 
 desc "Watch the site and regenerate when it changes"
@@ -224,6 +225,7 @@ task :deploy do
   end
 
   Rake::Task[:copydot].invoke(source_dir, public_dir)
+  Rake::Task[:copyfeeds].invoke
   Rake::Task["#{deploy_default}"].execute
 end
 
@@ -252,7 +254,7 @@ desc "deploy public directory to github pages"
 multitask :push do
   puts "## Deploying branch to Github Pages "
   puts "## Pulling any updates from Github Pages "
-  cd "#{deploy_dir}" do 
+  cd "#{deploy_dir}" do
     system "git pull"
   end
   (Dir["#{deploy_dir}/*"]).each { |f| rm_rf(f) }
@@ -401,4 +403,14 @@ desc "list tasks"
 task :list do
   puts "Tasks: #{(Rake::Task.tasks - [Rake::Task[:list]]).join(', ')}"
   puts "(type rake -T for more detail)\n\n"
+end
+
+# Feed files other than atom.xml that needed to be compatible with previous blog
+feed_files = ["feed/index.html"]
+
+desc "copy atom.xml to feed_files"
+task :copyfeeds do
+  feed_files.each do |filename|
+    cp("#{public_dir}/atom.xml","#{public_dir}/#{filename}")
+  end
 end
