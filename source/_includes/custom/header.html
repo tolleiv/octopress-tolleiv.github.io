@@ -1,9 +1,22 @@
 <hgroup>
-  <div id="header-inner">
-    <span class="first"><a href="{{ root_url }}/">{{ site.title }}</a></span>
-    <span><a href="{{ root_url }}/blog/about">about</a></span>
-    <span><a href="{{ root_url }}/blog/imprint">imprint</a></span>
-    <!--    <span><a href="http://www.github.com/">projects</a></span> -->
-    <span class="last"><a href="{{ site.subscribe_rss }}" title="subscribe via RSS">rss</a></span>
-  </div>
+    <div id="header-inner">
+        <span class="first"><a href="{{ root_url }}/">{{ site.title }}</a></span>
+        <span><a href="{{ root_url }}/blog/about">about</a></span>
+        <span><a href="{{ root_url }}/blog/imprint">imprint</a></span>
+        <!--    <span><a href="http://www.github.com/">projects</a></span> -->
+        <span class="last"><a href="{{ site.subscribe_rss }}" title="subscribe via RSS">rss</a></span>
+        {% if site.flattr_user %}
+        <div class="header-flattr">
+            <a class="FlattrButton" style="display:none;"
+               title="{{ page.title }}"
+               data-flattr-uid="{{ site.flattr_user }}"
+               data-flattr-tags="{{ page.categories | join: "," }}"
+            data-flattr-button="compact"
+            data-flattr-category="text"
+            href="{{ site.url }}">
+            {% if page.description %}{{ page.description }}{% else %}{{page.content | truncate: 500}}{% endif %}
+            </a>
+        </div>
+        {% endif %}
+    </div>
 </hgroup>

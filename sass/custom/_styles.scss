@@ -144,7 +144,7 @@ p code, li code {
 }
 
 h1 {
-    font-size: 1.2em;
+    font-size: 2em;
     line-height: 1.5em;
 }
 
@@ -168,4 +168,8 @@ aside.sidebar a {
 
 ul, ol {
     margin-left: 2em;
+}
+
+.header-flattr {
+  float: right;
 }

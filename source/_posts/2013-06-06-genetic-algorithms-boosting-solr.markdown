@@ -25,8 +25,10 @@ tags:
 When running search indexes with Solr, one thing you might stumble opon is that you've various fields in your documents and you've to adjust their weights to get reasonable results. Finding those "boosting" values can be quite complex when you have many fields and many scenarios. Usually getting the values right is a task for very experienced integrators.
 
 
-> /solr/select?defType=dismax&q=my+query
-&qf=title^**42**+description^**23**+footnotes^**5**+dalmatiners^**101**+foo^**9001**+comments
+``` bash
+   /solr/select?defType=dismax&q=my+query
+     &qf=title^**42**+description^**23**+footnotes^**5**+dalmatiners^**101**+foo^**9001**+comments
+```
 
 
 Looking at it from a more technical perspective - when your Solr query looks like the one above, the question you've to answer is how the values for the highlighted numbers should look like to get _reasonable_ results.
@@ -38,13 +40,14 @@ Looking at it from a more technical perspective - when your Solr query looks lik
 In order to solve the problem, the first thing we've to do, is to answer what we expect the outcome to look like. In other words, we've to measure how reasonable a specific solution is. For a search engine this can be done with some sample queries and some expectations along with that. The expectation could come in a form that we explicitly tell which documents we expect in the result lists of specific queries (and at predefined positions). Once we've these expectations, we can simple test agains the expectations and check whether or not specific boost factor values actually satisfy them.
 
 
-
-> A small example on that: In case we've a sample query with the expectation that document 123 appears in the first position and document 248 appears second. We could run this with two specific boost factor combinations (a) and (b). Along with (a) we might find that, document 123 actually ranks on position 8 and document 248 is found on position 4 and with (b) we'd find them on pos. 2 and pos. 14 - which one would we consider to be better?
+A small example on that: In case we've a sample query with the expectation that document 123 appears in the first position and document 248 appears second. We could run this with two specific boost factor combinations (a) and (b). Along with (a) we might find that, document 123 actually ranks on position 8 and document 248 is found on position 4 and with (b) we'd find them on pos. 2 and pos. 14 - which one would we consider to be better?
 Comparing the "error" and "squared error" produced by (a) and (b) gives us a possible hint:
-(a): 8-1 + 4-2 = 7+2 = 9
-(8-1)² + (4-2)² = 49+4 = 53
-(b): 2-1 + 14-2 = 1+12 = 13
-(2-1)² + (14-2)² = 1+144 = 145
+
+* (a): 8-1 + 4-2 = 7+2 = 9
+* (8-1)² + (4-2)² = 49+4 = 53
+* (b): 2-1 + 14-2 = 1+12 = 13
+* (2-1)² + (14-2)² = 1+144 = 145
+
 While it's not clear to compare both with just the normal error value comparision, the squared error shows clearly that (a) seems to outperform (b) in those cases and we should choose (a) for further considerations.
 
 
@@ -62,16 +65,12 @@ Another approach to run these optimizations, is to utilize genetic algorithms wh
 **With some more details:** Genetic algorithms take an amount of randomly generated possible solutions (called the _population_) and try to find good solutions by applying the typical methods you know from your biology class (mutations, crossovers, natural selection). _Natural selection_ is done in a way that from each generation only the top 50% "survive and the rest of the population is filled up with now solutions generated through _mutations_ (random parameter changes of existing solutions) and _crossovers_ (interchanging parts of two existing solutions to create a third one). All solutions are always measured and compared on their response to the defined cost function and this way we're always able to determine the "best known solution" even after very short time.
 
 
-
-> If that sounds too high-level. For the shown query from above, the vector [42,23,5,101,9001,1] is the vector I used. In addition let's considering we have another vector [1,1,1,1,1,1] with equal weights for all fields. Assuming those are our fittest vectors at a given time, we could derive new possible solutions by mutating them (e.g. [42,23,5,101,9001,1] ~> [42,23,5,101,505,1] ) or creating a cross-over between both ( [42,23,5,101,9001,1] & [1,1,1,1,1,1] ~> [42,23,5,1,1,1]). Even adding new random vectors to our population might add some value. Once we found enough new vectors to have a population of a decent size, we'd compare the fitness and keep only the top 50% and continue our process until we reach convergence or a fixed iteration limit.
-
-
+If that sounds too high-level. For the shown query from above, the vector [42,23,5,101,9001,1] is the vector I used. In addition let's considering we have another vector [1,1,1,1,1,1] with equal weights for all fields. Assuming those are our fittest vectors at a given time, we could derive new possible solutions by mutating them (e.g. [42,23,5,101,9001,1] ~> [42,23,5,101,505,1] ) or creating a cross-over between both ( [42,23,5,101,9001,1] & [1,1,1,1,1,1] ~> [42,23,5,1,1,1]). Even adding new random vectors to our population might add some value. Once we found enough new vectors to have a population of a decent size, we'd compare the fitness and keep only the top 50% and continue our process until we reach convergence or a fixed iteration limit.
 
 A drawback of the genetic algorithm is that it might not deliver the optimal result, because it never found it. But that's just how nature works too. So it's more that you've to sacrifice "training runtime" over accuracy or vice versa.
 
 
 ## Implementation:
-
 
 [![10 generation optimization](http://blog.tolleiv.de/wp-content/uploads/2013/06/Bildschirmfoto-2013-05-29-um-18.10.43-150x150.png)](http://blog.tolleiv.de/wp-content/uploads/2013/06/Bildschirmfoto-2013-05-29-um-18.10.43.png) 10 generation optimizationThere's really not too much to say other than that the code can be found in [Github](http://github.com/tolleiv/boostgenetics). I used NodeJS with ExpressJs, SocketIO and an Twitter Bootstrap interface to have a relatively good looking and somewhat performing proof-of-concept. I used that setup, because NodeJS seems to me as the most easiest way to talk to Solr and it "promises" to be performant even with larger examples. SocketIO helped a lot to ease the pain when it comes to Server <> Client communication. The only drawback of that setup is the that everything had to be turned into something which is able to deal with asynchronous processing. This makes the algorithmic parts look a bit odd and bloated - but for me the benefits outweigh the odds.
 
@@ -86,7 +85,6 @@ You can use the NodeJS tool with any of your Solr indexes and just go ahead and 
 
 
 * * *
-
 
 
 When I did a small presentation during the [Berlin Buzzwords bar camp](http://berlinbuzzwords.de/wiki/barcamp) I also got some other questions which don't necessarily relate to just this implementation but to all sorts of automated optimizations.
