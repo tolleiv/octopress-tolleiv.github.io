@@ -4,7 +4,7 @@
   <title><![CDATA[blog.tolleiv.de]]></title>
   <link href="http://blog.tolleiv.de/atom.xml" rel="self"/>
   <link href="http://blog.tolleiv.de/"/>
-  <updated>2014-05-04T13:31:47+02:00</updated>
+  <updated>2014-05-04T16:04:29+02:00</updated>
   <id>http://blog.tolleiv.de/</id>
   <author>
     <name><![CDATA[Tolleiv Nietsch]]></name>
@@ -176,8 +176,12 @@
 
 <p>When running search indexes with Solr, one thing you might stumble opon is that you&rsquo;ve various fields in your documents and you&rsquo;ve to adjust their weights to get reasonable results. Finding those &ldquo;boosting&rdquo; values can be quite complex when you have many fields and many scenarios. Usually getting the values right is a task for very experienced integrators.</p>
 
-<blockquote><p>/solr/select?defType=dismax&amp;q=my+query
-&amp;qf=title^<strong>42</strong>+description^<strong>23</strong>+footnotes^<strong>5</strong>+dalmatiners^<strong>101</strong>+foo^<strong>9001</strong>+comments</p></blockquote>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>   /solr/select?defType<span class="o">=</span>dismax&amp;q<span class="o">=</span>my+query
+</span><span class='line'>     &amp;qf<span class="o">=</span>title^**42**+description^**23**+footnotes^**5**+dalmatiners^**101**+foo^**9001**+comments
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>Looking at it from a more technical perspective &ndash; when your Solr query looks like the one above, the question you&rsquo;ve to answer is how the values for the highlighted numbers should look like to get <em>reasonable</em> results.</p>
 
@@ -185,13 +189,18 @@
 
 <p>In order to solve the problem, the first thing we&rsquo;ve to do, is to answer what we expect the outcome to look like. In other words, we&rsquo;ve to measure how reasonable a specific solution is. For a search engine this can be done with some sample queries and some expectations along with that. The expectation could come in a form that we explicitly tell which documents we expect in the result lists of specific queries (and at predefined positions). Once we&rsquo;ve these expectations, we can simple test agains the expectations and check whether or not specific boost factor values actually satisfy them.</p>
 
-<blockquote><p>A small example on that: In case we&rsquo;ve a sample query with the expectation that document 123 appears in the first position and document 248 appears second. We could run this with two specific boost factor combinations (a) and (b). Along with (a) we might find that, document 123 actually ranks on position 8 and document 248 is found on position 4 and with (b) we&rsquo;d find them on pos. 2 and pos. 14 &ndash; which one would we consider to be better?
-Comparing the &ldquo;error&rdquo; and &ldquo;squared error&rdquo; produced by (a) and (b) gives us a possible hint:
-(a): 8-1 + 4-2 = 7+2 = 9
-(8-1)² + (4-2)² = 49+4 = 53
-(b): 2-1 + 14-2 = 1+12 = 13
-(2-1)² + (14-2)² = 1+144 = 145
-While it&rsquo;s not clear to compare both with just the normal error value comparision, the squared error shows clearly that (a) seems to outperform (b) in those cases and we should choose (a) for further considerations.</p></blockquote>
+<p>A small example on that: In case we&rsquo;ve a sample query with the expectation that document 123 appears in the first position and document 248 appears second. We could run this with two specific boost factor combinations (a) and (b). Along with (a) we might find that, document 123 actually ranks on position 8 and document 248 is found on position 4 and with (b) we&rsquo;d find them on pos. 2 and pos. 14 &ndash; which one would we consider to be better?
+Comparing the &ldquo;error&rdquo; and &ldquo;squared error&rdquo; produced by (a) and (b) gives us a possible hint:</p>
+
+<ul>
+<li>(a): 8-1 + 4-2 = 7+2 = 9</li>
+<li>(8-1)² + (4-2)² = 49+4 = 53</li>
+<li>(b): 2-1 + 14-2 = 1+12 = 13</li>
+<li>(2-1)² + (14-2)² = 1+144 = 145</li>
+</ul>
+
+
+<p>While it&rsquo;s not clear to compare both with just the normal error value comparision, the squared error shows clearly that (a) seems to outperform (b) in those cases and we should choose (a) for further considerations.</p>
 
 <p>Being able to determine the &ldquo;error&rdquo; introduced by a specific solution then enables us to compare various solutions and helps us to play around with all sorts of optimizations.</p>
 
@@ -203,7 +212,7 @@ While it&rsquo;s not clear to compare both with just the normal error value comp
 
 <p><strong>With some more details:</strong> Genetic algorithms take an amount of randomly generated possible solutions (called the <em>population</em>) and try to find good solutions by applying the typical methods you know from your biology class (mutations, crossovers, natural selection). <em>Natural selection</em> is done in a way that from each generation only the top 50% &ldquo;survive and the rest of the population is filled up with now solutions generated through <em>mutations</em> (random parameter changes of existing solutions) and <em>crossovers</em> (interchanging parts of two existing solutions to create a third one). All solutions are always measured and compared on their response to the defined cost function and this way we&rsquo;re always able to determine the &#8220;best known solution&rdquo; even after very short time.</p>
 
-<blockquote><p>If that sounds too high-level. For the shown query from above, the vector [42,23,5,101,9001,1] is the vector I used. In addition let&rsquo;s considering we have another vector [1,1,1,1,1,1] with equal weights for all fields. Assuming those are our fittest vectors at a given time, we could derive new possible solutions by mutating them (e.g. [42,23,5,101,9001,1] ~> [42,23,5,101,505,1] ) or creating a cross-over between both ( [42,23,5,101,9001,1] &amp; [1,1,1,1,1,1] ~> [42,23,5,1,1,1]). Even adding new random vectors to our population might add some value. Once we found enough new vectors to have a population of a decent size, we&rsquo;d compare the fitness and keep only the top 50% and continue our process until we reach convergence or a fixed iteration limit.</p></blockquote>
+<p>If that sounds too high-level. For the shown query from above, the vector [42,23,5,101,9001,1] is the vector I used. In addition let&rsquo;s considering we have another vector [1,1,1,1,1,1] with equal weights for all fields. Assuming those are our fittest vectors at a given time, we could derive new possible solutions by mutating them (e.g. [42,23,5,101,9001,1] ~> [42,23,5,101,505,1] ) or creating a cross-over between both ( [42,23,5,101,9001,1] &amp; [1,1,1,1,1,1] ~> [42,23,5,1,1,1]). Even adding new random vectors to our population might add some value. Once we found enough new vectors to have a population of a decent size, we&rsquo;d compare the fitness and keep only the top 50% and continue our process until we reach convergence or a fixed iteration limit.</p>
 
 <p>A drawback of the genetic algorithm is that it might not deliver the optimal result, because it never found it. But that&rsquo;s just how nature works too. So it&rsquo;s more that you&rsquo;ve to sacrifice &ldquo;training runtime&rdquo; over accuracy or vice versa.</p>
 
