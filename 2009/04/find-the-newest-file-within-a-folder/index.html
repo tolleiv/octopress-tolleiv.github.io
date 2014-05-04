@@ -20,7 +20,7 @@ find . -type f -printf "%T@ %p \n" | &hellip;">
 
   
   <link rel="canonical" href="http://blog.tolleiv.de/2009/04/find-the-newest-file-within-a-folder">
-  <link href="/favicon.png" rel="icon">
+  <link href="/favicon.ico" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="blog.tolleiv.de" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -77,13 +77,33 @@ find . -type f -printf "%T@ %p \n" | &hellip;">
 
 <body   >
   <header role="banner"><hgroup>
-  <div id="header-inner">
-    <span class="first"><a href="/">blog.tolleiv.de</a></span>
-    <span><a href="/blog/about">about</a></span>
-    <span><a href="/blog/imprint">imprint</a></span>
-    <!--    <span><a href="http://www.github.com/">projects</a></span> -->
-    <span class="last"><a href="/atom.xml" title="subscribe via RSS">rss</a></span>
-  </div>
+    <div id="header-inner">
+        <span class="first"><a href="/">blog.tolleiv.de</a></span>
+        <span><a href="/blog/about">about</a></span>
+        <span><a href="/blog/imprint">imprint</a></span>
+        <!--    <span><a href="http://www.github.com/">projects</a></span> -->
+        <span class="last"><a href="/atom.xml" title="subscribe via RSS">rss</a></span>
+        
+        <div class="header-flattr">
+            <a class="FlattrButton" style="display:none;"
+               title="find the newest file within a folder...."
+               data-flattr-uid="tolleiv"
+               data-flattr-tags=""
+            data-flattr-button="compact"
+            data-flattr-category="text"
+            href="http://blog.tolleiv.de">
+            These are two neat little commands to find the newest and oldest file within a folder and it's subfolder:
+` find . -type f -printf "%T@ %p \n" | sort -n -k 1,1 | awk '{print $2}' | tail -n 1
+find . -type f -printf "%T@ %p \n" | sort -n -k 1,1 | awk '{print $2}' | head -n 1`
+If you'd like to know how old/young these files are try these two:
+`find . -type f -printf "%T@ %C+ %p \n" | sort -n -k 1,1 | tail -n 1
+find . -type f -printf "%T@ %C+ %p \n" | sort -n -k 1,1 | head -n 1`
+
+I hope that's a &hellip;
+            </a>
+        </div>
+        
+    </div>
 </hgroup>
 
 </header>

@@ -19,7 +19,7 @@
 
   
   <link rel="canonical" href="http://blog.tolleiv.de/2011/12/tagging-page-caches">
-  <link href="/favicon.png" rel="icon">
+  <link href="/favicon.ico" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="blog.tolleiv.de" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -76,13 +76,33 @@
 
 <body   >
   <header role="banner"><hgroup>
-  <div id="header-inner">
-    <span class="first"><a href="/">blog.tolleiv.de</a></span>
-    <span><a href="/blog/about">about</a></span>
-    <span><a href="/blog/imprint">imprint</a></span>
-    <!--    <span><a href="http://www.github.com/">projects</a></span> -->
-    <span class="last"><a href="/atom.xml" title="subscribe via RSS">rss</a></span>
-  </div>
+    <div id="header-inner">
+        <span class="first"><a href="/">blog.tolleiv.de</a></span>
+        <span><a href="/blog/about">about</a></span>
+        <span><a href="/blog/imprint">imprint</a></span>
+        <!--    <span><a href="http://www.github.com/">projects</a></span> -->
+        <span class="last"><a href="/atom.xml" title="subscribe via RSS">rss</a></span>
+        
+        <div class="header-flattr">
+            <a class="FlattrButton" style="display:none;"
+               title="Tagging page caches"
+               data-flattr-uid="tolleiv"
+               data-flattr-tags=""
+            data-flattr-button="compact"
+            data-flattr-category="text"
+            href="http://blog.tolleiv.de">
+            In our small TYPO3 world it's quite common to have list and single views for extensions on specific pages. That's quite nice because once a record is changed it allowes users to flush the caches for these pages automatically, using:
+
+    
+    TCEMAIN.clearCacheCmd=all|<pid>
+
+
+
+But of course it isn't very smart to clear all caches once you have filled them up for hundred or even thousand records. To work around these limits it's quite handy to use an API which lives in [TYPO3 since 2008](http:// &hellip;
+            </a>
+        </div>
+        
+    </div>
 </hgroup>
 
 </header>

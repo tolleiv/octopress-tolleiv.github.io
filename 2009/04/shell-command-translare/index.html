@@ -20,7 +20,7 @@ writing to standard output.&rdquo; &hellip; that&rsquo;s the manpage &hellip;">
 
   
   <link rel="canonical" href="http://blog.tolleiv.de/2009/04/shell-command-translare">
-  <link href="/favicon.png" rel="icon">
+  <link href="/favicon.ico" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="blog.tolleiv.de" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -77,13 +77,35 @@ writing to standard output.&rdquo; &hellip; that&rsquo;s the manpage &hellip;">
 
 <body   >
   <header role="banner"><hgroup>
-  <div id="header-inner">
-    <span class="first"><a href="/">blog.tolleiv.de</a></span>
-    <span><a href="/blog/about">about</a></span>
-    <span><a href="/blog/imprint">imprint</a></span>
-    <!--    <span><a href="http://www.github.com/">projects</a></span> -->
-    <span class="last"><a href="/atom.xml" title="subscribe via RSS">rss</a></span>
-  </div>
+    <div id="header-inner">
+        <span class="first"><a href="/">blog.tolleiv.de</a></span>
+        <span><a href="/blog/about">about</a></span>
+        <span><a href="/blog/imprint">imprint</a></span>
+        <!--    <span><a href="http://www.github.com/">projects</a></span> -->
+        <span class="last"><a href="/atom.xml" title="subscribe via RSS">rss</a></span>
+        
+        <div class="header-flattr">
+            <a class="FlattrButton" style="display:none;"
+               title="shell command: translate "
+               data-flattr-uid="tolleiv"
+               data-flattr-tags=""
+            data-flattr-button="compact"
+            data-flattr-category="text"
+            href="http://blog.tolleiv.de">
+            > "Translate, squeeze, and/or delete characters from standard input,
+writing to standard output."
+
+
+... that's the manpage description of the shell-command I just found (with the help of a good friend) ... and besides sed this is a very handy way to do simple string-operations on stdin.
+
+He used it to replace (old) Mac newline characters with Unix newline charaters within files (as seen on [wikipedia](http://en.wikipedia.org/wiki/Newline)):
+`tr '\r' '\n' < old.file > new.file`
+
+Btw I still &hellip;
+            </a>
+        </div>
+        
+    </div>
 </hgroup>
 
 </header>

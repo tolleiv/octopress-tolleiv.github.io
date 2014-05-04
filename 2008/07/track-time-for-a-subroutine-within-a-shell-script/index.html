@@ -19,7 +19,7 @@
 
   
   <link rel="canonical" href="http://blog.tolleiv.de/2008/07/track-time-for-a-subroutine-within-a-shell-script">
-  <link href="/favicon.png" rel="icon">
+  <link href="/favicon.ico" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="blog.tolleiv.de" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -76,13 +76,45 @@
 
 <body   >
   <header role="banner"><hgroup>
-  <div id="header-inner">
-    <span class="first"><a href="/">blog.tolleiv.de</a></span>
-    <span><a href="/blog/about">about</a></span>
-    <span><a href="/blog/imprint">imprint</a></span>
-    <!--    <span><a href="http://www.github.com/">projects</a></span> -->
-    <span class="last"><a href="/atom.xml" title="subscribe via RSS">rss</a></span>
-  </div>
+    <div id="header-inner">
+        <span class="first"><a href="/">blog.tolleiv.de</a></span>
+        <span><a href="/blog/about">about</a></span>
+        <span><a href="/blog/imprint">imprint</a></span>
+        <!--    <span><a href="http://www.github.com/">projects</a></span> -->
+        <span class="last"><a href="/atom.xml" title="subscribe via RSS">rss</a></span>
+        
+        <div class="header-flattr">
+            <a class="FlattrButton" style="display:none;"
+               title="track time for a subroutine within a shell-script"
+               data-flattr-uid="tolleiv"
+               data-flattr-tags="offtopic,shellscript"
+            data-flattr-button="compact"
+            data-flattr-category="text"
+            href="http://blog.tolleiv.de">
+            The following code-snippet is a shell-script which does the following:
+
+
+
+
+	
+  1. Track the time for a block of shell commands
+
+	
+  2. Check if the time was less than x seconds (the example uses 10 seconds)
+
+
+	
+  3. If the block run through too fast the script waits/sleeps a few seconds
+
+	
+  4. Run all this within a loop so that the block of shell-commands is executed periodically
+
+
+I used the script combined with a PHP script which processes a queue. The PHP script processes 1000 elements from &hellip;
+            </a>
+        </div>
+        
+    </div>
 </hgroup>
 
 </header>

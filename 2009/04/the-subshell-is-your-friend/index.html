@@ -19,7 +19,7 @@
 
   
   <link rel="canonical" href="http://blog.tolleiv.de/2009/04/the-subshell-is-your-friend">
-  <link href="/favicon.png" rel="icon">
+  <link href="/favicon.ico" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="blog.tolleiv.de" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -76,13 +76,30 @@
 
 <body   >
   <header role="banner"><hgroup>
-  <div id="header-inner">
-    <span class="first"><a href="/">blog.tolleiv.de</a></span>
-    <span><a href="/blog/about">about</a></span>
-    <span><a href="/blog/imprint">imprint</a></span>
-    <!--    <span><a href="http://www.github.com/">projects</a></span> -->
-    <span class="last"><a href="/atom.xml" title="subscribe via RSS">rss</a></span>
-  </div>
+    <div id="header-inner">
+        <span class="first"><a href="/">blog.tolleiv.de</a></span>
+        <span><a href="/blog/about">about</a></span>
+        <span><a href="/blog/imprint">imprint</a></span>
+        <!--    <span><a href="http://www.github.com/">projects</a></span> -->
+        <span class="last"><a href="/atom.xml" title="subscribe via RSS">rss</a></span>
+        
+        <div class="header-flattr">
+            <a class="FlattrButton" style="display:none;"
+               title="the subshell is your friend"
+               data-flattr-uid="tolleiv"
+               data-flattr-tags=""
+            data-flattr-button="compact"
+            data-flattr-category="text"
+            href="http://blog.tolleiv.de">
+            Today I tried to find a way to track the time of a shell-command and to log that runtime into a file. I was already aware of the **time **command which is a bash build-in. Due to that it passes its output directly to the user without using either stdout or stderr and therefore there's no "easy" way to redirect the output directly into a file.
+
+But bash als provides subshells and in this case that's how you can use the output :P (which is passed on stderr in this case).
+
+`(time sleep 5) 2> time. &hellip;
+            </a>
+        </div>
+        
+    </div>
 </hgroup>
 
 </header>
