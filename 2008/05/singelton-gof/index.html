@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Singelton [GoF] - the fancy part of the web</title>
+  <title>Singelton [GoF] - blog.tolleiv.de</title>
   <meta name="author" content="Tolleiv Nietsch">
 
   
@@ -21,7 +21,7 @@
   <link rel="canonical" href="http://blog.tolleiv.de/2008/05/singelton-gof">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/atom.xml" rel="alternate" title="the fancy part of the web" type="application/atom+xml">
+  <link href="/atom.xml" rel="alternate" title="blog.tolleiv.de" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
@@ -30,6 +30,46 @@
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+ <script type="text/javascript">
+ /* <![CDATA[ */
+     (function() {
+         var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];
+         s.type = 'text/javascript';
+         s.async = true;
+         s.src = 'http://api.flattr.com/js/0.6/load.js?mode=auto';
+         t.parentNode.insertBefore(s, t);
+     })();
+ /* ]]> */
+ </script>
+ 
+
+<script type="text/javascript">
+/* <![CDATA[ */
+    (function() {
+        var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = 'http://api.flattr.com/js/0.6/load.js?mode=auto';
+        t.parentNode.insertBefore(s, t);
+    })();
+/* ]]> */
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="payment" href="https://flattr.com/submit/auto?url=http%3A%2F%2Fblog.tolleiv.de%2F2008%2F05%2Fsingelton-gof%2F&amp;user_id=tolleiv&amp;title=Singelton+%5BGoF%5D&amp;category=text&amp;description=this+is+just+about+all+sorts+of+web+related+work+with+a+small+factor+of+fanciness+-+it%27s+about+coding%2C+typo3%2C+its+extensions+and+everything&amp;tags=anti-pattern%2Ccreational%2Cregistry%2Csingleton" type="text/html" />
+
+
   
 
 </head>
@@ -37,7 +77,7 @@
 <body   >
   <header role="banner"><hgroup>
   <div id="header-inner">
-    <span class="first"><a href="/">the fancy part of the web</a></span>
+    <span class="first"><a href="/">blog.tolleiv.de</a></span>
     <span><a href="/blog/about">about</a></span>
     <span><a href="/blog/imprint">imprint</a></span>
     <!--    <span><a href="http://www.github.com/">projects</a></span> -->
@@ -165,6 +205,30 @@ var_dump($tin);
 <p>The really important things happen in the last lines where the CookieTin is accessed statically and this change also (as you will see yourself) is reflected in the local instance if the $tin.</p>
 </div>
 
+<div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.tolleiv.de/2008/05/singelton-gof/" data-via="tolleiv" data-counturl="http://blog.tolleiv.de/2008/05/singelton-gof/" >Tweet</a>
+  
+  
+    <a class="FlattrButton" style="display:none;"
+    title="Singelton [GoF]"
+    data-flattr-uid="tolleiv"
+    data-flattr-tags="anti-pattern,creational,registry,singleton"
+    data-flattr-button="compact"
+    data-flattr-category="text"
+    href="http://blog.tolleiv.de/2008/05/singelton-gof/">
+    Tis pattern is a very well know and a often discussed one.
+
+Explaining it the tasty way: let's say you have exactly one well know place where you store all your cookies and whenever you need one you can easy point to that place. Normally that's really comfortable because whatever you do with it, you don't have to search some place where you can find a cookie, you just go to that single "cookie tin" (or wherever you store cookies) and put a new cookie into it ;)
+
+In modern OOP the singleton is &hellip;
+</a>
+
+  
+  
+  
+</div>
+
 
   <footer>
     <p class="meta">
@@ -200,6 +264,22 @@ var_dump($tin);
       <div class="sharing">
   
   <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.tolleiv.de/2008/05/singelton-gof/" data-via="tolleiv" data-counturl="http://blog.tolleiv.de/2008/05/singelton-gof/" >Tweet</a>
+  
+  
+    <a class="FlattrButton" style="display:none;"
+    title="Singelton [GoF]"
+    data-flattr-uid="tolleiv"
+    data-flattr-tags="anti-pattern,creational,registry,singleton"
+    data-flattr-button="compact"
+    data-flattr-category="text"
+    href="http://blog.tolleiv.de/2008/05/singelton-gof/">
+    Tis pattern is a very well know and a often discussed one.
+
+Explaining it the tasty way: let's say you have exactly one well know place where you store all your cookies and whenever you need one you can easy point to that place. Normally that's really comfortable because whatever you do with it, you don't have to search some place where you can find a cookie, you just go to that single "cookie tin" (or wherever you store cookies) and put a new cookie into it ;)
+
+In modern OOP the singleton is &hellip;
+</a>
+
   
   
   

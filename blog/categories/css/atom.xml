@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: css | the fancy part of the web]]></title>
+  <title><![CDATA[Category: css | blog.tolleiv.de]]></title>
   <link href="http://blog.tolleiv.de/blog/categories/css/atom.xml" rel="self"/>
   <link href="http://blog.tolleiv.de/"/>
-  <updated>2014-05-04T11:33:35+02:00</updated>
+  <updated>2014-05-04T12:08:19+02:00</updated>
   <id>http://blog.tolleiv.de/</id>
   <author>
     <name><![CDATA[Tolleiv Nietsch]]></name>
