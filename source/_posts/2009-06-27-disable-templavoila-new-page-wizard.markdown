@@ -11,7 +11,7 @@ tags:
 - typo3
 ---
 
-[![templavoila-pagetemplate-selector](http://blog.tolleiv.de/wp-content/uploads/2009/06/templavoila-pagetemplate-selector1.png)](http://blog.tolleiv.de/wp-content/uploads/2009/06/templavoila-pagetemplate-selector1.png) TemplaVoila's "new page wizard" is a pretty cool featue - at least if your page templates have a thumbnail and a description. If your "new page wizard" look like the image on the right you might consider to turn it of.
+[![templavoila-pagetemplate-selector](/uploads/2009/06/templavoila-pagetemplate-selector1.png)](/uploads/2009/06/templavoila-pagetemplate-selector1.png) TemplaVoila's "new page wizard" is a pretty cool featue - at least if your page templates have a thumbnail and a description. If your "new page wizard" look like the image on the right you might consider to turn it of.
 
 That's pretty easy just paste this into the Page TSConfig of your rootpage and you're done:
 `mod.web_list.newPageWiz.overrideWithExtension >`

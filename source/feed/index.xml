@@ -109,7 +109,7 @@
     <link href="http://blog.tolleiv.de/2013/06/genetic-algorithms-boosting-solr/"/>
     <updated>2013-06-06T20:47:56+02:00</updated>
     <id>http://blog.tolleiv.de/2013/06/genetic-algorithms-boosting-solr</id>
-    <content type="html"><![CDATA[<p><a href="http://blog.tolleiv.de/wp-content/uploads/2013/06/Bildschirmfoto-2013-05-29-um-18.08.18.png"><img src="http://blog.tolleiv.de/wp-content/uploads/2013/06/Bildschirmfoto-2013-05-29-um-18.08.18-150x150.png" alt="Configuration interface." /></a> Configuration interface.One thing I took along from last year&rsquo;s ApacheCon was the idea to combine Apache Solr along with some mathematical search algorithms to figure out boost factor values. I did some work on that back then and on the way to this year&rsquo;s BerlinBuzzwords. Now I finally have a proof-of-concept working which I&rsquo;d like to share. If you want to have a look right away &ndash; the code can be found on <a href="http://github.com/tolleiv/boostgenetics">Github</a>.</p>
+    <content type="html"><![CDATA[<p><a href="/uploads/2013/06/Bildschirmfoto-2013-05-29-um-18.08.18.png"><img src="/uploads/2013/06/Bildschirmfoto-2013-05-29-um-18.08.18-150x150.png" alt="Configuration interface." /></a> Configuration interface.One thing I took along from last year&rsquo;s ApacheCon was the idea to combine Apache Solr along with some mathematical search algorithms to figure out boost factor values. I did some work on that back then and on the way to this year&rsquo;s BerlinBuzzwords. Now I finally have a proof-of-concept working which I&rsquo;d like to share. If you want to have a look right away &ndash; the code can be found on <a href="http://github.com/tolleiv/boostgenetics">Github</a>.</p>
 
 <h2>The problem to solve:</h2>
 
@@ -148,7 +148,7 @@ While it&rsquo;s not clear to compare both with just the normal error value comp
 
 <h2>Implementation:</h2>
 
-<p><a href="http://blog.tolleiv.de/wp-content/uploads/2013/06/Bildschirmfoto-2013-05-29-um-18.10.43.png"><img src="http://blog.tolleiv.de/wp-content/uploads/2013/06/Bildschirmfoto-2013-05-29-um-18.10.43-150x150.png" alt="10 generation optimization" /></a> 10 generation optimizationThere&rsquo;s really not too much to say other than that the code can be found in <a href="http://github.com/tolleiv/boostgenetics">Github</a>. I used NodeJS with ExpressJs, SocketIO and an Twitter Bootstrap interface to have a relatively good looking and somewhat performing proof-of-concept. I used that setup, because NodeJS seems to me as the most easiest way to talk to Solr and it &ldquo;promises&rdquo; to be performant even with larger examples. SocketIO helped a lot to ease the pain when it comes to Server &lt;> Client communication. The only drawback of that setup is the that everything had to be turned into something which is able to deal with asynchronous processing. This makes the algorithmic parts look a bit odd and bloated &ndash; but for me the benefits outweigh the odds.</p>
+<p><a href="/uploads/2013/06/Bildschirmfoto-2013-05-29-um-18.10.43.png"><img src="/uploads/2013/06/Bildschirmfoto-2013-05-29-um-18.10.43-150x150.png" alt="10 generation optimization" /></a> 10 generation optimizationThere&rsquo;s really not too much to say other than that the code can be found in <a href="http://github.com/tolleiv/boostgenetics">Github</a>. I used NodeJS with ExpressJs, SocketIO and an Twitter Bootstrap interface to have a relatively good looking and somewhat performing proof-of-concept. I used that setup, because NodeJS seems to me as the most easiest way to talk to Solr and it &ldquo;promises&rdquo; to be performant even with larger examples. SocketIO helped a lot to ease the pain when it comes to Server &lt;> Client communication. The only drawback of that setup is the that everything had to be turned into something which is able to deal with asynchronous processing. This makes the algorithmic parts look a bit odd and bloated &ndash; but for me the benefits outweigh the odds.</p>
 
 <h2>Final thoughts:</h2>
 
@@ -322,19 +322,19 @@ undemocratic way.</p></blockquote>
 
 <p>So that&rsquo;s what you might see in your TypoScript Object Browser:</p>
 
-<p><a href="http://blog.tolleiv.de/wp-content/uploads/2012/02/typoscript-error.png"><img src="http://blog.tolleiv.de/wp-content/uploads/2012/02/typoscript-error.png" alt="The error message from your TypoScript Object Browser might look like this." /></a></p>
+<p><a href="/uploads/2012/02/typoscript-error.png"><img src="/uploads/2012/02/typoscript-error.png" alt="The error message from your TypoScript Object Browser might look like this." /></a></p>
 
 <p> Switching from there to the Template Analyzer:</p>
 
-<p><a href="http://blog.tolleiv.de/wp-content/uploads/2012/02/typoscript-analyzer.png"><img src="http://blog.tolleiv.de/wp-content/uploads/2012/02/typoscript-analyzer.png" alt="Switching to the TypoScript analyzer" /></a></p>
+<p><a href="/uploads/2012/02/typoscript-analyzer.png"><img src="/uploads/2012/02/typoscript-analyzer.png" alt="Switching to the TypoScript analyzer" /></a></p>
 
 <p>At the bottom of the Template Analyzer, you&rsquo;ll find a &ldquo;Complete TS&rdquo; section and a link ~which looks like normal text.</p>
 
-<p><a href="http://blog.tolleiv.de/wp-content/uploads/2012/02/typoscript-analyzer-complete.png"><img src="http://blog.tolleiv.de/wp-content/uploads/2012/02/typoscript-analyzer-complete.png" alt="And you'll find a link to the fully concatenated TypoScript of your current page." /></a></p>
+<p><a href="/uploads/2012/02/typoscript-analyzer-complete.png"><img src="/uploads/2012/02/typoscript-analyzer-complete.png" alt="And you'll find a link to the fully concatenated TypoScript of your current page." /></a></p>
 
 <p>Clicking on that link will give you the entire concatenated TypoScript and here you&rsquo;ll also find that the line numbers finally match to the error message.</p>
 
-<p><a href="http://blog.tolleiv.de/wp-content/uploads/2012/02/typoscript-analyzer-error.png"><img src="http://blog.tolleiv.de/wp-content/uploads/2012/02/typoscript-analyzer-error.png" alt="And you'll find that the line numbers are now what you saw in the error message before (might need some scrolling)." /></a></p>
+<p><a href="/uploads/2012/02/typoscript-analyzer-error.png"><img src="/uploads/2012/02/typoscript-analyzer-error.png" alt="And you'll find that the line numbers are now what you saw in the error message before (might need some scrolling)." /></a></p>
 
 <p>A well hidden gem which works most likely in all TYPO3 4.x versions ;)</p>
 
@@ -353,13 +353,13 @@ undemocratic way.</p></blockquote>
 
 <p>Using Gerrit sometimes feels quite lonesome &ndash; you don&rsquo;t really see who&rsquo;s active and you don&rsquo;t really get a feeling on how much is done in the TYPO3 Core at a certain point. To visualize on how active the contributors are and to show the most active members I applied a little scoring and summed up the results for the time since 2006.</p>
 
-<p><a href="http://blog.tolleiv.de/impact-chart"><img src="http://blog.tolleiv.de/wp-content/uploads/2012/01/TYPO3-Core-impact.png" alt="Snippet of the impact chart." /></a></p>
+<p><a href="http://blog.tolleiv.de/impact-chart"><img src="/uploads/2012/01/TYPO3-Core-impact.png" alt="Snippet of the impact chart." /></a></p>
 
 <p>The scoring is quite easy &ndash; every author of a patch gets 10 points, testers get 3 and reviewers 1 point*. Looking at the stats it seems that even the statistics pulled from the old Subversion days seem to meet up with today&rsquo;s numbers &ndash; of course we&rsquo;ve to keep in mind that everything which was pulled from Subversion doesn&rsquo;t really point to the author but to the actual committer (except if there was a &ldquo;Thanks to XXXXX&rdquo; reference in the commit).</p>
 
 <p>To visualize the numbers I choose a <a href="https://github.com/blog/219-impact-graph-speedups">Github</a> like <a href="http://blog.tolleiv.de/impact-chart">impact chart</a>**. Each contributor has it&rsquo;s own color and line in it and whenever he got active the width of the line scales up. To maintain the overview the scale of the width isn&rsquo;t linear and every contributor who&rsquo;s not within the &ldquo;Top 20&rdquo; had to be scaled down to &ldquo;1&rdquo;. The line stops if the contributor didn&rsquo;t get active anymore. The scores are grouped and compared by month.</p>
 
-<p><a href="http://blog.tolleiv.de/impact-chart/stat.html"><img src="http://blog.tolleiv.de/wp-content/uploads/2012/01/Core-Stats-January20121.png" alt="Snapshot of the &quot;Top 20&quot; stats taken Jan. 14th 2012" /></a></p>
+<p><a href="http://blog.tolleiv.de/impact-chart/stat.html"><img src="/uploads/2012/01/Core-Stats-January20121.png" alt="Snapshot of the &quot;Top 20&quot; stats taken Jan. 14th 2012" /></a></p>
 
 <p>In addition to the chart I also created a <a href="http://blog.tolleiv.de/impact-chart/stat.html">table based overview for the &ldquo;Top 20&rdquo;</a> contributors with their score***.</p>
 
@@ -594,7 +594,7 @@ A complete list of the included features and changes can be found on <a href="ht
 
 <p>The full list of HTML5 tags is now supported in TemplaVoila. The restrictions to specific tags was removed and the TYPO3 integrator is now able to use the full bandwidth of modern HTML. With this change also the tag-icons themself were replaced and the coloring schema was changed. The inspiration for the current color schema came from <a href="http://joshduck.com/periodic-table.html">Josh Duck&rsquo;s &ldquo;Periodic Table of the Elements&rdquo;</a>. In additon same mapping bugs have been resolved too &ndash; for details see <a href="http://bugs.typo3.org/view.php?id=13974">#13974</a> and <a href="http://bugs.typo3.org/view.php?id=14881">#14881</a>.</p>
 
-<p><a href="http://blog.tolleiv.de/wp-content/uploads/2010/09/tv15-page-module.png"><img src="http://blog.tolleiv.de/wp-content/uploads/2010/09/tv15-page-module-300x190.png" alt="TemplaVoila 1.5 page module" /></a></p>
+<p><a href="/uploads/2010/09/tv15-page-module.png"><img src="/uploads/2010/09/tv15-page-module-300x190.png" alt="TemplaVoila 1.5 page module" /></a></p>
 
 <h4>TYPO3 4.4 Look&amp;Feel and docHeader integration</h4>
 

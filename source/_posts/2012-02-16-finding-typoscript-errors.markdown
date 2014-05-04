@@ -16,13 +16,13 @@ When you work on TypoScript templates in TYPO3, errors might show up in the Typo
 So that's what you might see in your TypoScript Object Browser:
 
 
-[![The error message from your TypoScript Object Browser might look like this.](http://blog.tolleiv.de/wp-content/uploads/2012/02/typoscript-error.png)](http://blog.tolleiv.de/wp-content/uploads/2012/02/typoscript-error.png)
+[![The error message from your TypoScript Object Browser might look like this.](/uploads/2012/02/typoscript-error.png)](/uploads/2012/02/typoscript-error.png)
 
 
  Switching from there to the Template Analyzer:
 
 
-[![Switching to the TypoScript analyzer](http://blog.tolleiv.de/wp-content/uploads/2012/02/typoscript-analyzer.png)](http://blog.tolleiv.de/wp-content/uploads/2012/02/typoscript-analyzer.png)
+[![Switching to the TypoScript analyzer](/uploads/2012/02/typoscript-analyzer.png)](/uploads/2012/02/typoscript-analyzer.png)
 
 
 
@@ -32,7 +32,7 @@ At the bottom of the Template Analyzer, you'll find a "Complete TS" section and 
 
 
 
-[![And you'll find a link to the fully concatenated TypoScript of your current page.](http://blog.tolleiv.de/wp-content/uploads/2012/02/typoscript-analyzer-complete.png)](http://blog.tolleiv.de/wp-content/uploads/2012/02/typoscript-analyzer-complete.png)
+[![And you'll find a link to the fully concatenated TypoScript of your current page.](/uploads/2012/02/typoscript-analyzer-complete.png)](/uploads/2012/02/typoscript-analyzer-complete.png)
 
 
 
@@ -42,7 +42,7 @@ Clicking on that link will give you the entire concatenated TypoScript and here 
 
 
 
-[![And you'll find that the line numbers are now what you saw in the error message before (might need some scrolling).](http://blog.tolleiv.de/wp-content/uploads/2012/02/typoscript-analyzer-error.png)](http://blog.tolleiv.de/wp-content/uploads/2012/02/typoscript-analyzer-error.png)
+[![And you'll find that the line numbers are now what you saw in the error message before (might need some scrolling).](/uploads/2012/02/typoscript-analyzer-error.png)](/uploads/2012/02/typoscript-analyzer-error.png)
 
 
 

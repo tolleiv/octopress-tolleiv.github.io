@@ -12,9 +12,9 @@ Please send any feedback or complains about the content to: feedback[-at-]tollei
 
 Responsible for content and presentation:
 
-Tolleiv Nietsch
-Dotzheimer Straße 123
-65197 Wiesbaden, Germany
+Tolleiv Nietsch <br/>
+Kaiser-Friedrich-Ring 30 <br/>
+65185 Wiesbaden, Germany
 
 [![Creative Commons License](http://i.creativecommons.org/l/by-sa/3.0/88x31.png)](http://creativecommons.org/licenses/by-sa/3.0/)Except where otherwise [noted](http://creativecommons.org/policies#license), content on this site is
 licensed under a [Creative Commons Attribution 3.0 License](http://creativecommons.org/licenses/by-sa/3.0/)

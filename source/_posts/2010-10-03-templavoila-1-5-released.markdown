@@ -20,7 +20,7 @@ The new version comes with many bugfixes,new features and a closer TYPO3 integra
 
 The full list of HTML5 tags is now supported in TemplaVoila. The restrictions to specific tags was removed and the TYPO3 integrator is now able to use the full bandwidth of modern HTML. With this change also the tag-icons themself were replaced and the coloring schema was changed. The inspiration for the current color schema came from [Josh Duck's "Periodic Table of the Elements"](http://joshduck.com/periodic-table.html). In additon same mapping bugs have been resolved too - for details see [#13974](http://bugs.typo3.org/view.php?id=13974) and [#14881](http://bugs.typo3.org/view.php?id=14881).
 
-[![TemplaVoila 1.5 page module](http://blog.tolleiv.de/wp-content/uploads/2010/09/tv15-page-module-300x190.png)](http://blog.tolleiv.de/wp-content/uploads/2010/09/tv15-page-module.png)
+[![TemplaVoila 1.5 page module](/uploads/2010/09/tv15-page-module-300x190.png)](/uploads/2010/09/tv15-page-module.png)
 
 
 

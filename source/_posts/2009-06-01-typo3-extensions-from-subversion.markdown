@@ -11,7 +11,7 @@ tags:
 - typo3
 ---
 
-[![Subversion to T3X conversion tool](http://blog.tolleiv.de/wp-content/uploads/2009/06/svn2t3x-snap-150x150.png)(http://blog.tolleiv.de/wp-content/uploads/2009/06/svn2t3x-snap.png)
+[![Subversion to T3X conversion tool](/uploads/2009/06/svn2t3x-snap-150x150.png)(/uploads/2009/06/svn2t3x-snap.png)
 
 From time to time it's really buggin me that some "TYPO3 integrators" don't have PHP skills. And since Subversion is imho the most important tool within groups of developers, their missing PHP skills are a real downside because they can't use the newest extension version directly out of the Subversion repository. Therefore I decided to create a handy little tool which enables to generate TYPO3 *.t3x extension-files from any* Subversion repository.
 
