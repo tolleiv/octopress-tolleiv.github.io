@@ -4,7 +4,7 @@
   <title><![CDATA[Category: firefox | the fancy part of the web]]></title>
   <link href="http://tolleiv.github.io/blog/categories/firefox/atom.xml" rel="self"/>
   <link href="http://tolleiv.github.io/"/>
-  <updated>2014-05-04T01:22:28+02:00</updated>
+  <updated>2014-05-04T08:57:44+02:00</updated>
   <id>http://tolleiv.github.io/</id>
   <author>
     <name><![CDATA[Tolleiv Nietsch]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Firefox 3 RC1]]></title>
-    <link href="http://tolleiv.github.io/blog/2008/05/18/firefox-3-rc1/"/>
+    <link href="http://tolleiv.github.io/2008/05/firefox-3-rc1/"/>
     <updated>2008-05-18T18:11:00+02:00</updated>
-    <id>http://tolleiv.github.io/blog/2008/05/18/firefox-3-rc1</id>
+    <id>http://tolleiv.github.io/2008/05/firefox-3-rc1</id>
     <content type="html"><![CDATA[<p>I just saw that the first Release Candidate of Firefox 3 is available for <a href="http://www.mozilla.com/en-US/firefox/all-rc.html">download</a> . As with the most of the Beta-versions I also checked this update because I&rsquo;m really excited to get the <a href="http://www.mozilla.com/en-US/firefox/3.0rc1/releasenotes/#whatsnew">new features</a>, but after 5 minutes (again) I removed it from my PC. Non of my extensions is working in FF3 (except the dictionary), it still destroys the Frames in TYPO3 (<a href="http://typo3.org/extensions/repository/view/mn_ff3_be_bugfix/0.0.2/">there&rsquo;s a bugfix-extension for that</a>) and the memory-usage is still very high,10% lower than in FF2 but still high.<br/>
 So I postponed the update and  kept on running <a href="http://www.mozilla.com/en-US/firefox/all.html">Firefox 2</a>, at least until the next Release Candidate ;)</p>
 ]]></content>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: algorithm | the fancy part of the web]]></title>
   <link href="http://tolleiv.github.io/blog/categories/algorithm/atom.xml" rel="self"/>
   <link href="http://tolleiv.github.io/"/>
-  <updated>2014-05-04T01:22:28+02:00</updated>
+  <updated>2014-05-04T08:57:44+02:00</updated>
   <id>http://tolleiv.github.io/</id>
   <author>
     <name><![CDATA[Tolleiv Nietsch]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[B-Tree simulation...]]></title>
-    <link href="http://tolleiv.github.io/blog/2008/07/29/b-tree-simulation/"/>
+    <link href="http://tolleiv.github.io/2008/07/b-tree-simulation/"/>
     <updated>2008-07-29T21:25:00+02:00</updated>
-    <id>http://tolleiv.github.io/blog/2008/07/29/b-tree-simulation</id>
+    <id>http://tolleiv.github.io/2008/07/b-tree-simulation</id>
     <content type="html"><![CDATA[<p>I&rsquo;m just preparing for some of my computer science exams and in one of my researches I found a really great B-Tree simulation and I&rsquo;d like to share it: <a href="http://slady.net/java/bt/view.php">http://slady.net/java/bt/view.php</a> &hellip;..</p>
 ]]></content>
   </entry>

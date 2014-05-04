@@ -4,7 +4,7 @@
   <title><![CDATA[Category: plugin | the fancy part of the web]]></title>
   <link href="http://tolleiv.github.io/blog/categories/plugin/atom.xml" rel="self"/>
   <link href="http://tolleiv.github.io/"/>
-  <updated>2014-05-04T01:22:28+02:00</updated>
+  <updated>2014-05-04T08:57:44+02:00</updated>
   <id>http://tolleiv.github.io/</id>
   <author>
     <name><![CDATA[Tolleiv Nietsch]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Plugin [PoEAA]]]></title>
-    <link href="http://tolleiv.github.io/blog/2008/06/05/plugin-poeaa/"/>
+    <link href="http://tolleiv.github.io/2008/06/plugin-poeaa/"/>
     <updated>2008-06-05T03:11:00+02:00</updated>
-    <id>http://tolleiv.github.io/blog/2008/06/05/plugin-poeaa</id>
+    <id>http://tolleiv.github.io/2008/06/plugin-poeaa</id>
     <content type="html"><![CDATA[<p>I&rsquo;m sure you&rsquo;re pretty often in the situation that you have to switch something depending on the context you&rsquo;re currently in. For example most people change their eating habits before summer &ndash; I also do :P</p>
 
 <p>Sometimes this is what you also want to have in your software. To achieve different behaviour you normally just implement two different classes or aggregates and since they have the same &ldquo;meaning&rdquo; they normally share a interface (a.k.a Separated Interface). But who decides which implementation fits into the current environment/context?</p>

@@ -1,0 +1,428 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Specification [DDD] - the fancy part of the web</title>
+  <meta name="author" content="Tolleiv Nietsch">
+
+  
+  <meta name="description" content="Maybe sometimes the cookie tin is filled with all sorts of cookies and only some of them are what you&rsquo;d like in this special moment. Often it& &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://tolleiv.github.io/2008/05/specification-ddd">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="the fancy part of the web" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:tolleiv.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+  
+    
+      <h1 class="entry-title">Specification [DDD]</h1>
+    
+  
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-05-15T16:00:00+02:00" pubdate data-updated="true">May 15<span>th</span>, 2008</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Maybe sometimes the cookie tin is filled with all sorts of cookies and only some of them are what you&rsquo;d like in this special moment. Often it&rsquo;s very easy to specify which cookie you like, but sometimes your wishes are very complex, for example if you look for grannies special cookie with chocolate, coconut and vanilla crumbles. This could lead into a real crumby problem if you try to sort all the cookies and then select eat the right one.</p>
+
+<p>In the world of OOP it&rsquo;s often much harder to collect a few objects out of a large number of different objects, also combining different requirements isn&rsquo;t easy and that&rsquo;s where the specification pattern can help you out. It implements some basic operations to combine requirements (AND, OR, NOT) and the only thing a concrete specification for a concrete class has to do is to implement a method (isSatisfied()) which is able to determine whether a object meats a requirement or not.</p>
+
+<p>I splitted the generic part of the script and the cookie-example. The first part just implements the methods which are needed for the combination and provides a abstract class which is extended by the specifications in the second part. As you see the specification is combined which normally encapsulates the retrieval of the objects ,for example from a database. &hellip;.just have a look it&rsquo;s really easy to select the right cookie &hellip; yummy</p>
+
+<p><a href="http://bp2.blogger.com/_l5fIZzJyYfc/SC115dPibfI/AAAAAAAAABQ/ZZfCsWJAwDA/s1600-h/specification_sequenze.png"><img src="http://bp2.blogger.com/_l5fIZzJyYfc/SC115dPibfI/AAAAAAAAABQ/ZZfCsWJAwDA/s400/specification_sequenze.png" alt="" /></a></p>
+
+<pre><code>interface Specification {
+    public function isSatisfiedBy($obj);
+    public function _and(Specification $spec);
+    public function _or(Specification $spec);
+    public function _not();
+}
+
+abstract class AbstractSpecification implements Specification {
+    public function isSatisfiedBy($obj) { }
+    public function _and(Specification $spec) {
+        return new AndSpecification($this, $spec);
+    }
+    public function _or(Specification $spec) {
+        return new OrSpecification($this, $spec);
+    }
+    public function _not() {
+        return new NotSpecification($this);
+    }
+}
+
+class AndSpecification extends AbstractSpecification {
+    private $spec1, $spec2;
+    public function __construct(Specification $spec1, Specification $spec2) {
+        $this-&gt;spec1 = $spec1;
+        $this-&gt;spec2 = $spec2;
+    }
+    public function isSatisfiedBy($obj) {
+        return $this-&gt;spec1-&gt;isSatisfiedBy($obj) &amp;&amp; $this-&gt;spec2-&gt;isSatisfiedBy($obj);
+    }
+}
+
+class OrSpecification extends AbstractSpecification {
+    private $spec1, $spec2;
+    public function __construct(Specification $spec1, Specification $spec2) {
+        $this-&gt;spec1 = $spec1;
+        $this-&gt;spec2 = $spec2;
+    }
+    public function isSatisfiedBy($obj) {
+        return $this-&gt;spec1-&gt;isSatisfiedBy($obj) || $this-&gt;spec2-&gt;isSatisfiedBy($obj);
+    }
+}
+
+class NotSpecification extends AbstractSpecification {
+    private $spec;
+    public function __construct(Specification $spec) {
+        $this-&gt;spec = $spec;
+    }
+    public function isSatisfiedBy($obj) {
+        return !$this-&gt;spec-&gt;isSatisfiedBy($obj);
+    }
+}
+
+
+
+
+
+
+/**
+* Cookie object just a container for the relevant data.
+*
+*/
+class Cookie {
+    protected $name,$flavor,$size;
+    public function __construct($name=”,$flavor=‘chocolate’,$size=100) {
+    $this-&gt;name=$name;
+    $this-&gt;flavor = $flavor;
+    $this-&gt;size = abs($size); // avoid negative size
+    }
+    public function getName() { return $this-&gt;name; }
+    public function getFlavor() { return $this-&gt;flavor; }
+    public function getSize() { return $this-&gt;size; }
+}
+/**
+* Cookie service delivers cookies, offers some ways to select specific types of cookies
+*
+*/
+class CookieService {
+    protected $cookies = array();
+    /**
+    * Add a cookie to the collection
+    * name is used as identifier, thats not the best choice
+    * but it’s ok for the example
+    *
+    * @param Cookie $cookie
+    */
+    public function add(Cookie $cookie) {
+        $this-&gt;cookies[$cookie-&gt;getName()]=$cookie;
+    }
+    /**
+    * Generic method to check which objects fit the spec
+    *
+    * @param Specification $spec
+    */
+    private function filter(Specification $spec) {
+        $result=array();
+        reset($this-&gt;cookies);
+        foreach($this-&gt;cookies as $name=&gt;$cookie) {
+            if($spec-&gt;isSatisfiedBy($cookie)) {
+                $result[]=$cookie;
+            }
+        }
+        return $result;
+    }
+
+    public function getLargeCookies() {
+        $spec = new SmallCookieSpecification();
+        $spec = $spec-&gt;_not();
+        return $this-&gt;filter($spec);
+    }
+    public function getSmallChocolateCookies() {
+        $spec = new SmallCookieSpecification();
+        $spec = $spec-&gt;_and(new ChocolateCookieSpecification());
+        return $this-&gt;filter($spec);
+    }
+    public function loadDummyData() {
+        $this-&gt;add(new Cookie(‘Granny\’s classic’,‘chocolate’,60));
+        $this-&gt;add(new Cookie(‘Modern Jumbo’,‘moca,chocolate’,180));
+        $this-&gt;add(new Cookie(‘Kitchen Sink’,‘macadamia,cranberrie’,90));
+        $this-&gt;add(new Cookie(‘Vanilla Cloud’,‘vanilla’,120));
+        $this-&gt;add(new Cookie(‘Chocolate chip’,‘coconut,chocolate’,160));
+    }
+}
+
+class SmallCookieSpecification extends AbstractSpecification {
+    public function isSatisfiedBy($obj) {
+        return $obj-&gt;getSize() &lt; 100;
+    }
+}
+
+class ChocolateCookieSpecification extends AbstractSpecification {
+    public function isSatisfiedBy($obj) {
+        return stristr(strtolower($obj-&gt;getFlavor()),‘chocolate’) !== FALSE;
+    }
+}
+
+/**
+* Client code
+*/
+$service = new CookieService();
+$service-&gt;loadDummyData();
+echo ‘
+
+’;
+var_dump($service-&gt;getLargeCookies());
+var_dump($service-&gt;getSmallChocolateCookies());
+echo ‘
+</code></pre>
+
+<p>’;</p>
+
+<p><a href="http://martinfowler.com/apsupp/spec.pdf">more information by E.Evans and M.Fowler</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">tolleiv</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-05-15T16:00:00+02:00" pubdate data-updated="true">May 15<span>th</span>, 2008</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/pattern/'>pattern</a>, <a class='category' href='/blog/categories/service/'>service</a>, <a class='category' href='/blog/categories/specification/'>specification</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://tolleiv.github.io/2008/05/specification-ddd/" data-via="tolleiv" data-counturl="http://tolleiv.github.io/2008/05/specification-ddd/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2008/05/homer-simpson-as-ascii-art/" title="Previous Post: Homer Simpson as ASCII-Art">&laquo; Homer Simpson as ASCII-Art</a>
+      
+      
+        <a class="basic-alignment right" href="/2008/05/typo3-api/" title="Next Post: TYPO3 API...">TYPO3 API... &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2013/06/templavoila-followup/">TemplaVoila - followup</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2013/06/templavoila-future/">TemplaVoila future</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2013/06/genetic-algorithms-boosting-solr/">Using genetic algorithms to optimize Apache Solr boost factors.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/12/re-how-to-move-on-typo3/">Re: How to move on? #TYPO3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/12/typo3-login-state-and-varnish-cache/">TYPO3 login state and Varnish cache</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/tolleiv">@tolleiv</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'tolleiv',
+            count: 1,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Tolleiv Nietsch <br/>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>, customized with <a href="https://github.com/mjhea0/whiterspace">whiterspace</a>.</span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'tolleiv';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://tolleiv.github.io/2008/05/specification-ddd/';
+        var disqus_url = 'http://tolleiv.github.io/2008/05/specification-ddd/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: compression | the fancy part of the web]]></title>
   <link href="http://tolleiv.github.io/blog/categories/compression/atom.xml" rel="self"/>
   <link href="http://tolleiv.github.io/"/>
-  <updated>2014-05-04T01:22:28+02:00</updated>
+  <updated>2014-05-04T08:57:44+02:00</updated>
   <id>http://tolleiv.github.io/</id>
   <author>
     <name><![CDATA[Tolleiv Nietsch]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Self-extracting PHP archive]]></title>
-    <link href="http://tolleiv.github.io/blog/2008/06/07/self-extracting-php-archive/"/>
+    <link href="http://tolleiv.github.io/2008/06/self-extracting-php-archive/"/>
     <updated>2008-06-07T23:30:00+02:00</updated>
-    <id>http://tolleiv.github.io/blog/2008/06/07/self-extracting-php-archive</id>
+    <id>http://tolleiv.github.io/2008/06/self-extracting-php-archive</id>
     <content type="html"><![CDATA[<p>The __halt_compiler(); function in php enables to store some additional data in a php-file without blowing up the memory. A very nice possibility is to use this for a self-extracting php file as installation-packages of your php application.
 A wile ago I created a script which automatically creates such a archive and I think you might like it&hellip;.for the impatient ones: <a href="http://588299e40f6cb98516d7458.googlepages.com/createziparchive-0.5.1.php">Download</a> / <a href="http://588299e40f6cb98516d7458.googlepages.com/createziparchive-0.5.1.zip">Download as Zip</a>.</p>
 

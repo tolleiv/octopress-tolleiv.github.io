@@ -1,0 +1,386 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Using git svn for TYPO3 extension development - the fancy part of the web</title>
+  <meta name="author" content="Tolleiv Nietsch">
+
+  
+  <meta name="description" content="When I first saw a presentation about Git 2 years ago I liked it, but I was convinced that Subversion covers all I need. Things have changed and &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://tolleiv.github.io/2010/06/git-svn-for-typo3-extension-development">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="the fancy part of the web" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:tolleiv.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+  
+    
+      <h1 class="entry-title">Using Git Svn for TYPO3 Extension Development</h1>
+    
+  
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-06-30T08:00:30+02:00" pubdate data-updated="true">Jun 30<span>th</span>, 2010</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>When I first saw a presentation about Git 2 years ago I liked it, but I was convinced that Subversion covers all I need. Things have changed and especially the bad performance of Subversion for larger repositories and the need to commit things without messing up the official trunk motivated me to look up how to get started with Git. If you need more reasons why you should look into Git, you&rsquo;ll find them in [7] &ndash; anyways it&rsquo;s worth to have a look how I managed to work with it ;)</p>
+
+<p>There are basically 2½ different tasks during the &ldquo;daily&rdquo; development.</p>
+
+<ol>
+<li><p> <em>Create a local working copy a.k.a clone the repository</em></p></li>
+<li><p> Fix a bug or implement a feature and create a patch file with the changes</p></li>
+<li><p> Receive a patch and review it &ndash; eventually commit the changes</p></li>
+</ol>
+
+
+<h4>0. Repository initialization</h4>
+
+<p>Getting started and creating the repository from an existing Subversion repository looks like this:</p>
+
+<pre><code>mkdir templavoila
+cd templavoila
+git svn init -t tags -b branches -T trunk https://svn.typo3.org/TYPO3v4/Extensions/templavoila
+git-svn fetch
+</code></pre>
+
+<p>This will pull the entire SVN history into your local Git repository &ndash; use &ldquo;git-svn fetch -r &rdquo; to reduce the amount of imported revisions.</p>
+
+<p>To keep your repository up-to-date you need these commands:</p>
+
+<pre><code>git stash
+git-svn fetch
+git rebase trunk
+git stash apply
+</code></pre>
+
+<p>If you followed the SVN trunk/tags/branches convention you should see that it also finds tags and branches during the import. But using &ldquo;git branch&rdquo; afterwards you&rsquo;ll see that there&rsquo;s only one local branch called &ldquo;master&rdquo;. That&rsquo;s where Git shows it&rsquo;s strength the first time, because it distinguishes between local and remote branches. Work can only be done within local branches, whereas the existing SVN branches are only recognized as &ldquo;remote&rdquo; branches so far. To list all remote branches you can use &ldquo;git branch -r&rdquo;. If you followed the trunk/tags/branches convention, you should see your SVN tags and branches within this list &ndash; otherwise you might want to read [8]. To make a remote (SVN) branch available in your local repository use:</p>
+
+<pre><code>git checkout --track -b tv_1-4 templavoila_1-4
+</code></pre>
+
+<h4>1. Working with the repository</h4>
+
+<p>Starting to work on a new feature or a bug always starts with a new branch in git:</p>
+
+<pre><code>git branch issue00012345
+git checkout issue00012345
+</code></pre>
+
+<p>You&rsquo;re now working in the &ldquo;issue00012345&rdquo; branch and all commits will just be committed to that branch. Once you made changes  you can either just commit all modifications with:</p>
+
+<pre><code>git commit -a
+</code></pre>
+
+<p>or add particular files and commit only these files with:</p>
+
+<pre><code>git add fileA
+git add fileB
+git commit
+</code></pre>
+
+<p>or with a nice pre commit preview which lets you decide which lines you want to commit:</p>
+
+<pre><code>git add --patch
+git commit
+</code></pre>
+
+<p><strong>Preparing the patch for the mailingslist:</strong>
+In a pure Git workflow &ldquo;git format-patch&rdquo; is used to communicate patches, but due to the fact that there&rsquo;s a Subversion repository involved either the old style diff / patch or a workaround needs to be used to communicate changes.
+Creating a patch which works for the mailinglist can basically be done using:</p>
+
+<pre><code>git diff --no-prefix master &gt; myPatchFile.patch
+</code></pre>
+
+<p>An alternative workaround to create proper SVN diff files (including svn revision etc..) can be found in [10] it&rsquo;s used very straight forward:</p>
+
+<pre><code>git svn-diff &gt; mySvnPatchFile.patch
+</code></pre>
+
+<h4>2. Review and commit patches</h4>
+
+<p><strong>Reviewing the patch someone sent to the list:</strong>
+As &ldquo;usual&rdquo;</p>
+
+<pre><code>patch -p0 &lt; myPatchFile.patch
+</code></pre>
+
+<p>can be used to apply patch files.</p>
+
+<p>Once the files passed the review the changes can be committed using &ldquo;<strong>git add</strong>&rdquo; and &ldquo;<strong>git commit</strong>&rdquo; as shown before.</p>
+
+<p><strong>Committing to Subversion:</strong>
+Once you committed everything to your local repository you&rsquo;re able to perform this command to &ldquo;forward&rdquo; your commits to the Subversion repository.</p>
+
+<pre><code>git svn dcommit
+</code></pre>
+
+<p>Practically every single commit within git will also be reflected as a single Subversion commit. For several reason this might not always suit your situation.As a workaround you could merge all commits during the merge of your feature branches into the master branch using:</p>
+
+<pre><code>git merge --commit --squash issue00012345
+git svn dcommit
+</code></pre>
+
+<p>Of course I don&rsquo;t recommend to do this for your regular work since have small granular commits is always better.</p>
+
+<h4>Sources and further reading</h4>
+
+<p>[1] <a href="http://spyced.blogspot.com/2009/06/patch-oriented-development-made-sane.html">Patch-oriented development made sane with git-svn</a>
+[2] <a href="http://utsl.gen.nz/talks/git-svn/intro.html#using">An introduction to git-svn for Subversion/SVK users and deserters</a>
+[3] <a href="http://git-scm.org/course/svn.html">Git &ndash; SVN Crash Course</a>
+[4] <a href="http://trac.parrot.org/parrot/wiki/git-svn-tutorial">Getting the GIT checkout</a>
+[5] <a href="http://nathanj.github.com/gitguide/tour.html">An Illustrated Guide to Git on Windows</a>
+[6] <a href="http://stackoverflow.com/questions/1129688/git-svn-workflow-feature-branches-and-merge">git svn workflow &ndash;
+feature branches and merge</a>
+[7] <a href="http://whygitisbetterthanx.com/#any-workflow">whygitisbetterthanx.com</a>
+[8] <a href="http://www.dmo.ca/blog/20070608113513/">Multiple branches using git-svn</a>
+[9] <a href="http://www.viget.com/extend/effectively-using-git-with-subversion/">Effectively using Git with subversion</a>
+[10] <a href="http://mojodna.net/2009/02/24/my-work-git-workflow.html">Git Workflow with Upstream SVN</a></p>
+
+<h4>Notes</h4>
+
+<ul>
+<li><p>Don&rsquo;t try to dcommit to <a href="https://svn.typo3.org/TYPO3v4/Extensions/templavoila">https://svn.typo3.org/TYPO3v4/Extensions/templavoila</a> unless you know what you&rsquo;re doing &ndash; I just used it to show you that it&rsquo;s even working with large history projects.</p></li>
+<li><p>For projects hosted on forge.typo3.org there might be a native git support soon &ndash; stay tuned</p></li>
+<li><p>Let me know if you had problems with any of the snippets</p></li>
+<li><p>Further information about the review process for the TYPO3 Core and several other TYPO3 related projects can be found on <a href="http://typo3.org/teams/core/resources/maintenance-policy/">typo3.org</a></p></li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">tolleiv</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-06-30T08:00:30+02:00" pubdate data-updated="true">Jun 30<span>th</span>, 2010</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://tolleiv.github.io/2010/06/git-svn-for-typo3-extension-development/" data-via="tolleiv" data-counturl="http://tolleiv.github.io/2010/06/git-svn-for-typo3-extension-development/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2010/06/typo3-workspaces/" title="Previous Post: TYPO3 workspaces">&laquo; TYPO3 workspaces</a>
+      
+      
+        <a class="basic-alignment right" href="/2010/07/t3dd10-git-workshop/" title="Next Post: T3DD10 Git workshop">T3DD10 Git workshop &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2013/06/templavoila-followup/">TemplaVoila - followup</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2013/06/templavoila-future/">TemplaVoila future</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2013/06/genetic-algorithms-boosting-solr/">Using genetic algorithms to optimize Apache Solr boost factors.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/12/re-how-to-move-on-typo3/">Re: How to move on? #TYPO3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/12/typo3-login-state-and-varnish-cache/">TYPO3 login state and Varnish cache</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/tolleiv">@tolleiv</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'tolleiv',
+            count: 1,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Tolleiv Nietsch <br/>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>, customized with <a href="https://github.com/mjhea0/whiterspace">whiterspace</a>.</span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'tolleiv';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://tolleiv.github.io/2010/06/git-svn-for-typo3-extension-development/';
+        var disqus_url = 'http://tolleiv.github.io/2010/06/git-svn-for-typo3-extension-development/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

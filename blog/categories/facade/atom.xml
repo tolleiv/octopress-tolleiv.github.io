@@ -4,7 +4,7 @@
   <title><![CDATA[Category: facade | the fancy part of the web]]></title>
   <link href="http://tolleiv.github.io/blog/categories/facade/atom.xml" rel="self"/>
   <link href="http://tolleiv.github.io/"/>
-  <updated>2014-05-04T01:22:28+02:00</updated>
+  <updated>2014-05-04T08:57:44+02:00</updated>
   <id>http://tolleiv.github.io/</id>
   <author>
     <name><![CDATA[Tolleiv Nietsch]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Façade [GoF]]]></title>
-    <link href="http://tolleiv.github.io/blog/2008/06/17/facade-gof/"/>
+    <link href="http://tolleiv.github.io/2008/06/facade-gof/"/>
     <updated>2008-06-17T01:33:00+02:00</updated>
-    <id>http://tolleiv.github.io/blog/2008/06/17/facade-gof</id>
+    <id>http://tolleiv.github.io/2008/06/facade-gof</id>
     <content type="html"><![CDATA[<p>If a child is in the mood to eat a fresh cookie it normally asks his granny for one. Like this:</p>
 
 <p>Child: Grannyyyyy?<br/>

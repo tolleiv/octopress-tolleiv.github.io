@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Layout | the fancy part of the web]]></title>
   <link href="http://tolleiv.github.io/blog/categories/layout/atom.xml" rel="self"/>
   <link href="http://tolleiv.github.io/"/>
-  <updated>2014-05-04T01:22:28+02:00</updated>
+  <updated>2014-05-04T08:57:44+02:00</updated>
   <id>http://tolleiv.github.io/</id>
   <author>
     <name><![CDATA[Tolleiv Nietsch]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[CSS Sprites ... a nice way to save bandwidth]]></title>
-    <link href="http://tolleiv.github.io/blog/2009/04/29/css-sprites-a-nice-way-to-save-bandwidth/"/>
+    <link href="http://tolleiv.github.io/2009/04/css-sprites-a-nice-way-to-save-bandwidth/"/>
     <updated>2009-04-29T22:06:23+02:00</updated>
-    <id>http://tolleiv.github.io/blog/2009/04/29/css-sprites-a-nice-way-to-save-bandwidth</id>
+    <id>http://tolleiv.github.io/2009/04/css-sprites-a-nice-way-to-save-bandwidth</id>
     <content type="html"><![CDATA[<p>I saw some of these sprites long time ago on some spiegel.de subpage and from time to time I see smaller sprites within stuff I get from our HTML-team &ndash; but this article and it&rsquo;s insights into realworld design, is really great &hellip; continue on <a href="http://www.smashingmagazine.com/2009/04/27/the-mystery-of-css-sprites-techniques-tools-and-tutorials/"> Smashing Mag &ndash; The Mystery Of CSS Sprites</a></p>
 
 <p>And that&rsquo;s where you should start with it &ndash; as always AListApart is the best source for Web-Designers &hellip; <a href="http://www.alistapart.com/articles/sprites">AListApart about Sprites</a></p>

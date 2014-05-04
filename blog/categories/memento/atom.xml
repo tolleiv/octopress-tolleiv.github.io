@@ -4,7 +4,7 @@
   <title><![CDATA[Category: memento | the fancy part of the web]]></title>
   <link href="http://tolleiv.github.io/blog/categories/memento/atom.xml" rel="self"/>
   <link href="http://tolleiv.github.io/"/>
-  <updated>2014-05-04T01:22:28+02:00</updated>
+  <updated>2014-05-04T08:57:44+02:00</updated>
   <id>http://tolleiv.github.io/</id>
   <author>
     <name><![CDATA[Tolleiv Nietsch]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Memento [GoF]]]></title>
-    <link href="http://tolleiv.github.io/blog/2008/05/13/memento-gof/"/>
+    <link href="http://tolleiv.github.io/2008/05/memento-gof/"/>
     <updated>2008-05-13T09:59:00+02:00</updated>
-    <id>http://tolleiv.github.io/blog/2008/05/13/memento-gof</id>
+    <id>http://tolleiv.github.io/2008/05/memento-gof</id>
     <content type="html"><![CDATA[<p>Let&rsquo;s say you got a cookie from a repository your granny and you&rsquo;re not sure if you like the new taste. Wouldn&rsquo;t it be cool if you could just try it and revoke the operation first bite if you don&rsquo;t like it?</p>
 
 <p>In the world of OOP thats a easy job which can be handled by the so called memento pattern &ndash; you just save the inner state of the object  within a memento object and revoke you actions whenever you like&hellip;</p>

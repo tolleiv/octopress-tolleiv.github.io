@@ -1,0 +1,318 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>TemplaVoila 1.4 released... - the fancy part of the web</title>
+  <meta name="author" content="Tolleiv Nietsch">
+
+  
+  <meta name="description" content="A new version of  TemplaVoila (ter) (forge) has just been released. Besides the great fact that this is the first team-release of TemplaVoila, the &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://tolleiv.github.io/2009/11/templavoila-1-4-released">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="the fancy part of the web" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:tolleiv.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+  
+    
+      <h1 class="entry-title">TemplaVoila 1.4 Released...</h1>
+    
+  
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-11-26T21:00:19+01:00" pubdate data-updated="true">Nov 26<span>th</span>, 2009</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>A new version of  TemplaVoila (<a href="http://typo3.org/extensions/repository/view/templavoila/current/">ter</a>) (<a href="http://forge.typo3.org/projects/show/extension-templavoila">forge</a>) has just been released. Besides the great fact that this is the first <strong>team-release</strong> of TemplaVoila, the high-level improvements within the pagemodule (drag&#8217;n&#8217;drop),  the mapping module and the FCE editing forms and besides lot&rsquo;s of bug fixes, there are a few very nice features which make the day-to-day work with TemplaVoila much easier.</p>
+
+<p>The list of things which happend in 1.4 can be seen on bugs.typo3.org (<a href="http://tinyurl.com/yb9wsnk">preselected filter</a>). The following list contain my favorite fixes which happened unter the hood:</p>
+
+<p><strong>1) Delete content within the pagemodule (instead of unlinking)</strong>
+By default you will still see the &ldquo;unlink&rdquo; icon within the pagemodule but one small setting within User- or PageTSconfig will show up delete buttons as well. There are two modes:
+<em>mod.web_txtemplavoilaM1.enableDeleteIconForLocalElements = 1 _
+will show unlink and delete icons for local elements side-by-side
+</em>mod.web_txtemplavoilaM1.enableDeleteIconForLocalElements = 2 _
+will show the delete icon and hide the unlink icon whenever possible.</p>
+
+<p>Details: <a href="http://bugs.typo3.org/view.php?id=6869">http://bugs.typo3.org/view.php?id=6869</a></p>
+
+<p><strong>2) Skip edit screen after a new content element was created</strong>
+Especially for container items it&rsquo;s anoying that the TYPO3 edit screen opens up after such an item was created. The setting <em>noEditOnCreation</em><strong> </strong>within the meta configuration part of your datastructure can be used to change that.</p>
+
+<p>Details: <a href="http://bugs.typo3.org/view.php?id=8079">http://bugs.typo3.org/view.php?id=8079</a></p>
+
+<p><strong>3) Hide TemplaVoila field values and cleanup the pagemodule
+</strong>Another problem within large projects is a messed up pagemodule. Very often the field data of flexible content elements shows up without any chance to hide it. Use  <em>disableDataPreview<strong> </strong></em>within the meta configuration part of your datastructure to change that.</p>
+
+<p>Details: <a href="http://bugs.typo3.org/view.php?id=11520">http://bugs.typo3.org/view.php?id=11520</a></p>
+
+<p><strong>4) Define default record values</strong>
+A proper setup contains good default values. Within datastructures you can define default values for your flexform-fields and from now on TemplaVoila also provides the possibility to define default-values for the fields of the parent record. The &ldquo;default / TCEForms / <fieldname>&rdquo; parts within the meta configuration part of your datastructure does this. Very useful usage for container elemente is:</p>
+
+<p><meta type="array">
+<langDisable>1</langDisable>
+<default>
+<TCEForms>
+&lt;sys_language_uid>-1&lt;/sys_language_uid>
+</TCEForms>
+</default>
+</meta></p>
+
+<p>Details: <a href="http://bugs.typo3.org/view.php?id=8759">http://bugs.typo3.org/view.php?id=8759</a></p>
+
+<p>There&rsquo;s also a completly new &ldquo;New content element&rdquo;-wizard which can be configured with PageTSConfig &ndash; this wizard brings some additional feature for default-value configuration. I&rsquo;m going to bring that up in another post soon.</p>
+
+<p><strong>5) sectionCount / sectionPos register in TypoScript
+</strong>Rending fields which are nested in sections is not always fun. Expecially when it comes to position detection for the current item. Two new registers try to help in such situtations:</p>
+
+<p>tx_templavoila_pi1.sectionCount holds the overall amount of items within the current section
+tx_templavoila_pi1.sectionPos holds the position of the curren titem -starting with 1</p>
+
+<p>Example:
+10 = TEXT
+10.value = (last item)
+10.if.equals.data = register:tx_templavoila_pi1.sectionPos
+10.if.value.data = register:tx_templavoila_pi1.sectionCount</p>
+
+<p>Details: <a href="http://bugs.typo3.org/view.php?id=7263">http://bugs.typo3.org/view.php?id=7263</a></p>
+
+<pre><code>noEditOnCreation
+</code></pre>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">tolleiv</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-11-26T21:00:19+01:00" pubdate data-updated="true">Nov 26<span>th</span>, 2009</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://tolleiv.github.io/2009/11/templavoila-1-4-released/" data-via="tolleiv" data-counturl="http://tolleiv.github.io/2009/11/templavoila-1-4-released/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2009/10/typo3-core-changelog-feeded/" title="Previous Post: TYPO3 Core Changelog feeded">&laquo; TYPO3 Core Changelog feeded</a>
+      
+      
+        <a class="basic-alignment right" href="/2009/11/typo3-4-3-release/" title="Next Post: TYPO3 4.3 release">TYPO3 4.3 release &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2013/06/templavoila-followup/">TemplaVoila - followup</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2013/06/templavoila-future/">TemplaVoila future</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2013/06/genetic-algorithms-boosting-solr/">Using genetic algorithms to optimize Apache Solr boost factors.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/12/re-how-to-move-on-typo3/">Re: How to move on? #TYPO3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/12/typo3-login-state-and-varnish-cache/">TYPO3 login state and Varnish cache</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/tolleiv">@tolleiv</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'tolleiv',
+            count: 1,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Tolleiv Nietsch <br/>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>, customized with <a href="https://github.com/mjhea0/whiterspace">whiterspace</a>.</span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'tolleiv';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://tolleiv.github.io/2009/11/templavoila-1-4-released/';
+        var disqus_url = 'http://tolleiv.github.io/2009/11/templavoila-1-4-released/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

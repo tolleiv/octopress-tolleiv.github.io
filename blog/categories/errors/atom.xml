@@ -4,7 +4,7 @@
   <title><![CDATA[Category: errors | the fancy part of the web]]></title>
   <link href="http://tolleiv.github.io/blog/categories/errors/atom.xml" rel="self"/>
   <link href="http://tolleiv.github.io/"/>
-  <updated>2014-05-04T01:22:28+02:00</updated>
+  <updated>2014-05-04T08:57:44+02:00</updated>
   <id>http://tolleiv.github.io/</id>
   <author>
     <name><![CDATA[Tolleiv Nietsch]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Inherit abstract functions....]]></title>
-    <link href="http://tolleiv.github.io/blog/2008/06/11/inherit-abstract-functions/"/>
+    <link href="http://tolleiv.github.io/2008/06/inherit-abstract-functions/"/>
     <updated>2008-06-11T22:28:00+02:00</updated>
-    <id>http://tolleiv.github.io/blog/2008/06/11/inherit-abstract-functions</id>
+    <id>http://tolleiv.github.io/2008/06/inherit-abstract-functions</id>
     <content type="html"><![CDATA[<p>A error I find from time to time when I work with inheritance is this one:</p>
 
 <p>Fatal error: Can&rsquo;t inherit abstract function Cookie::setFlavor() (previously declared abstract in ChocolateCookie) in &hellip;</p>
@@ -40,9 +40,9 @@ abstract public function setFlavor($flavor);<br/>
   
   <entry>
     <title type="html"><![CDATA[error_reposting and exceptions....]]></title>
-    <link href="http://tolleiv.github.io/blog/2008/05/20/error_reposting-and-exceptions/"/>
+    <link href="http://tolleiv.github.io/2008/05/error_reposting-and-exceptions/"/>
     <updated>2008-05-20T23:40:00+02:00</updated>
-    <id>http://tolleiv.github.io/blog/2008/05/20/error_reposting-and-exceptions</id>
+    <id>http://tolleiv.github.io/2008/05/error_reposting-and-exceptions</id>
     <content type="html"><![CDATA[<p>I just found this line:</p>
 
 <p>set_error_handler(create_function(&lsquo;$x, $y&rsquo;, &lsquo;throw new Exception($y, $x);&rsquo;), E_ALL~E_NOTICE);</p>

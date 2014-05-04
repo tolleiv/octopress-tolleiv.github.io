@@ -1,0 +1,322 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Signal / Slots in Extbase - the fancy part of the web</title>
+  <meta name="author" content="Tolleiv Nietsch">
+
+  
+  <meta name="description" content="A nice thing to have at hand is definately Signal and Slots. I heard Felix talking about them quite often and I finally found a nice usecase and came &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://tolleiv.github.io/2011/11/signal-slots-in-extbase">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="the fancy part of the web" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:tolleiv.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+  
+    
+      <h1 class="entry-title">Signal / Slots in Extbase</h1>
+    
+  
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-11-30T18:17:02+01:00" pubdate data-updated="true">Nov 30<span>th</span>, 2011</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>A nice thing to have at hand is definately <a href="http://en.wikipedia.org/wiki/Signals_and_slots">Signal and Slots</a>. I heard <a href="http://f.oer.tel">Felix</a> talking about them quite often and I finally found a nice usecase and came to play with them a little bit this afternoon. And just to avoid that others have to look around too much to find how they can get them to work here&rsquo;s how it&rsquo;s working for me.</p>
+
+<p>First of all you should understand the concept. This nice little &ldquo;definition&rdquo; (from <a href="http://flow3.typo3.org/documentation/guide/partiii/signalsandslots.html">flow3.typo3.org</a>) sums it up pretty well:</p>
+
+<blockquote><p>A signal, which contains event information as it makes sense in the case at hand, can be emitted (sent) by any part of the code and is received by one or more slots, which can be any function<del> in FLOW3</del> in extbase.</p></blockquote>
+
+<p>To get this running in extbase, you&rsquo;ve to get hold of the <em>Tx_Extbase_SignalSlot_Dispatcher</em>, which is the central instance to manage all of it. Within Extbase that&rsquo;s done easily with this snippet within your classes:</p>
+
+<pre><code>   ...
+    /**
+     * @var Tx_Extbase_SignalSlot_Dispatcher
+     */
+    protected $signalSlotDispatcher;
+
+    /**
+     * @param Tx_Extbase_SignalSlot_Dispatcher $signalSlotDispatcher
+     */
+    public function injectSignalSlotDispatcher(Tx_Extbase_SignalSlot_Dispatcher $signalSlotDispatcher) {
+        $this-&gt;signalSlotDispatcher = $signalSlotDispatcher;
+    }
+   ...
+</code></pre>
+
+<p>Next thing is to make use of it. The Slot (listener) part could look like one of following blocks. In all cases you define the Signal by it&rsquo;s class (not necessarily a PHP Class) and it&rsquo;s name. Next to that the Slot can either be defined by a Closure, an object with a method name or a PHP-Class and a method name.</p>
+
+<pre><code>   ...
+// Using a closure
+$this-&gt;signalSlotDispatcher-&gt;connect(
+      'Crunching', 'emitDataReady', function($data) { crunch($data) }, NULL, FALSE
+);
+   ...
+// Using a method of the current object
+$this-&gt;signalSlotDispatcher-&gt;connect(
+     'Crunching', 'emitDataReady', $this, 'crunch', FALSE
+);
+   ...
+// Using a method of the specified class
+$this-&gt;signalSlotDispatcher-&gt;connect(
+     'Crunching', 'emitDataReady', 'Cruncher', 'crunch', FALSE
+);
+   ...
+</code></pre>
+
+<p>To trigger the Signal which invokes the Slots registered above, you&rsquo;ve to run the following code.</p>
+
+<pre><code>$this-&gt;signalSlotDispatcher-&gt;dispatch('Crunching', 'emitDataReady', array($data));
+</code></pre>
+
+<p>One thing I found was that by default the <em>Tx_Extbase_SignalSlot_Dispatcher</em> it not a Singleton in older extbase versions. Bastian fixed that already in the <a href="https://review.typo3.org/#change,6785">master</a> and <a href="https://review.typo3.org/#change,6786">1-4</a> branches and lucky enough this change was part within the TYPO3 4.6.1 release. But I think it&rsquo;s still important to mention that this wasn&rsquo;t the default from the beginning on.</p>
+
+<p>Even if <a href="http://flow3.typo3.org/documentation/guide/partiii/signalsandslots.html">AOP is a nicer way to implement this feature</a>, the extbase backport still works pretty straigh forward.</p>
+
+<p>Edit: One thing I&rsquo;ve to add &ndash; Felix is not &ldquo;just&rdquo; talking about Signal/Slots &ndash; he&rsquo;s the one to thank for the <a href="https://review.typo3.org/1563">backport</a>. And now that his <a href="http://blog.foertel.com/2011/10/using-signalslots-in-extbase/">blog</a> is running again &ndash; this post seems like a summary ;)</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">tolleiv</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-11-30T18:17:02+01:00" pubdate data-updated="true">Nov 30<span>th</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/coding/'>Coding</a>, <a class='category' href='/blog/categories/pattern/'>pattern</a>, <a class='category' href='/blog/categories/typo3/'>typo3</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://tolleiv.github.io/2011/11/signal-slots-in-extbase/" data-via="tolleiv" data-counturl="http://tolleiv.github.io/2011/11/signal-slots-in-extbase/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2011/02/release-reviews-templavoila-imagemap_wizard-workspaces/" title="Previous Post: Release reviews (templavoila, imagemap_wizard, workspaces)">&laquo; Release reviews (templavoila, imagemap_wizard, workspaces)</a>
+      
+      
+        <a class="basic-alignment right" href="/2011/12/tagging-page-caches/" title="Next Post: Tagging page caches">Tagging page caches &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2013/06/templavoila-followup/">TemplaVoila - followup</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2013/06/templavoila-future/">TemplaVoila future</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2013/06/genetic-algorithms-boosting-solr/">Using genetic algorithms to optimize Apache Solr boost factors.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/12/re-how-to-move-on-typo3/">Re: How to move on? #TYPO3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/12/typo3-login-state-and-varnish-cache/">TYPO3 login state and Varnish cache</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/tolleiv">@tolleiv</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'tolleiv',
+            count: 1,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Tolleiv Nietsch <br/>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>, customized with <a href="https://github.com/mjhea0/whiterspace">whiterspace</a>.</span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'tolleiv';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://tolleiv.github.io/2011/11/signal-slots-in-extbase/';
+        var disqus_url = 'http://tolleiv.github.io/2011/11/signal-slots-in-extbase/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

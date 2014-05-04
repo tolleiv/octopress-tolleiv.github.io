@@ -76,7 +76,7 @@
 
 <article>
   
-<h1><a href="/blog/2008/07/01/null-object-pattern/">Null-Object Pattern</a></h1>
+<h1><a href="/2008/07/null-object-pattern/">Null-Object Pattern</a></h1>
 <time datetime="2008-07-01T19:58:00+02:00" pubdate><span class='month'>Jul</span> <span class='day'>01</span> <span class='year'>2008</span></time>
 
 </article>
@@ -95,26 +95,55 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2013/06/14/templavoila-followup/">TemplaVoila - followup</a>
+        <a href="/2013/06/templavoila-followup/">TemplaVoila - followup</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2013/06/08/templavoila-future/">TemplaVoila future</a>
+        <a href="/2013/06/templavoila-future/">TemplaVoila future</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2013/06/06/genetic-algorithms-boosting-solr/">Using genetic algorithms to optimize Apache Solr boost factors.</a>
+        <a href="/2013/06/genetic-algorithms-boosting-solr/">Using genetic algorithms to optimize Apache Solr boost factors.</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2012/12/22/re-how-to-move-on-typo3/">Re: How to move on? #TYPO3</a>
+        <a href="/2012/12/re-how-to-move-on-typo3/">Re: How to move on? #TYPO3</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2012/12/10/typo3-login-state-and-varnish-cache/">TYPO3 login state and Varnish cache</a>
+        <a href="/2012/12/typo3-login-state-and-varnish-cache/">TYPO3 login state and Varnish cache</a>
       </li>
     
   </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/tolleiv">@tolleiv</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'tolleiv',
+            count: 1,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
 </section>
 
 
@@ -134,6 +163,19 @@
 
 </footer>
   
+
+<script type="text/javascript">
+      var disqus_shortname = 'tolleiv';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
 
 
 

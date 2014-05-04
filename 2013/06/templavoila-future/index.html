@@ -1,0 +1,274 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>TemplaVoila future - the fancy part of the web</title>
+  <meta name="author" content="Tolleiv Nietsch">
+
+  
+  <meta name="description" content="If you followed some of my comments in the TYPO3 newsgroups recently, you&rsquo;ve heard that I&rsquo;m not very satisfied with the TYPO3 project in &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://tolleiv.github.io/2013/06/templavoila-future">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="the fancy part of the web" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:tolleiv.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+  
+    
+      <h1 class="entry-title">TemplaVoila Future</h1>
+    
+  
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-08T09:20:34+02:00" pubdate data-updated="true">Jun 8<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>If you followed some of my comments in the TYPO3 newsgroups recently, you&rsquo;ve heard that I&rsquo;m not very satisfied with the TYPO3 project in general and that&rsquo;s also reflected in my activity for TemplaVoila. After a certain time of inactivity I even had to ask myself whether it&rsquo;s wort to keep it in the TYPO3 universe or not. Due to the fact that this isn&rsquo;t an easy decision, I created a pro and con list which I&rsquo;d like to share, before I make conclusions.</p>
+
+<h3>Why TemplaVoila maintenance should continue:</h3>
+
+<ul>
+<li><p>it made TYPO3 attractive for many less technical people (people who don&rsquo;t even understand conditions or loops)</p></li>
+<li><p>it contains and combines concepts (language, workspaces, content structuring) which aren&rsquo;t represented anyhow in other solutions</p></li>
+<li><p>it is still used within the community and various indicators proof that it is still very popular</p></li>
+</ul>
+
+
+<h3>Why TemplaVoila should not be maintained anymore:</h3>
+
+<ul>
+<li><p>it is not supported by the <a href="http://lists.typo3.org/pipermail/typo3-team-core/2013-April/053866.html">active contributors</a> at all</p></li>
+<li><p>it is constantly under some kind of PR-attack from the other solutions (which is very demotivating)</p></li>
+<li><p>it lacks a developer &ldquo;community&rdquo; or at least a team</p></li>
+<li><p>it has a horribly outdated documentation which has to be overworked</p></li>
+<li><p>code refactoring is not really possible, the code is horrible to maintain</p></li>
+<li><p>it&rsquo;s concepts can&rsquo;t be ported anyhow to FLOW/extbase (extbase itself is broken when it comes to workspaces or languages &ndash; no way to port over alternative concepts for these)</p></li>
+<li><p>UI wise, Prototype and ExtJS have been used for it and need to be replaced with whatever the TYPO3 Core could offer</p></li>
+<li><p>some of it&rsquo;s concepts need to be reworked (language) to be much more useable</p></li>
+<li><p>the TYPO3 Core changes in a way that extension maintenance is no fun at all</p></li>
+</ul>
+
+
+<h3>Conclusions:</h3>
+
+<p>I could add further points to both lists, but in general you&rsquo;ll get my point. All these have been on my mind for quite some time and I discussed them with various members of the TYPO3 community and I came to the conclusion that TemplaVoila should at least disappear from the TER to avoid that any new users start using it.</p>
+
+<p>Along with that, I also came to the conclusion that handing over TemplaVoila back to Dmitry, Robert or Kasper wouldn&rsquo;t make sense either &ndash; the remaining workload is enormous and a single developer alone would never be able to deliver anything with reasonable quality (incl. documentation).</p>
+
+<p>This basically means that TemplaVoila won&rsquo;t be actively distributed and supported by me and that there won&rsquo;t be any new public releases. In order to keep up the ability to fix bugs, I&rsquo;d offer to keep <a href="http://forge.typo3.org/projects/extension-templavoila">Forge+Git+Gerrit</a> open and I&rsquo;m still willing to review and merge patches (through Gerrit). Even though I didn&rsquo;t see too much activity from others for TemplaVoila within Gerrit, I assume that this should be enough to support running projects.</p>
+
+<p>To avoid that the discussion which might be needed for that announcement ends up in my blog, I&rsquo;ll close the comments here and I&rsquo;d love to invite you to comment within the related newsgroup entry in <a href="http://lists.typo3.org/cgi-bin/mailman/listinfo/typo3-project-templavoila">typo3.project.templavoila</a>.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">tolleiv</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-08T09:20:34+02:00" pubdate data-updated="true">Jun 8<span>th</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://tolleiv.github.io/2013/06/templavoila-future/" data-via="tolleiv" data-counturl="http://tolleiv.github.io/2013/06/templavoila-future/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2013/06/genetic-algorithms-boosting-solr/" title="Previous Post: Using genetic algorithms to optimize Apache Solr boost factors.">&laquo; Using genetic algorithms to optimize Apache Solr boost factors.</a>
+      
+      
+        <a class="basic-alignment right" href="/2013/06/templavoila-followup/" title="Next Post: TemplaVoila - followup">TemplaVoila - followup &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2013/06/templavoila-followup/">TemplaVoila - followup</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2013/06/templavoila-future/">TemplaVoila future</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2013/06/genetic-algorithms-boosting-solr/">Using genetic algorithms to optimize Apache Solr boost factors.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/12/re-how-to-move-on-typo3/">Re: How to move on? #TYPO3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/12/typo3-login-state-and-varnish-cache/">TYPO3 login state and Varnish cache</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/tolleiv">@tolleiv</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'tolleiv',
+            count: 1,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Tolleiv Nietsch <br/>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>, customized with <a href="https://github.com/mjhea0/whiterspace">whiterspace</a>.</span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

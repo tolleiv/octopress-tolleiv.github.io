@@ -1,0 +1,306 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>TYPO3 login state and Varnish cache - the fancy part of the web</title>
+  <meta name="author" content="Tolleiv Nietsch">
+
+  
+  <meta name="description" content="Caching is hard in complex page setups with user specific content, especially when public pages change their content once a user is logged in. TYPO3 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://tolleiv.github.io/2012/12/typo3-login-state-and-varnish-cache">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="the fancy part of the web" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:tolleiv.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+  
+    
+      <h1 class="entry-title">TYPO3 Login State and Varnish Cache</h1>
+    
+  
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-10T16:56:46+01:00" pubdate data-updated="true">Dec 10<span>th</span>, 2012</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Caching is hard in complex page setups with user specific content, especially when public pages change their content once a user is logged in. TYPO3 is smart enough to deal with the login state properly and cache appropriately. Once Varnish is involved, it&rsquo;s quite tricky to cache as much as possible without loosing the dynamic content. But it&rsquo;s not impossible and here&rsquo;s my summary how we resolved it for <a href="http://typo3.org">typo3.org</a>.</p>
+
+<h4>Setup</h4>
+
+<p>The basic Varnish setup is more or less always the same and best described by<a href="http://www.fabrizio-branca.de/nginx-varnish-apache-magento-typo3.html"> Farbrizio Branca</a>. On top of that we need   some TypoScript parameter tweaking to get the cache-control-headers in TYPO3 straight &ndash; <a href="http://www.typo3-media.com/blog/website-caching-login.html">Daniel Pötzinger&rsquo;s article</a> covers them best. Another very handy thing which can be found in Fabrizio&rsquo;s blog is the<a href="http://www.fabrizio-branca.de/make-your-magento-store-fly-using-varnish.html"> simplified flow chart</a> for the various <a href="https://www.varnish-cache.org/trac/wiki/VCLExampleDefault">Varnish subroutines</a>.Based on that all pages should be cached properly and your site should run smoothly. But in case you have a page with personalized content, you&rsquo;ll have to reconsider some parts.</p>
+
+<h4>Problem</h4>
+
+<p>The<a href="http://typo3.org/events/add-new-event/new/"> event submission page on typo3.org</a> is a good example. In case the user is not logged in (a.k.a <em>public page</em>), we just want to show a message which guides him to the login. If there&rsquo;s a login active (a.k.a <em>user page</em>), we&rsquo;ll show the submission form instead. In both cases we could cache the content nicely, but how would we ensure that Varnish delivers the correct content?</p>
+
+<h4>Solution</h4>
+
+<p>Ajax could be a solution, but for large sites it&rsquo;s usually smarter to avoid as much JavaScript as possible. EdgeSideIncludes (ESI) are another option, but I agree with <a href="http://www.typo3-media.com/blog/website-caching-login.html">Daniel</a>, they&rsquo;re not really useful in this case and I&rsquo;d rather go with Ajax than with ESI.</p>
+
+<p>What we want in this scenario, is to cache the <em>public page </em>in Varnish and pass to the <em>user page</em> generated by TYPO3 if we find that the user is logged in. But this should of course only happen on pages where this is really necessary &ndash; normal pages should just ignore the login state of the user. Therefore we need sth. to distinguish <em>normal</em> from <em>login specific</em> pages in Varnish. Lucky enough TYPO3 already provides a field in the pages properties which allows this distinction. Using the <strong>Login Behaviour (pages.fe_login_mode)</strong> field, you can enable and disable the user-login for specific branches and pages*. As we want to whitelist <em>login specific</em> pages, our root page should have the default setting &ldquo;Disable Login&rdquo; &ndash; this will be inherited to all sub-pages. All the <em>login specific</em> pages should have the setting &ldquo;Re-Enable login&rdquo;.</p>
+
+<p>Once this is done, we need a way to carry that out to Varnish. We improved <a href="http://forge.typo3.org/projects/extension-cacheinfo">EXT:cacheinfo</a> for that purpose, with that it now carries a &ldquo;<strong>loginAllowedInBranch</strong>&rdquo; or &ldquo;<strong>noLoginAllowedInBranch</strong>&rdquo; value in the &ldquo;<strong>X-T3CacheInfo&rdquo;</strong> header. Using all that, the Varnish VCL can be extended to make use of it like this:</p>
+
+<pre><code>sub vcl_hit {
+  if (obj.http.X-T3CacheInfo ~ "loginAllowedInBranch") {
+    set obj.http.Cache-Control = "private";
+    if (req.http.Cookie ~ "(e_typo_user|PHPSESSID|_pk_.*)") {
+      # Do not cache requests which come from a logged in user
+      return (pass);
+    }
+  }
+}
+</code></pre>
+
+<p>This is straight forward. For every page which allows logins, we make sure that the client does not keep them in his cache. In case we&rsquo;re actually on such a page and find the related login-cookies, we pass the request along to TYPO3, otherwise we deliver the <em>public page</em> right away from the cache. The fact that we pass the request along to TYPO3 in some cases doesn&rsquo;t mean that we&rsquo;ll deliver the <em>user page</em>, it just indicates that we&rsquo;ve to rely on TYPO3 to make the right choice based on the actual login state.</p>
+
+<h4>Conclusion</h4>
+
+<p>For me the beauty here lies in the simplicity. Once you managed to wrap your head around the <a href="http://www.fabrizio-branca.de/make-your-magento-store-fly-using-varnish.html">flow chart</a> and once you managed to deliver appropriate meta-data to Varnish, many more complex scenarios can be resolved equally.</p>
+
+<p>As most of the typo3.org stuff, this solution came from a great team. In this case <a href="https://twitter.com/stucki">Michael Stucki</a> and <a href="https://twitter.com/danpoetz">Daniel Pötzinger</a> helped to craft the final solution &ndash; thanks guys :)</p>
+
+<hr />
+
+<ul>
+<li>the naming of the field&rsquo;s labels is really irritating &ndash; especially &ldquo;0 &ndash; Enable login&rdquo; should be &ldquo;Inherit setting&rdquo; as it really does not force any setting.</li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">tolleiv</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-10T16:56:46+01:00" pubdate data-updated="true">Dec 10<span>th</span>, 2012</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://tolleiv.github.io/2012/12/typo3-login-state-and-varnish-cache/" data-via="tolleiv" data-counturl="http://tolleiv.github.io/2012/12/typo3-login-state-and-varnish-cache/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2012/02/finding-typoscript-errors/" title="Previous Post: Finding TypoScript errors.">&laquo; Finding TypoScript errors.</a>
+      
+      
+        <a class="basic-alignment right" href="/2012/12/re-how-to-move-on-typo3/" title="Next Post: Re: How to move on? #TYPO3">Re: How to move on? #TYPO3 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2013/06/templavoila-followup/">TemplaVoila - followup</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2013/06/templavoila-future/">TemplaVoila future</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2013/06/genetic-algorithms-boosting-solr/">Using genetic algorithms to optimize Apache Solr boost factors.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/12/re-how-to-move-on-typo3/">Re: How to move on? #TYPO3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/12/typo3-login-state-and-varnish-cache/">TYPO3 login state and Varnish cache</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/tolleiv">@tolleiv</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'tolleiv',
+            count: 1,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Tolleiv Nietsch <br/>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>, customized with <a href="https://github.com/mjhea0/whiterspace">whiterspace</a>.</span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'tolleiv';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://tolleiv.github.io/2012/12/typo3-login-state-and-varnish-cache/';
+        var disqus_url = 'http://tolleiv.github.io/2012/12/typo3-login-state-and-varnish-cache/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

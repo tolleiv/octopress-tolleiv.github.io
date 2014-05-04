@@ -4,7 +4,7 @@
   <title><![CDATA[Category: null | the fancy part of the web]]></title>
   <link href="http://tolleiv.github.io/blog/categories/null/atom.xml" rel="self"/>
   <link href="http://tolleiv.github.io/"/>
-  <updated>2014-05-04T01:22:28+02:00</updated>
+  <updated>2014-05-04T08:57:44+02:00</updated>
   <id>http://tolleiv.github.io/</id>
   <author>
     <name><![CDATA[Tolleiv Nietsch]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Null-Object Pattern]]></title>
-    <link href="http://tolleiv.github.io/blog/2008/07/01/null-object-pattern/"/>
+    <link href="http://tolleiv.github.io/2008/07/null-object-pattern/"/>
     <updated>2008-07-01T19:58:00+02:00</updated>
-    <id>http://tolleiv.github.io/blog/2008/07/01/null-object-pattern</id>
+    <id>http://tolleiv.github.io/2008/07/null-object-pattern</id>
     <content type="html"><![CDATA[<p>Very often you create a object with a factory and before you really start using it, you check if your factory really created a object or returned NULL. Or maybe you have a method where a object is passed in and in this situation you&rsquo;ll have to do this check also.</p>
 
 <p>Instead of typing the &ldquo;if(object == null)&rdquo; phrase again and again, you could use the Null-Object pattern, you&rsquo;ll see that this can make some situations much clearer.</p>
