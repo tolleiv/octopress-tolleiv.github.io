@@ -107,14 +107,15 @@ small { font-size: .8em; }
 
 big { font-size: 1.2em; }
 
+
 article blockquote {
   $bq-margin: 1.2em;
   font-style: italic;
   position: relative;
-  font-size: 1.2em;
+  font-size: 1em;
   line-height: 1.5em;
   padding-left: 1em;
-  border-left: 4px solid rgba($text-color-light, .5);
+  // border-left: 4px solid rgba($text-color-light, .5);
   cite {
     font-style: italic;
     a { color: $text-color-light !important; word-wrap: break-word; }
@@ -125,6 +126,61 @@ article blockquote {
     border-left-width: 4px;
   }
 }
+
+article blockquote{
+  display:block;
+  background: #fff;
+  padding: 15px 20px 15px 45px;
+  margin: 0 0 20px;
+  position: relative;
+
+  /*Box Shadow - (Optional)*/
+  -moz-box-shadow: 2px 2px 15px #ccc;
+  -webkit-box-shadow: 2px 2px 15px #ccc;
+  box-shadow: 2px 2px 15px #ccc;
+}
+
+article blockquote::before{
+  content: "\201C"; /*Unicode for Left Double Quote*/
+
+  /*Font*/
+  font-family: Georgia, serif;
+  font-size: 60px;
+  font-style: normal;
+  font-weight: bold;
+  color: #999;
+
+  /*Positioning*/
+  position: absolute;
+  left: 10px;
+  top:15px;
+}
+
+article blockquote::after{
+  /*Reset to make sure*/
+  content: "";
+}
+
+article blockquote a{
+  text-decoration: none;
+  background: #eee;
+  cursor: pointer;
+  padding: 0 3px;
+  color: #c76c0c;
+}
+
+article blockquote a:hover{
+  color: #666;
+}
+
+article blockquote em{
+  font-style: italic;
+}
+
+
+
+
+
 
 .pullquote-right:before,
 .pullquote-left:before {

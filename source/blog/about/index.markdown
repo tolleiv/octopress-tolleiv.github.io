@@ -23,7 +23,7 @@ Get in touch we me on [Twitter](http://www.twitter.com/tolleiv), [LinkedIn](http
 #### About my TYPO3 involvement
 
 
-Besides client-specific work, I used to maintain several popular TYPO3 extensions ([templavoila](http://typo3.org/extensions/repository/view/templavoila/current/), [languagevisibility](http://forge.typo3.org/projects/show/extension-languagevisibility), [l10nmgr](http://forge.typo3.org/projects/show/extension-l10nmgr), [crawler ](http://typo3.org/extensions/repository/view/crawler/current/) [and others](http://typo3.org/extensions/repository/?tx_terfe_pi1[view]=search&no_cache=1&tx_terfe_pi1[sword]=tolleiv) ). In addition I'm was part of the workspace-team and the TYPO3 Core team. By now I've stopped my public involvedment with TYPO3 as it was to challenging for me to contribute in a peacful and productive way.
+Besides client-specific work, I used to maintain several popular TYPO3 extensions ([templavoila](http://typo3.org/extensions/repository/view/templavoila/current/), [languagevisibility](http://forge.typo3.org/projects/show/extension-languagevisibility), [l10nmgr](http://forge.typo3.org/projects/show/extension-l10nmgr), [crawler ](http://typo3.org/extensions/repository/view/crawler/current/) [and others](http://typo3.org/extensions/repository/?tx_terfe_pi1[view]=search&no_cache=1&tx_terfe_pi1[sword]=tolleiv) ). In addition I'm was part of the workspace-team, the TYPO3 Core team and took care of typo3.org. By now I've stopped my public involvement with TYPO3 as it was to challenging for me to contribute in a peacful and productive way.
 
 Oh and most important - receiving things from my [Amazon wishlist](http://www.amazon.de/registry/wishlist/K48CS8V4DZ4I/ref=cm_wl_rlist_go) makes me very happen ;)
 
