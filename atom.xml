@@ -4,7 +4,7 @@
   <title><![CDATA[blog.tolleiv.de]]></title>
   <link href="http://blog.tolleiv.de/atom.xml" rel="self"/>
   <link href="http://blog.tolleiv.de/"/>
-  <updated>2014-05-05T07:56:06+02:00</updated>
+  <updated>2014-05-11T15:58:51+02:00</updated>
   <id>http://blog.tolleiv.de/</id>
   <author>
     <name><![CDATA[Tolleiv Nietsch]]></name>
@@ -12,6 +12,186 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Socket.IO within concurrent processes]]></title>
+    <link href="http://blog.tolleiv.de/2014/05/socket-dot-io-within-concurrent-processes/"/>
+    <updated>2014-05-11T15:43:53+02:00</updated>
+    <id>http://blog.tolleiv.de/2014/05/socket-dot-io-within-concurrent-processes</id>
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+    <link rel="payment" href="https://flattr.com/submit/auto?url=http%3A%2F%2Fblog.tolleiv.de%2F2014%2F05%2Fsocket-dot-io-within-concurrent-processes%2F&amp;user_id=tolleiv&amp;title=Socket.IO+within+concurrent+processes&amp;category=text&amp;description=this+is+just+about+all+sorts+of+web+related+work+with+a+small+factor+of+fanciness+-+it%27s+about+coding%2C+typo3%2C+its+extensions+and+everything&amp;tags=" type="text/html" />
+    
+    <content type="html"><![CDATA[<p>The following is going to show some pitfalls and their solution when working with NodeJs, Socket.IO and concurrent processes.</p>
+
+<h3>Basic setup</h3>
+
+<h4>Socket connections</h4>
+
+<p>In order to use socket communication with NodeJS a basic server side code block might look this <a href="http://socket.io/">see online docs</a>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>var io = require('socket.io').listen(80);
+</span><span class='line'>io.sockets.on('connection', function (socket) {
+</span><span class='line'>  socket.emit('news', { hello: 'world' });
+</span><span class='line'>});</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This enables you to send some data through the socket connection to the client and with just a little more code it could even retrieve some data from the client. I left that part out to keep it simple.</p>
+
+<h4>Event emitters</h4>
+
+<p>The second component which I&rsquo;ve to add in the mix is a simple <a href="http://nodejs.org/api/events.html">EventEmitter</a>. It&rsquo;s build like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>var emitter = new (require('events').EventEmitter);
+</span><span class='line'> // listening to a given event:
+</span><span class='line'>emitter.on("news", function (data) { console.log(data); });
+</span><span class='line'> // actually trigger the event:
+</span><span class='line'>emitter.emit("news", {my: data})</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The emitter would be used to gather data from within the program and the listeners would trigger <code>socket.emit(...)</code> in case the event is relevant for the connected client. This way the program could be decoupled from the socket implementation and other listeners could use the same event data without additional event (a nice way to introduce logging).</p>
+
+<h4>Concurrent processes</h4>
+
+<p>Besides all the event logic, the application should run in a robust way and that&rsquo;s typically done with the <a href="http://nodejs.org/api/cluster.html">cluster module</a> like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>var cluster = require('cluster');
+</span><span class='line'>if (cluster.isMaster) {
+</span><span class='line'>    var cpuCount = require('os').cpus().length;
+</span><span class='line'>    for (var i = 0; i &lt; cpuCount; i += 1) {
+</span><span class='line'>        cluster.fork();
+</span><span class='line'>    }
+</span><span class='line'>    cluster.on('exit', function(worker) {
+</span><span class='line'>        cluster.fork();
+</span><span class='line'>    });
+</span><span class='line'>} else {
+</span><span class='line'>    // Your actual code come here
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That&rsquo;s now the application entry point, it creates worker processes for the actual processing. In case a worker dies our application would keep running and a new worker process would come up.</p>
+
+<h3>Mixing the incredients</h3>
+
+<p>Throwing all this into the mix creates some problems. First of all, the worker processes use their own memory, so everything which is sent to the EventEmitter in one process can&rsquo;t reach the others.</p>
+
+<p>The second problem occurs when Socket.IO is included in the concurrent setup. Due to the fact that the worker processes are assign randomly to the clients, your actual work (e.g. triggered by HTTP requests) might been done in one process, while your socket connection might be established to another process. If you&rsquo;d use the basic setup from above, your events would then never reach the right clients and therefore you&rsquo;d loose information.</p>
+
+<h3>Redis store helping out</h3>
+
+<p>The solution is to replace the in-memory store of Socket.IO with a Redis based store (see <a href="http://adamnengland.wordpress.com/2013/01/30/node-js-cluster-with-socket-io-and-express-3/">Adam N England</a> for further details). This would look like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>var RedisStore = require('socket.io/lib/stores/redis')
+</span><span class='line'>    , redis = require('socket.io/node_modules/redis')
+</span><span class='line'>    , pub = redis.createClient()
+</span><span class='line'>    , sub = redis.createClient()
+</span><span class='line'>    , client = redis.createClient();
+</span><span class='line'>
+</span><span class='line'>var io = require('socket.io').listen(80);
+</span><span class='line'>io.set('store', new RedisStore({
+</span><span class='line'>    redis: redis, redisPub: pub, redisSub: sub, redisClient: client
+</span><span class='line'>}));
+</span><span class='line'>io.sockets.on('connection', function (socket) {
+</span><span class='line'>  socket.emit('news', { hello: 'world' });
+</span><span class='line'>});
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>With that, the native <a href="http://redis.io/topics/pubsub">Redis Publisher/Subscriber</a> functionality is used to implement the required interprocess communication and it makes sure all processes can react on the passed information.</p>
+
+<h4>EventEmitter replacement</h4>
+
+<p>In order to participate in that setup, all event based processes should then also start using the Redis functionality. Especially the events which are meant to &ldquo;reach&rdquo; out to the socket connection should be replaced with <a href="https://github.com/mranney/node_redis#publish--subscribe">Redis calls</a> then:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>var redis = require('redis');
+</span><span class='line'>
+</span><span class='line'>  // subscription replace the event listener
+</span><span class='line'>var sub = redisClient.createClient()
+</span><span class='line'>sub.subscribe("channelname");
+</span><span class='line'>sub.on("message", function (channel, msg) {
+</span><span class='line'>   console.log(msg)
+</span><span class='line'>})
+</span><span class='line'>
+</span><span class='line'>  // publishing replaces the event emitter
+</span><span class='line'>var pub = redis.createClient();
+</span><span class='line'>pub.publish("channelname", JSON.stringify({ my: data}));
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This introduces some latency into the system which <a href="http://blog.lightstreamer.com/2013/05/benchmarking-socketio-vs-lightstreamer.html">might cause scaling problems</a> with higher numbers of clients &ndash; but first of all it enables higher numbers of clients at all.</p>
+
+<h3>Final setup</h3>
+
+<p>The overall setup can be seen in the small demonstration app on <a href="https://github.com/tolleiv/concurrent-sockets">Github</a>. Within that application a simple HTTP frontend call would trigger the events, which then report back through Redis and the Socket.IO connection. That&rsquo;s quite trivial but complex enough to play with it and to run some tests against it.</p>
+
+<p>Btw. reviewing the demo app works best starting from the related test within <a href="https://github.com/tolleiv/concurrent-sockets/blob/master/spec/socket-spec.js">spec/socket-spec.js</a>.</p>
+
+<h3>Benchmarks</h3>
+
+<p>The NodeJS Redis client comes with some nice <a href="https://github.com/mranney/node_redis#performance">benchmarks</a> already. They reach up to 40000 ops/sec for simple calls with 50 concurrent connections.</p>
+
+<p>For NodeJS there are tons of benchmarks around already &ndash; especially the <a href="https://www.paypal-engineering.com/2013/11/22/node-js-at-paypal/">PayPal benchmark</a> and the <a href="https://vividcortex.com/blog/2013/12/09/analysis-of-paypals-node-vs-java-benchmarks/">related debate</a>, which show that Node can outperform Java significantly, should be mentioned. Along with that the <a href="http://drewww.github.io/socket.io-benchmarking/">Practical socket.io Benchmarking</a> by Drew Harry is worth a lookup.</p>
+
+<p>What&rsquo;s left for me is the question how many concurrent socket connections this could withstand and how all this scales depending on the amount of messages. The assumption from <a href="http://mrjoes.github.io/2011/12/15/sockjs-bench.html">existing benchmarks</a> would be that every worker process should be able to bind ~2k socket connections with approx. 10k messages per second. But those are not closely related to the described setup anf they leave room for further investigations.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Octopress migration]]></title>
@@ -1043,152 +1223,6 @@ $icon = t3lib_iconWorks::getSpriteIcon('actions-view-go-back');
     <content type="html"><![CDATA[<p>I just found that <a href="http://www.xing.com/profile/Peter_Niederlag">Peter</a> shares the slides of the Git workshop from the T3DD10 on <a href="http://www.slideshare.net/jugglefish/t3dd10-git">slideshare</a>. Since this 4 hour workshop was &ndash; for many reasons &ndash; one of my favorites during the T3DD10, I felt that it&rsquo;s worth to mention it. And due to the fact that TYPO3 is moving very fast towards Git it&rsquo;s worth to look at them ;) &mdash;&ndash; <a href="http://www.slideshare.net/jugglefish/t3dd10-git">Open workshop slides</a></p>
 
 <p>Btw. at the beginning I didn&rsquo;t belief that a Git workshop could fill 4 hours &ndash; now I don&rsquo;t think that shorter workshops make any sense :P</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Using git svn for TYPO3 extension development]]></title>
-    <link href="http://blog.tolleiv.de/2010/06/git-svn-for-typo3-extension-development/"/>
-    <updated>2010-06-30T08:00:30+02:00</updated>
-    <id>http://blog.tolleiv.de/2010/06/git-svn-for-typo3-extension-development</id>
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-    <link rel="payment" href="https://flattr.com/submit/auto?url=http%3A%2F%2Fblog.tolleiv.de%2F2010%2F06%2Fgit-svn-for-typo3-extension-development%2F&amp;user_id=tolleiv&amp;title=Using+git+svn+for+TYPO3+extension+development&amp;category=text&amp;description=this+is+just+about+all+sorts+of+web+related+work+with+a+small+factor+of+fanciness+-+it%27s+about+coding%2C+typo3%2C+its+extensions+and+everything&amp;tags=" type="text/html" />
-    
-    <content type="html"><![CDATA[<p>When I first saw a presentation about Git 2 years ago I liked it, but I was convinced that Subversion covers all I need. Things have changed and especially the bad performance of Subversion for larger repositories and the need to commit things without messing up the official trunk motivated me to look up how to get started with Git. If you need more reasons why you should look into Git, you&rsquo;ll find them in [7] &ndash; anyways it&rsquo;s worth to have a look how I managed to work with it ;)</p>
-
-<p>There are basically 2½ different tasks during the &ldquo;daily&rdquo; development.</p>
-
-<ol>
-<li><p> <em>Create a local working copy a.k.a clone the repository</em></p></li>
-<li><p> Fix a bug or implement a feature and create a patch file with the changes</p></li>
-<li><p> Receive a patch and review it &ndash; eventually commit the changes</p></li>
-</ol>
-
-
-<h4>0. Repository initialization</h4>
-
-<p>Getting started and creating the repository from an existing Subversion repository looks like this:</p>
-
-<pre><code>mkdir templavoila
-cd templavoila
-git svn init -t tags -b branches -T trunk https://svn.typo3.org/TYPO3v4/Extensions/templavoila
-git-svn fetch
-</code></pre>
-
-<p>This will pull the entire SVN history into your local Git repository &ndash; use &ldquo;git-svn fetch -r &rdquo; to reduce the amount of imported revisions.</p>
-
-<p>To keep your repository up-to-date you need these commands:</p>
-
-<pre><code>git stash
-git-svn fetch
-git rebase trunk
-git stash apply
-</code></pre>
-
-<p>If you followed the SVN trunk/tags/branches convention you should see that it also finds tags and branches during the import. But using &ldquo;git branch&rdquo; afterwards you&rsquo;ll see that there&rsquo;s only one local branch called &ldquo;master&rdquo;. That&rsquo;s where Git shows it&rsquo;s strength the first time, because it distinguishes between local and remote branches. Work can only be done within local branches, whereas the existing SVN branches are only recognized as &ldquo;remote&rdquo; branches so far. To list all remote branches you can use &ldquo;git branch -r&rdquo;. If you followed the trunk/tags/branches convention, you should see your SVN tags and branches within this list &ndash; otherwise you might want to read [8]. To make a remote (SVN) branch available in your local repository use:</p>
-
-<pre><code>git checkout --track -b tv_1-4 templavoila_1-4
-</code></pre>
-
-<h4>1. Working with the repository</h4>
-
-<p>Starting to work on a new feature or a bug always starts with a new branch in git:</p>
-
-<pre><code>git branch issue00012345
-git checkout issue00012345
-</code></pre>
-
-<p>You&rsquo;re now working in the &ldquo;issue00012345&rdquo; branch and all commits will just be committed to that branch. Once you made changes  you can either just commit all modifications with:</p>
-
-<pre><code>git commit -a
-</code></pre>
-
-<p>or add particular files and commit only these files with:</p>
-
-<pre><code>git add fileA
-git add fileB
-git commit
-</code></pre>
-
-<p>or with a nice pre commit preview which lets you decide which lines you want to commit:</p>
-
-<pre><code>git add --patch
-git commit
-</code></pre>
-
-<p><strong>Preparing the patch for the mailingslist:</strong>
-In a pure Git workflow &ldquo;git format-patch&rdquo; is used to communicate patches, but due to the fact that there&rsquo;s a Subversion repository involved either the old style diff / patch or a workaround needs to be used to communicate changes.
-Creating a patch which works for the mailinglist can basically be done using:</p>
-
-<pre><code>git diff --no-prefix master &gt; myPatchFile.patch
-</code></pre>
-
-<p>An alternative workaround to create proper SVN diff files (including svn revision etc..) can be found in [10] it&rsquo;s used very straight forward:</p>
-
-<pre><code>git svn-diff &gt; mySvnPatchFile.patch
-</code></pre>
-
-<h4>2. Review and commit patches</h4>
-
-<p><strong>Reviewing the patch someone sent to the list:</strong>
-As &ldquo;usual&rdquo;</p>
-
-<pre><code>patch -p0 &lt; myPatchFile.patch
-</code></pre>
-
-<p>can be used to apply patch files.</p>
-
-<p>Once the files passed the review the changes can be committed using &ldquo;<strong>git add</strong>&rdquo; and &ldquo;<strong>git commit</strong>&rdquo; as shown before.</p>
-
-<p><strong>Committing to Subversion:</strong>
-Once you committed everything to your local repository you&rsquo;re able to perform this command to &ldquo;forward&rdquo; your commits to the Subversion repository.</p>
-
-<pre><code>git svn dcommit
-</code></pre>
-
-<p>Practically every single commit within git will also be reflected as a single Subversion commit. For several reason this might not always suit your situation.As a workaround you could merge all commits during the merge of your feature branches into the master branch using:</p>
-
-<pre><code>git merge --commit --squash issue00012345
-git svn dcommit
-</code></pre>
-
-<p>Of course I don&rsquo;t recommend to do this for your regular work since have small granular commits is always better.</p>
-
-<h4>Sources and further reading</h4>
-
-<p>[1] <a href="http://spyced.blogspot.com/2009/06/patch-oriented-development-made-sane.html">Patch-oriented development made sane with git-svn</a>
-[2] <a href="http://utsl.gen.nz/talks/git-svn/intro.html#using">An introduction to git-svn for Subversion/SVK users and deserters</a>
-[3] <a href="http://git-scm.org/course/svn.html">Git &ndash; SVN Crash Course</a>
-[4] <a href="http://trac.parrot.org/parrot/wiki/git-svn-tutorial">Getting the GIT checkout</a>
-[5] <a href="http://nathanj.github.com/gitguide/tour.html">An Illustrated Guide to Git on Windows</a>
-[6] <a href="http://stackoverflow.com/questions/1129688/git-svn-workflow-feature-branches-and-merge">git svn workflow &ndash;
-feature branches and merge</a>
-[7] <a href="http://whygitisbetterthanx.com/#any-workflow">whygitisbetterthanx.com</a>
-[8] <a href="http://www.dmo.ca/blog/20070608113513/">Multiple branches using git-svn</a>
-[9] <a href="http://www.viget.com/extend/effectively-using-git-with-subversion/">Effectively using Git with subversion</a>
-[10] <a href="http://mojodna.net/2009/02/24/my-work-git-workflow.html">Git Workflow with Upstream SVN</a></p>
-
-<h4>Notes</h4>
-
-<ul>
-<li><p>Don&rsquo;t try to dcommit to <a href="https://svn.typo3.org/TYPO3v4/Extensions/templavoila">https://svn.typo3.org/TYPO3v4/Extensions/templavoila</a> unless you know what you&rsquo;re doing &ndash; I just used it to show you that it&rsquo;s even working with large history projects.</p></li>
-<li><p>For projects hosted on forge.typo3.org there might be a native git support soon &ndash; stay tuned</p></li>
-<li><p>Let me know if you had problems with any of the snippets</p></li>
-<li><p>Further information about the review process for the TYPO3 Core and several other TYPO3 related projects can be found on <a href="http://typo3.org/teams/core/resources/maintenance-policy/">typo3.org</a></p></li>
-</ul>
-
 ]]></content>
   </entry>
   

@@ -1,0 +1,539 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Socket.IO within concurrent processes - blog.tolleiv.de</title>
+  <meta name="author" content="Tolleiv Nietsch">
+
+  
+  <meta name="description" content="The following is going to show some pitfalls and their solution when working with NodeJs, Socket.IO and concurrent processes. Basic setup Socket &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.tolleiv.de/2014/05/socket-dot-io-within-concurrent-processes">
+  <link href="/favicon.ico" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="blog.tolleiv.de" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+ <script type="text/javascript">
+ /* <![CDATA[ */
+     (function() {
+         var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];
+         s.type = 'text/javascript';
+         s.async = true;
+         s.src = 'http://api.flattr.com/js/0.6/load.js?mode=auto';
+         t.parentNode.insertBefore(s, t);
+     })();
+ /* ]]> */
+ </script>
+ 
+
+<script type="text/javascript">
+/* <![CDATA[ */
+    (function() {
+        var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = 'http://api.flattr.com/js/0.6/load.js?mode=auto';
+        t.parentNode.insertBefore(s, t);
+    })();
+/* ]]> */
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="payment" href="https://flattr.com/submit/auto?url=http%3A%2F%2Fblog.tolleiv.de%2F2014%2F05%2Fsocket-dot-io-within-concurrent-processes%2F&amp;user_id=tolleiv&amp;title=Socket.IO+within+concurrent+processes&amp;category=text&amp;description=this+is+just+about+all+sorts+of+web+related+work+with+a+small+factor+of+fanciness+-+it%27s+about+coding%2C+typo3%2C+its+extensions+and+everything&amp;tags=" type="text/html" />
+
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+    <div id="header-inner">
+        <span class="first"><a href="/">blog.tolleiv.de</a></span>
+        <span><a href="/blog/about">about</a></span>
+        <span><a href="/blog/imprint">imprint</a></span>
+        <!--    <span><a href="http://www.github.com/">projects</a></span> -->
+        <span class="last"><a href="/atom.xml" title="subscribe via RSS">rss</a></span>
+        
+        <div class="header-flattr">
+            <a class="FlattrButton" style="display:none;"
+               title="Socket.IO within concurrent processes"
+               data-flattr-uid="tolleiv"
+               data-flattr-tags=""
+            data-flattr-button="compact"
+            data-flattr-category="text"
+            href="http://blog.tolleiv.de">
+            The following is going to show some pitfalls and their solution when working with NodeJs, Socket.IO and concurrent processes.
+
+### Basic setup
+
+#### Socket connections
+In order to use socket communication with NodeJS a basic server side code block might look this [see online docs](http://socket.io/):
+
+```
+var io = require('socket.io').listen(80);
+io.sockets.on('connection', function (socket) {
+  socket.emit('news', { hello: 'world' });
+});
+```
+This enables you to send some data through the &hellip;
+            </a>
+        </div>
+        
+    </div>
+</hgroup>
+
+</header>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Socket.IO Within Concurrent Processes</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-11T15:43:53+02:00" pubdate data-updated="true">May 11<span>th</span>, 2014</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>The following is going to show some pitfalls and their solution when working with NodeJs, Socket.IO and concurrent processes.</p>
+
+<h3>Basic setup</h3>
+
+<h4>Socket connections</h4>
+
+<p>In order to use socket communication with NodeJS a basic server side code block might look this <a href="http://socket.io/">see online docs</a>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>var io = require('socket.io').listen(80);
+</span><span class='line'>io.sockets.on('connection', function (socket) {
+</span><span class='line'>  socket.emit('news', { hello: 'world' });
+</span><span class='line'>});</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This enables you to send some data through the socket connection to the client and with just a little more code it could even retrieve some data from the client. I left that part out to keep it simple.</p>
+
+<h4>Event emitters</h4>
+
+<p>The second component which I&rsquo;ve to add in the mix is a simple <a href="http://nodejs.org/api/events.html">EventEmitter</a>. It&rsquo;s build like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>var emitter = new (require('events').EventEmitter);
+</span><span class='line'> // listening to a given event:
+</span><span class='line'>emitter.on("news", function (data) { console.log(data); });
+</span><span class='line'> // actually trigger the event:
+</span><span class='line'>emitter.emit("news", {my: data})</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The emitter would be used to gather data from within the program and the listeners would trigger <code>socket.emit(...)</code> in case the event is relevant for the connected client. This way the program could be decoupled from the socket implementation and other listeners could use the same event data without additional event (a nice way to introduce logging).</p>
+
+<h4>Concurrent processes</h4>
+
+<p>Besides all the event logic, the application should run in a robust way and that&rsquo;s typically done with the <a href="http://nodejs.org/api/cluster.html">cluster module</a> like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>var cluster = require('cluster');
+</span><span class='line'>if (cluster.isMaster) {
+</span><span class='line'>    var cpuCount = require('os').cpus().length;
+</span><span class='line'>    for (var i = 0; i &lt; cpuCount; i += 1) {
+</span><span class='line'>        cluster.fork();
+</span><span class='line'>    }
+</span><span class='line'>    cluster.on('exit', function(worker) {
+</span><span class='line'>        cluster.fork();
+</span><span class='line'>    });
+</span><span class='line'>} else {
+</span><span class='line'>    // Your actual code come here
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That&rsquo;s now the application entry point, it creates worker processes for the actual processing. In case a worker dies our application would keep running and a new worker process would come up.</p>
+
+<h3>Mixing the incredients</h3>
+
+<p>Throwing all this into the mix creates some problems. First of all, the worker processes use their own memory, so everything which is sent to the EventEmitter in one process can&rsquo;t reach the others.</p>
+
+<p>The second problem occurs when Socket.IO is included in the concurrent setup. Due to the fact that the worker processes are assign randomly to the clients, your actual work (e.g. triggered by HTTP requests) might been done in one process, while your socket connection might be established to another process. If you&rsquo;d use the basic setup from above, your events would then never reach the right clients and therefore you&rsquo;d loose information.</p>
+
+<h3>Redis store helping out</h3>
+
+<p>The solution is to replace the in-memory store of Socket.IO with a Redis based store (see <a href="http://adamnengland.wordpress.com/2013/01/30/node-js-cluster-with-socket-io-and-express-3/">Adam N England</a> for further details). This would look like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>var RedisStore = require('socket.io/lib/stores/redis')
+</span><span class='line'>    , redis = require('socket.io/node_modules/redis')
+</span><span class='line'>    , pub = redis.createClient()
+</span><span class='line'>    , sub = redis.createClient()
+</span><span class='line'>    , client = redis.createClient();
+</span><span class='line'>
+</span><span class='line'>var io = require('socket.io').listen(80);
+</span><span class='line'>io.set('store', new RedisStore({
+</span><span class='line'>    redis: redis, redisPub: pub, redisSub: sub, redisClient: client
+</span><span class='line'>}));
+</span><span class='line'>io.sockets.on('connection', function (socket) {
+</span><span class='line'>  socket.emit('news', { hello: 'world' });
+</span><span class='line'>});
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>With that, the native <a href="http://redis.io/topics/pubsub">Redis Publisher/Subscriber</a> functionality is used to implement the required interprocess communication and it makes sure all processes can react on the passed information.</p>
+
+<h4>EventEmitter replacement</h4>
+
+<p>In order to participate in that setup, all event based processes should then also start using the Redis functionality. Especially the events which are meant to &ldquo;reach&rdquo; out to the socket connection should be replaced with <a href="https://github.com/mranney/node_redis#publish--subscribe">Redis calls</a> then:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>var redis = require('redis');
+</span><span class='line'>
+</span><span class='line'>  // subscription replace the event listener
+</span><span class='line'>var sub = redisClient.createClient()
+</span><span class='line'>sub.subscribe("channelname");
+</span><span class='line'>sub.on("message", function (channel, msg) {
+</span><span class='line'>   console.log(msg)
+</span><span class='line'>})
+</span><span class='line'>
+</span><span class='line'>  // publishing replaces the event emitter
+</span><span class='line'>var pub = redis.createClient();
+</span><span class='line'>pub.publish("channelname", JSON.stringify({ my: data}));
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This introduces some latency into the system which <a href="http://blog.lightstreamer.com/2013/05/benchmarking-socketio-vs-lightstreamer.html">might cause scaling problems</a> with higher numbers of clients &ndash; but first of all it enables higher numbers of clients at all.</p>
+
+<h3>Final setup</h3>
+
+<p>The overall setup can be seen in the small demonstration app on <a href="https://github.com/tolleiv/concurrent-sockets">Github</a>. Within that application a simple HTTP frontend call would trigger the events, which then report back through Redis and the Socket.IO connection. That&rsquo;s quite trivial but complex enough to play with it and to run some tests against it.</p>
+
+<p>Btw. reviewing the demo app works best starting from the related test within <a href="https://github.com/tolleiv/concurrent-sockets/blob/master/spec/socket-spec.js">spec/socket-spec.js</a>.</p>
+
+<h3>Benchmarks</h3>
+
+<p>The NodeJS Redis client comes with some nice <a href="https://github.com/mranney/node_redis#performance">benchmarks</a> already. They reach up to 40000 ops/sec for simple calls with 50 concurrent connections.</p>
+
+<p>For NodeJS there are tons of benchmarks around already &ndash; especially the <a href="https://www.paypal-engineering.com/2013/11/22/node-js-at-paypal/">PayPal benchmark</a> and the <a href="https://vividcortex.com/blog/2013/12/09/analysis-of-paypals-node-vs-java-benchmarks/">related debate</a>, which show that Node can outperform Java significantly, should be mentioned. Along with that the <a href="http://drewww.github.io/socket.io-benchmarking/">Practical socket.io Benchmarking</a> by Drew Harry is worth a lookup.</p>
+
+<p>What&rsquo;s left for me is the question how many concurrent socket connections this could withstand and how all this scales depending on the amount of messages. The assumption from <a href="http://mrjoes.github.io/2011/12/15/sockjs-bench.html">existing benchmarks</a> would be that every worker process should be able to bind ~2k socket connections with approx. 10k messages per second. But those are not closely related to the described setup anf they leave room for further investigations.</p>
+</div>
+
+<div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.tolleiv.de/2014/05/socket-dot-io-within-concurrent-processes/" data-via="tolleiv" data-counturl="http://blog.tolleiv.de/2014/05/socket-dot-io-within-concurrent-processes/" >Tweet</a>
+  
+  
+    <a class="FlattrButton" style="display:none;"
+    title="Socket.IO within concurrent processes"
+    data-flattr-uid="tolleiv"
+    data-flattr-tags=""
+    data-flattr-button="compact"
+    data-flattr-category="text"
+    href="http://blog.tolleiv.de/2014/05/socket-dot-io-within-concurrent-processes/">
+    The following is going to show some pitfalls and their solution when working with NodeJs, Socket.IO and concurrent processes.
+
+### Basic setup
+
+#### Socket connections
+In order to use socket communication with NodeJS a basic server side code block might look this [see online docs](http://socket.io/):
+
+```
+var io = require('socket.io').listen(80);
+io.sockets.on('connection', function (socket) {
+  socket.emit('news', { hello: 'world' });
+});
+```
+This enables you to send some data through the &hellip;
+</a>
+
+  
+  
+  
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Tolleiv Nietsch</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-11T15:43:53+02:00" pubdate data-updated="true">May 11<span>th</span>, 2014</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.tolleiv.de/2014/05/socket-dot-io-within-concurrent-processes/" data-via="tolleiv" data-counturl="http://blog.tolleiv.de/2014/05/socket-dot-io-within-concurrent-processes/" >Tweet</a>
+  
+  
+    <a class="FlattrButton" style="display:none;"
+    title="Socket.IO within concurrent processes"
+    data-flattr-uid="tolleiv"
+    data-flattr-tags=""
+    data-flattr-button="compact"
+    data-flattr-category="text"
+    href="http://blog.tolleiv.de/2014/05/socket-dot-io-within-concurrent-processes/">
+    The following is going to show some pitfalls and their solution when working with NodeJs, Socket.IO and concurrent processes.
+
+### Basic setup
+
+#### Socket connections
+In order to use socket communication with NodeJS a basic server side code block might look this [see online docs](http://socket.io/):
+
+```
+var io = require('socket.io').listen(80);
+io.sockets.on('connection', function (socket) {
+  socket.emit('news', { hello: 'world' });
+});
+```
+This enables you to send some data through the &hellip;
+</a>
+
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2014/05/octopress-migration/" title="Previous Post: Octopress migration">&laquo; Octopress migration</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <ul id="recent_posts">
+      <li class="post">
+      <a href="http://blog.tolleiv.de" alt="Home"><img src="/images/Home.png"></a>
+      <a href="http://blog.tolleiv.de/archives/" alt="Archives"><img src="/images/Calendar.png"></a>
+      <a href="mailto:" alt="E-Mail"><img src="/images/Envelope.png"></a>
+      <a href="http://blog.tolleiv.de/atom.xml" alt="subscribe feed"><img src="/images/rss_big.png"></a>
+      </li>
+  </ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2014/05/socket-dot-io-within-concurrent-processes/">Socket.IO Within Concurrent Processes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/05/octopress-migration/">Octopress Migration</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2013/06/templavoila-followup/">TemplaVoila - Followup</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2013/06/templavoila-future/">TemplaVoila Future</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2013/06/genetic-algorithms-boosting-solr/">Using Genetic Algorithms to Optimize Apache Solr Boost Factors.</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/tolleiv">@tolleiv</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'tolleiv',
+            count: 1,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Tolleiv Nietsch -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'tolleiv';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.tolleiv.de/2014/05/socket-dot-io-within-concurrent-processes/';
+        var disqus_url = 'http://blog.tolleiv.de/2014/05/socket-dot-io-within-concurrent-processes/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
