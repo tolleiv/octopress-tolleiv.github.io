@@ -1,0 +1,421 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Chef QA toolchain - blog.tolleiv.de</title>
+  <meta name="author" content="Tolleiv Nietsch">
+
+  
+  <meta name="description" content="In the past years I&rsquo;ve jumped into the role of the DevOps evangelist at AOE. As it seems this was quite successful and people joined in quickly &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.tolleiv.de/2014/05/chef-qa-toolchain">
+  <link href="/favicon.ico" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="blog.tolleiv.de" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+ <script type="text/javascript">
+ /* <![CDATA[ */
+     (function() {
+         var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];
+         s.type = 'text/javascript';
+         s.async = true;
+         s.src = 'http://api.flattr.com/js/0.6/load.js?mode=auto';
+         t.parentNode.insertBefore(s, t);
+     })();
+ /* ]]> */
+ </script>
+ 
+
+<script type="text/javascript">
+/* <![CDATA[ */
+    (function() {
+        var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = 'http://api.flattr.com/js/0.6/load.js?mode=auto';
+        t.parentNode.insertBefore(s, t);
+    })();
+/* ]]> */
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="payment" href="https://flattr.com/submit/auto?url=http%3A%2F%2Fblog.tolleiv.de%2F2014%2F05%2Fchef-qa-toolchain%2F&amp;user_id=tolleiv&amp;title=Chef+QA+toolchain&amp;category=text&amp;description=this+is+just+about+all+sorts+of+web+related+work+with+a+small+factor+of+fanciness+-+it%27s+about+coding%2C+typo3%2C+its+extensions+and+everything&amp;tags=chef%2Cdevops" type="text/html" />
+
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+    <div id="header-inner">
+        <span class="first"><a href="/">blog.tolleiv.de</a></span>
+        <span><a href="/blog/about">about</a></span>
+        <span><a href="/blog/imprint">imprint</a></span>
+        <!--    <span><a href="http://www.github.com/">projects</a></span> -->
+        <span class="last"><a href="/atom.xml" title="subscribe via RSS">rss</a></span>
+        
+        <div class="header-flattr">
+            <a class="FlattrButton" style="display:none;"
+               title="Chef QA toolchain"
+               data-flattr-uid="tolleiv"
+               data-flattr-tags="chef,devops"
+            data-flattr-button="compact"
+            data-flattr-category="text"
+            href="http://blog.tolleiv.de">
+            In the past years I've jumped into the role of the DevOps evangelist at AOE. As it seems this was quite successful and people joined in quickly. But due to the fact that DevOps for us also means that less trained colleges should participate in most parts of the codified infrastructure, it requires some quality assurance efforts in the background. An overview of the tools which help us to keep things clean, is what I wanted to share in this post.
+
+### Tl;dr
+
+* [Chef](http://www.getchef.com/chef &hellip;
+            </a>
+        </div>
+        
+    </div>
+</hgroup>
+
+</header>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Chef QA Toolchain</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-24T00:35:09+02:00" pubdate data-updated="true">May 24<span>th</span>, 2014</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>In the past years I&rsquo;ve jumped into the role of the DevOps evangelist at AOE. As it seems this was quite successful and people joined in quickly. But due to the fact that DevOps for us also means that less trained colleges should participate in most parts of the codified infrastructure, it requires some quality assurance efforts in the background. An overview of the tools which help us to keep things clean, is what I wanted to share in this post.</p>
+
+<h3>Tl;dr</h3>
+
+<ul>
+<li><a href="http://www.getchef.com/chef/">Chef</a> &ndash; Great provisioning tool</li>
+<li><a href="http://berkshelf.com/">Berkshelf</a> &ndash; Easy dependency management</li>
+<li><a href="http://acrmp.github.io/foodcritic/">Foodcritic</a> &ndash; Chef specific lint</li>
+<li><a href="http://batsov.com/rubocop/">Rubocop</a> &ndash; Generic Ruby lint with autocorrect</li>
+<li><a href="https://github.com/test-kitchen">Test-Kitchen</a> &ndash; Real world test automation</li>
+<li><a href="http://serverspec.org/">Serverspec</a> &ndash; Intuitive good documented functional test library</li>
+</ul>
+
+
+<h3>Provisioning tools</h3>
+
+<p>The first part in the toolchain is <a href="http://www.getchef.com/chef/">Chef</a> itself. We choose it over <a href="http://puppetlabs.com/">Puppet</a> because it seemed to have a lower entry barrier and involved developers much better than the strict DSL of Puppet. We had some knowledge in our team for both tools, but in the end people sticked to Chef even on their private servers and that made the choice easy.</p>
+
+<h3>Dependency management</h3>
+
+<p>Nowadays we&rsquo;re using <a href="http://berkshelf.com/">Berkshelf</a> to maintain dependencies within our cookbooks and for our cookbook packages. The main reason to choose it over <a href="https://github.com/applicationsonline/librarian-chef">Librarian</a>, which we used before, was that it is failing with more meaningful errors. Besides that it turned out to be more robust when it comes to circular dependencies between cookbooks. Both features are essential when working with beginners.</p>
+
+<h3>Lint tools</h3>
+
+<p>Once our team started to write cookbooks on their own, it turned out quickly that the understanding of Chef, the awareness of best practices and a unique coding style is hard to achive without tools. And that&rsquo;s where the following Ruby tools can help out a lot.</p>
+
+<p>The first tool which should be used by everyone who typed more than two lines of Chef code is <a href="http://acrmp.github.io/foodcritic/">Foodcritic</a>. It is analizing the cookbooks and responds with very cool and well documented error messages and code improvement suggestions. Along with them it guides every user to stick to Chef best practices.</p>
+
+<p>The second tool is <a href="http://batsov.com/rubocop/">Rubocop</a>, a well known Ruby static code analizer which enforces the <a href="https://github.com/bbatsov/ruby-style-guide">Ruby Style Guide</a>. One of the most powerful features is the autocorrect option which helps to get rid of trivial problems. That&rsquo;s especially important for developers who don&rsquo;t use Ruby all day and who hate to think about <em>single vs. double quotes</em> problems. Rubocop handles such problems automatically and keeps the code base in a consistent state.</p>
+
+<p>An alternative to Rubocop would be <a href="https://github.com/square/cane">Cane</a> &ndash; but that comes without the autocorrect feature. Further Ruby QA tools like <a href="https://github.com/seattlerb/flay">flay</a>, <a href="https://github.com/troessner/reek">reek</a> or <a href="https://github.com/seattlerb/flay">flog</a> didn&rsquo;t really apply to our Chef recipes or brought up too much false positives. This just created too much confusion and brought in too little value.</p>
+
+<h3>Testing</h3>
+
+<p>There&rsquo;s a large amount of tools which you could use to test recipes. <a href="https://github.com/sethvargo/chefspec">ChefSpec</a> is the way to go when it comes to plain unit tests. It runs everything in Chef solo without actually converging anything on the system. Its speed is the biggest benefit and it is also the only way to properly test exception handling and broken paths in your recipes. Nowadays there&rsquo;s no way around ChefSpec when you look into the official OpsCode cookbooks. It is covered in lot&rsquo;s of blog posts as the entry point to cookbook testing (<a href="https://sethvargo.com/unit-testing-chef-cookbooks/">Unit testing Chef cookbooks</a>, <a href="http://jtimberman.housepub.org/blog/2013/05/09/starting-chefspec-example/">Starting ChefSpec Example</a>).</p>
+
+<p>If you&rsquo;re interested to run functional or integration tests, you could use <a href="https://github.com/sstephenson/bats">Bats</a>, <a href="http://serverspec.org/">Serverspec</a>, <a href="http://docs.seattlerb.org/minitest/">Minitest</a>, <a href="https://github.com/calavera/rspec-chef">Rspec</a>, <a href="https://github.com/Atalanta/cucumber-chef">Cucumber</a>, <a href="https://code.google.com/p/shunit2/">shUnit2</a> and even plain <a href="https://github.com/test-kitchen/busser-bash">Bash</a> scripts. All of the tools depend on a preceding converge step before the actual tests could check the results. That&rsquo;s why you usually want to run the tests in a fixed virtualized environment. That&rsquo;s provided with <a href="https://github.com/test-kitchen">Test-Kitchen</a>. Every Test-Kitchen suite is pulled up as seperate environment with it&rsquo;s own runlist and can then be tested fully isolated.</p>
+
+<p>For our recipe QA my favorite functional testing tool is Serverspec. It provides an intuitive test structure (opposed to MiniTest) and comes with a long list of well documented <a href="http://serverspec.org/resource_types.html">predefined resources</a>. But to encourage everyone to test as much as possible, I wouldn&rsquo;t really limit the toolchain to a single tool, instead I brought up example implementations for most of them into our internal cookbooks. This way everyone could pick the tool they liked.</p>
+
+<p>Good public examples for these testing libraries can be found on Github in various public cookbooks:</p>
+
+<ul>
+<li>ChefSpec: <a href="https://github.com/tas50/nagios/tree/master/spec">1</a>, <a href="https://github.com/opscode-cookbooks/nginx/tree/master/spec">2</a>, <a href="https://github.com/opscode-cookbooks/chef-splunk">3</a>, <a href="https://github.com/opscode-cookbooks/yum/tree/master/spec/unit">4</a>, <a href="https://github.com/opscode-cookbooks/rsyslog/tree/master/spec">5</a></li>
+<li>Serverspec: <a href="https://github.com/opscode-cookbooks/mysql/tree/master/test/integration">1</a>, <a href="https://github.com/serverspec/specinfra/tree/master/spec">2</a>, <a href="https://github.com/phlipper/chef-postgresql/tree/master/test/integration/server/serverspec">3</a>, <a href="https://github.com/phlipper/chef-monit/tree/master/test/integration">4</a></li>
+<li>Minitest: <a href="https://github.com/opscode-cookbooks/ark/tree/master/files/default/tests/minitest">1</a>, <a href="https://github.com/opscode-cookbooks/varnish/tree/master/files/default/test">2</a>, <a href="https://github.com/elasticsearch/cookbook-elasticsearch/tree/master/tests">3</a>, <a href="https://github.com/bflad/chef-docker/tree/master/test/cookbooks/docker_test/files/default/tests/minitest">4</a>, <a href="https://github.com/ganglia/chef-ganglia/tree/master/test/cookbooks/ganglia_test/files/default/tests/minitest">5</a></li>
+<li>Bats: <a href="https://github.com/opscode-cookbooks/lvm/tree/master/test/integration/create/bats">1</a>, <a href="https://github.com/opscode-cookbooks/rsync/tree/master/test/integration">2</a>, <a href="https://github.com/fnichol/chef-rbenv/tree/master/test/integration/system_ruby/bats">3</a></li>
+<li>Cucumber <a href="http://www.jedi.be/blog/2011/03/29/vagrant-testing-testing-one-two/">1</a></li>
+</ul>
+
+
+<h3>Documentation</h3>
+
+<p>Last but not least, every cookbook should have a nice README and that could be rendered with <a href="https://rubygems.org/gems/redcarpet">redcarpet</a> or if you&rsquo;re supporting more than just Markdown you could just throw <a href="https://github.com/github/markup">github/markup</a> at it.</p>
+
+<p>Alternatively you could of course just host your cookbooks on Github, Bitbucket or on a self-hosted Gitlab. Then these would take over rendering.</p>
+
+<h3>Fin</h3>
+
+<p>The above <code>Tl,dr</code> section lined out my favorite tools. To sum up this post, I&rsquo;d say that automation was essential for our setup. Each tool which I brought up in the post can be used for our internal recipes and all off them will be triggered by our CI server. With that toolchain at hand we were able to have fully open cookbooks were everyone can contribute easily. Besides that the tools lower the barrier for people who are new to Chef and they help the more integrated people to support others efficiently.</p>
+</div>
+
+<div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.tolleiv.de/2014/05/chef-qa-toolchain/" data-via="tolleiv" data-counturl="http://blog.tolleiv.de/2014/05/chef-qa-toolchain/" >Tweet</a>
+  
+  
+    <a class="FlattrButton" style="display:none;"
+    title="Chef QA toolchain"
+    data-flattr-uid="tolleiv"
+    data-flattr-tags="chef,devops"
+    data-flattr-button="compact"
+    data-flattr-category="text"
+    href="http://blog.tolleiv.de/2014/05/chef-qa-toolchain/">
+    In the past years I've jumped into the role of the DevOps evangelist at AOE. As it seems this was quite successful and people joined in quickly. But due to the fact that DevOps for us also means that less trained colleges should participate in most parts of the codified infrastructure, it requires some quality assurance efforts in the background. An overview of the tools which help us to keep things clean, is what I wanted to share in this post.
+
+### Tl;dr
+
+* [Chef](http://www.getchef.com/chef &hellip;
+</a>
+
+  
+  
+  
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Tolleiv Nietsch</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-24T00:35:09+02:00" pubdate data-updated="true">May 24<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/chef/'>chef</a>, <a class='category' href='/blog/categories/devops/'>devops</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.tolleiv.de/2014/05/chef-qa-toolchain/" data-via="tolleiv" data-counturl="http://blog.tolleiv.de/2014/05/chef-qa-toolchain/" >Tweet</a>
+  
+  
+    <a class="FlattrButton" style="display:none;"
+    title="Chef QA toolchain"
+    data-flattr-uid="tolleiv"
+    data-flattr-tags="chef,devops"
+    data-flattr-button="compact"
+    data-flattr-category="text"
+    href="http://blog.tolleiv.de/2014/05/chef-qa-toolchain/">
+    In the past years I've jumped into the role of the DevOps evangelist at AOE. As it seems this was quite successful and people joined in quickly. But due to the fact that DevOps for us also means that less trained colleges should participate in most parts of the codified infrastructure, it requires some quality assurance efforts in the background. An overview of the tools which help us to keep things clean, is what I wanted to share in this post.
+
+### Tl;dr
+
+* [Chef](http://www.getchef.com/chef &hellip;
+</a>
+
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2014/05/socket-dot-io-within-concurrent-processes/" title="Previous Post: Socket.IO within concurrent processes">&laquo; Socket.IO within concurrent processes</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <ul id="recent_posts">
+      <li class="post">
+      <a href="http://blog.tolleiv.de" alt="Home"><img src="/images/Home.png"></a>
+      <a href="http://blog.tolleiv.de/archives/" alt="Archives"><img src="/images/Calendar.png"></a>
+      <a href="mailto:" alt="E-Mail"><img src="/images/Envelope.png"></a>
+      <a href="http://blog.tolleiv.de/atom.xml" alt="subscribe feed"><img src="/images/rss_big.png"></a>
+      </li>
+  </ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2014/05/chef-qa-toolchain/">Chef QA Toolchain</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/05/socket-dot-io-within-concurrent-processes/">Socket.IO Within Concurrent Processes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/05/octopress-migration/">Octopress Migration</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2013/06/templavoila-followup/">TemplaVoila - Followup</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2013/06/templavoila-future/">TemplaVoila Future</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/tolleiv">@tolleiv</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'tolleiv',
+            count: 1,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Tolleiv Nietsch -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'tolleiv';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.tolleiv.de/2014/05/chef-qa-toolchain/';
+        var disqus_url = 'http://blog.tolleiv.de/2014/05/chef-qa-toolchain/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
