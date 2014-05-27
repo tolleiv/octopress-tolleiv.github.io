@@ -4,7 +4,7 @@
   <title><![CDATA[Category: devops | blog.tolleiv.de]]></title>
   <link href="http://blog.tolleiv.de/blog/categories/devops/atom.xml" rel="self"/>
   <link href="http://blog.tolleiv.de/"/>
-  <updated>2014-05-27T08:52:20+02:00</updated>
+  <updated>2014-05-27T12:40:36+02:00</updated>
   <id>http://blog.tolleiv.de/</id>
   <author>
     <name><![CDATA[Tolleiv Nietsch]]></name>
@@ -42,7 +42,7 @@
 
 <h3>Lint tools</h3>
 
-<p>Once our team started to write cookbooks on their own, it turned out quickly that the understanding of Chef, the awareness of best practices and a unique coding style is hard to achive without tools. And that&rsquo;s where the following Ruby tools can help out a lot.</p>
+<p>Once our team started to write cookbooks on their own, it turned out quickly that the understanding of Chef, the awareness of best practices and a unique coding style is hard to achieve without tools. And that&rsquo;s where the following Ruby tools can help out a lot.</p>
 
 <p>The first tool which should be used by everyone who typed more than two lines of Chef code is <a href="http://acrmp.github.io/foodcritic/">Foodcritic</a>. It is analizing the cookbooks and responds with very cool and well documented error messages and code improvement suggestions. Along with them it guides every user to stick to Chef best practices.</p>
 
