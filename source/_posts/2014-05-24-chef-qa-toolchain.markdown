@@ -27,7 +27,7 @@ Nowadays we're using [Berkshelf](http://berkshelf.com/) to maintain dependencies
 
 ### Lint tools
 
-Once our team started to write cookbooks on their own, it turned out quickly that the understanding of Chef, the awareness of best practices and a unique coding style is hard to achive without tools. And that's where the following Ruby tools can help out a lot.
+Once our team started to write cookbooks on their own, it turned out quickly that the understanding of Chef, the awareness of best practices and a unique coding style is hard to achieve without tools. And that's where the following Ruby tools can help out a lot.
 
 The first tool which should be used by everyone who typed more than two lines of Chef code is [Foodcritic](http://acrmp.github.io/foodcritic/). It is analizing the cookbooks and responds with very cool and well documented error messages and code improvement suggestions. Along with them it guides every user to stick to Chef best practices.
 
