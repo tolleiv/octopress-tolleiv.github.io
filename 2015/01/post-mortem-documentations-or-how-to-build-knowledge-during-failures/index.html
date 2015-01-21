@@ -1,0 +1,448 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Post mortem documentations or how to build knowledge during failures - blog.tolleiv.de</title>
+  <meta name="author" content="Tolleiv Nietsch">
+
+  
+  <meta name="description" content="Few months ago I tried to get my head around Post-Mortem documentations and found it particularly hard to fill the gap between the publicly available &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.tolleiv.de/2015/01/post-mortem-documentations-or-how-to-build-knowledge-during-failures">
+  <link href="/favicon.ico" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="blog.tolleiv.de" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+ <script type="text/javascript">
+ /* <![CDATA[ */
+     (function() {
+         var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];
+         s.type = 'text/javascript';
+         s.async = true;
+         s.src = 'http://api.flattr.com/js/0.6/load.js?mode=auto';
+         t.parentNode.insertBefore(s, t);
+     })();
+ /* ]]> */
+ </script>
+ 
+
+<script type="text/javascript">
+/* <![CDATA[ */
+    (function() {
+        var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = 'http://api.flattr.com/js/0.6/load.js?mode=auto';
+        t.parentNode.insertBefore(s, t);
+    })();
+/* ]]> */
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="payment" href="https://flattr.com/submit/auto?url=http%3A%2F%2Fblog.tolleiv.de%2F2015%2F01%2Fpost-mortem-documentations-or-how-to-build-knowledge-during-failures%2F&amp;user_id=tolleiv&amp;title=Post+mortem+documentations+or+how+to+build+knowledge+during+failures&amp;category=text&amp;description=this+is+just+about+all+sorts+of+web+related+work+with+a+small+factor+of+fanciness+-+it%27s+about+coding%2C+typo3%2C+its+extensions+and+everything&amp;tags=devops" type="text/html" />
+
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+    <div id="header-inner">
+        <span class="first"><a href="/">blog.tolleiv.de</a></span>
+        <span><a href="/blog/about">about</a></span>
+        <span><a href="/blog/imprint">imprint</a></span>
+        <!--    <span><a href="http://www.github.com/">projects</a></span> -->
+        <span class="last"><a href="/atom.xml" title="subscribe via RSS">rss</a></span>
+        
+        <div class="header-flattr">
+            <a class="FlattrButton" style="display:none;"
+               title="Post mortem documentations or how to build knowledge during failures"
+               data-flattr-uid="tolleiv"
+               data-flattr-tags="devops"
+            data-flattr-button="compact"
+            data-flattr-category="text"
+            href="http://blog.tolleiv.de">
+            Few months ago I tried to get my head around Post-Mortem documentations and found it particularly hard to fill the gap between the publicly available documentations and my aim to have company internal documentations which teams could use to share knowledge and learn from past mistakes. During my research I came across lot’s of publicly available information which helped me to dive into the topic. But unfortunately information was widely distributed and I though that sharing my link collection &hellip;
+            </a>
+        </div>
+        
+    </div>
+</hgroup>
+
+</header>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Post Mortem Documentations or How to Build Knowledge During Failures</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-01-05T22:18:26+01:00" pubdate data-updated="true">Jan 5<span>th</span>, 2015</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Few months ago I tried to get my head around Post-Mortem documentations and found it particularly hard to fill the gap between the publicly available documentations and my aim to have company internal documentations which teams could use to share knowledge and learn from past mistakes. During my research I came across lot’s of publicly available information which helped me to dive into the topic. But unfortunately information was widely distributed and I though that sharing my link collection could help to shorten your way a bit.</p>
+
+<h2>Basics</h2>
+
+<p>Some good reads if you want to learn what Post-Mortems are:</p>
+
+<ul>
+<li><a href="http://www.uio.no/studier/emner/matnat/ifi/INF5180/v10/undervisningsmateriale/reading-materials/p08/post-mortems.pdf">Postmortem reviews: purpose and approaches in software engineering</a>  (Time invest 30 mins)</li>
+<li>O’Reilly &ldquo;<a href="http://shop.oreilly.com/product/0636920000136.do">Web Operations &ndash; Keeping the Data On Time</a>“ — Chapter 13 &#8220;How to Make Failure Beautiful: The Art and Science of Postmortems&rdquo;
+(Time invest 20 mins)</li>
+<li><a href="http://www.cdlib.org/cdlinfo/2010/11/17/the-project-post-mortem-a-valuable-tool-for-continuous-improvement/">The Project Post-Mortem: A Valuable Tool for Continuous Improvement</a> (Time invest 5-15 mins)</li>
+</ul>
+
+
+<h2>Foundations</h2>
+
+<p>If you want to look further into the topic, you’ve to deal with human error and failure. These will give you some idea how large this topic is:</p>
+
+<ul>
+<li><a href="http://web.mit.edu/2.75/resources/random/How%20Complex%20Systems%20Fail.pdf">How Complex Systems Fail</a> &ndash; Richard Cook (Time invest 15mins)</li>
+<li>Velocity 2012 (Video): <a href="http://www.youtube.com/watch?v=2S0k12uZR14">How Complex Systems Fail</a> &ndash; Richard Cook (Time invest 30 mins)</li>
+<li><a href="http://www.indecorous.com/fallible_humans/">Fallible Humans</a> (Time invest 35 mins)</li>
+<li><a href="http://www.oreilly.com/webops-perf/free/the-human-side-of-postmortems.csp">The Human Side of Postmortems</a> (Time invest 45 mins)</li>
+<li><a href="http://www.amazon.de/Field-Guide-Understanding-Human-Error/dp/0754648265">Field Guide to Understanding Human Error</a> &ndash; Sidney Dekker</li>
+</ul>
+
+
+<h2>Instructions</h2>
+
+<p>Adding up on top of that, there are lot’s of blog-posts, interviews and descriptions on how post-mortems should be conducted:</p>
+
+<ul>
+<li><a href="http://www.cmg.org/wp-content/uploads/2009/06/8022.pdf">Say Goodbye to Post-Mortems. Say Hello to Effective Problem Management</a> &ndash;(Time invest 30mins)</li>
+<li>(Video) <a href="http://youtu.be/ciIT2r_j050">John Allspaw (Etsy) Interview &ndash; Velocity Santa Clara 2014</a> (Time invest 30 mins)</li>
+<li>(Slides) <a href="http://velocityconf.com/velocity2013/public/schedule/detail/28251">How to Run a Post-Mortem With Humans (Not Robots)</a> (Time invest 10 mins)</li>
+<li><a href="http://blog.pusher.com/dont-repeat-your-mistakes-conducting-post-mortems/">Don’t Repeat your Mistakes: Conducting Post-mortems</a> (Time invest 7 mins)</li>
+<li><a href="http://dimsboiv.uqac.ca/Cours/C2013/8INF851_Aut/tp_paper/paper/postmortem.pdf">Extending Agile Methods: Postmortem Reviews as Extended Feedback</a> (Time invest 20 mins)</li>
+<li>(Slides) <a href="http://www.slideshare.net/mobile/fullscreen/jhand2/its-not-your-fault-blameless-post-mortems/3">It’s not your fault</a> (Time invest 5 mins)</li>
+<li>(Video) <a href="https://sysadmincasts.com/episodes/20-how-to-write-an-incident-report-postmortem">How to write an Incident Report / Postmortem</a> (Time invest 5 mins)</li>
+<li><a href="http://blog.travis-ci.com/2014-06-26-three-ingredients-to-a-great-postmortem/">The Three Ingredients of a Great Postmortem</a> (Time invest 5 mins)</li>
+<li><a href="https://codeascraft.com/2012/05/22/blameless-postmortems/">Blameless PostMortems and a Just Culture</a> (Time invest 10 mins)</li>
+<li><a href="http://vimeo.com/77206751">Morgue: Helping Better Understand Events by Building a Post Mortem Tool &ndash; Bethany Macri</a> (Time invest 33 mins)</li>
+<li>(Slides) <a href="http://www.unwiredcouch.com/talks/human-factors-postmortems/">Human Factors and PostMortems</a> (5 mins)</li>
+<li><a href="http://www.infoq.com/news/2014/07/blameless-post-mortems">Blameless Post-Mortems</a> (Time invest 5 mins)</li>
+<li><a href="http://www.paperplanes.de/2014/6/20/what-blameless-postmortem-taught-me.html">What Adopting Blameless Post-Mortems Has Taught Me About Culture</a> &ndash; Mathias Meyer (Time invest 7 mins)</li>
+<li><a href="http://everythingsysadmin.com/2012/09/more-outages.html">DevOps: To increase reliability you need to have more outages</a> (Time invest 7 mins)</li>
+<li><a href="http://www.jessicaharllee.com/notes/what-blameless-really-means/">What blameless really means</a> (Time invest 3 mins)</li>
+<li><a href="http://radar.oreilly.com/tag/blameless-postmortem">Postmortems, sans finger-pointing: The O’Reilly Radar Podcast</a> (Time invest 30 mins)</li>
+</ul>
+
+
+<h2>Tools</h2>
+
+<p>Once you discovered all of that and you want to apply it in your team, there are even some tools available:</p>
+
+<ul>
+<li>Etsy Morgue (<a href="https://github.com/etsy/morgue">Github</a>)</li>
+<li><a href="http://www.teresadietrich.net/?page_id=37">Post Mortem Documents</a> (incl. Excel template)</li>
+<li><a href="http://de.slideshare.net/fattofatt/post-mortem-report">Post Mortem Template</a></li>
+</ul>
+
+
+<p>With all of those you get a great insight in what type of culture you should establish in your team and essentially this makes up a good internal documentation and brings up good input for public statements. Which kind of filled the gap for me.</p>
+
+<h2>Archives</h2>
+
+<p>Finally there’s a long list of links to existing documentations. First and foremost there’s a never ending list of post-mortem documentations on Tumblr:  <a href="http://fuckyeahpostmortems.tumblr.com">fuckyeahpostmortems.tumblr.com</a></p>
+
+<p>Looking closer into these, there are some examples which span across some well known companies:</p>
+
+<ul>
+<li><a href="http://blog.mailgun.com/what-happened-yesterday-and-what-we-are-doing-about-it/">MailGun</a></li>
+<li><a href="https://blog.pagerduty.com/2012/06/outage-post-mortem-june-14/">PagerDuty</a></li>
+<li><a href="https://github.com/blog/1759-dns-outage-post-mortem">Github</a></li>
+<li><a href="https://status.heroku.com/incidents/15">Heroku Application Outage</a></li>
+<li>Google App Engine Outage (<a href="https://groups.google.com/forum/m/#!topic/google-appengine/p2QKJ0OSLc8">1</a>),(<a href="http://googledevelopers.blogspot.ca/2013/05/google-api-infrastructure-outage_3.html">2</a>)</li>
+<li><a href="https://www.getchef.com/blog/2014/07/10/berkshelf-v2-outage-postmortem/">GetChef</a></li>
+<li><a href="http://www.zdnet.com/blog/btl/post-mortem-our-site-fail-wednesday-and-what-went-wrong/3023">ZDNet</a></li>
+<li><a href="https://www.joyent.com/blog/postmortem-for-outage-of-us-east-1-may-27-2014">Joyent</a></li>
+<li><a href="http://aws.amazon.com/de/message/65648/">AWS</a></li>
+<li><a href="http://stackstatus.net/post/97322396704/outage-postmortem-sepember-11th-2014">StackExchange</a></li>
+<li><a href="http://blog.dnsimple.com/2014/12/incident-report-ddos/">DNSimple</a></li>
+</ul>
+
+
+<p>Other industries of course also have postmortem documentations or lessons learned which they share:</p>
+
+<ul>
+<li><a href="http://www.wildfirelessons.net">Fire fighting</a></li>
+<li><a href="http://www.pixelprospector.com/the-big-list-of-postmortems/">Indy game developers</a></li>
+<li><a href="http://www.chubbybrain.com/blog/startup-failure-post-mortem/">VC / Company startup failures</a></li>
+</ul>
+
+
+<hr />
+
+<h4>Offtopic</h4>
+
+<p>I’ve also learned that there are programming techniques which enable you to debug software fails on the algorithmic levels. E.g. for <a href="http://dtrace.org/blogs/dap/2012/01/13/playing-with-nodev8-postmortem-debugging/">NodeJS</a> or <a href="http://bashdb.sourceforge.net/pydb/pydb/lib/node36.html">Python</a>.</p>
+</div>
+
+<div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.tolleiv.de/2015/01/post-mortem-documentations-or-how-to-build-knowledge-during-failures/" data-via="tolleiv" data-counturl="http://blog.tolleiv.de/2015/01/post-mortem-documentations-or-how-to-build-knowledge-during-failures/" >Tweet</a>
+  
+  
+    <a class="FlattrButton" style="display:none;"
+    title="Post mortem documentations or how to build knowledge during failures"
+    data-flattr-uid="tolleiv"
+    data-flattr-tags="devops"
+    data-flattr-button="compact"
+    data-flattr-category="text"
+    href="http://blog.tolleiv.de/2015/01/post-mortem-documentations-or-how-to-build-knowledge-during-failures/">
+    Few months ago I tried to get my head around Post-Mortem documentations and found it particularly hard to fill the gap between the publicly available documentations and my aim to have company internal documentations which teams could use to share knowledge and learn from past mistakes. During my research I came across lot’s of publicly available information which helped me to dive into the topic. But unfortunately information was widely distributed and I though that sharing my link collection &hellip;
+</a>
+
+  
+  
+  
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Tolleiv Nietsch</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-01-05T22:18:26+01:00" pubdate data-updated="true">Jan 5<span>th</span>, 2015</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/devops/'>devops</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.tolleiv.de/2015/01/post-mortem-documentations-or-how-to-build-knowledge-during-failures/" data-via="tolleiv" data-counturl="http://blog.tolleiv.de/2015/01/post-mortem-documentations-or-how-to-build-knowledge-during-failures/" >Tweet</a>
+  
+  
+    <a class="FlattrButton" style="display:none;"
+    title="Post mortem documentations or how to build knowledge during failures"
+    data-flattr-uid="tolleiv"
+    data-flattr-tags="devops"
+    data-flattr-button="compact"
+    data-flattr-category="text"
+    href="http://blog.tolleiv.de/2015/01/post-mortem-documentations-or-how-to-build-knowledge-during-failures/">
+    Few months ago I tried to get my head around Post-Mortem documentations and found it particularly hard to fill the gap between the publicly available documentations and my aim to have company internal documentations which teams could use to share knowledge and learn from past mistakes. During my research I came across lot’s of publicly available information which helped me to dive into the topic. But unfortunately information was widely distributed and I though that sharing my link collection &hellip;
+</a>
+
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2014/07/chef-cookbook-dependecy-visualization/" title="Previous Post: Chef cookbook dependecy visualization">&laquo; Chef cookbook dependecy visualization</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <ul id="recent_posts">
+      <li class="post">
+      <a href="http://blog.tolleiv.de" alt="Home"><img src="/images/Home.png"></a>
+      <a href="http://blog.tolleiv.de/archives/" alt="Archives"><img src="/images/Calendar.png"></a>
+      <a href="mailto:" alt="E-Mail"><img src="/images/Envelope.png"></a>
+      <a href="http://blog.tolleiv.de/atom.xml" alt="subscribe feed"><img src="/images/rss_big.png"></a>
+      </li>
+  </ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2015/01/post-mortem-documentations-or-how-to-build-knowledge-during-failures/">Post Mortem Documentations or How to Build Knowledge During Failures</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/07/chef-cookbook-dependecy-visualization/">Chef Cookbook Dependecy Visualization</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/05/chef-qa-toolchain/">Chef QA Toolchain</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/05/socket-dot-io-within-concurrent-processes/">Socket.IO Within Concurrent Processes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/05/octopress-migration/">Octopress Migration</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/tolleiv">@tolleiv</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'tolleiv',
+            count: 1,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Tolleiv Nietsch -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'tolleiv';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.tolleiv.de/2015/01/post-mortem-documentations-or-how-to-build-knowledge-during-failures/';
+        var disqus_url = 'http://blog.tolleiv.de/2015/01/post-mortem-documentations-or-how-to-build-knowledge-during-failures/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
