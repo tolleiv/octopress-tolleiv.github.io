@@ -1,0 +1,505 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Enrich Zabbix monitoring with additional data from Pingdom - blog.tolleiv.de</title>
+  <meta name="author" content="Tolleiv Nietsch">
+
+  
+  <meta name="description" content="If you’re running your own monitoring system which has to observe services for global customers, you might have considered to spin up some monitoring &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.tolleiv.de/2015/11/enrich-zabbix-monitoring-with-additional-data-from-pingdom">
+  <link href="/favicon.ico" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="blog.tolleiv.de" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+ <script type="text/javascript">
+ /* <![CDATA[ */
+     (function() {
+         var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];
+         s.type = 'text/javascript';
+         s.async = true;
+         s.src = 'http://api.flattr.com/js/0.6/load.js?mode=auto';
+         t.parentNode.insertBefore(s, t);
+     })();
+ /* ]]> */
+ </script>
+ 
+
+<script type="text/javascript">
+/* <![CDATA[ */
+    (function() {
+        var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = 'http://api.flattr.com/js/0.6/load.js?mode=auto';
+        t.parentNode.insertBefore(s, t);
+    })();
+/* ]]> */
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="payment" href="https://flattr.com/submit/auto?url=http%3A%2F%2Fblog.tolleiv.de%2F2015%2F11%2Fenrich-zabbix-monitoring-with-additional-data-from-pingdom%2F&amp;user_id=tolleiv&amp;title=Enrich+Zabbix+monitoring+with+additional+data+from+Pingdom&amp;category=text&amp;description=this+is+just+about+all+sorts+of+web+related+work+with+a+small+factor+of+fanciness+-+it%27s+about+coding%2C+typo3%2C+its+extensions+and+everything&amp;tags=" type="text/html" />
+
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+    <div id="header-inner">
+        <span class="first"><a href="/">blog.tolleiv.de</a></span>
+        <span><a href="/blog/about">about</a></span>
+        <span><a href="/blog/imprint">imprint</a></span>
+        <!--    <span><a href="http://www.github.com/">projects</a></span> -->
+        <span class="last"><a href="/atom.xml" title="subscribe via RSS">rss</a></span>
+        
+        <div class="header-flattr">
+            <a class="FlattrButton" style="display:none;"
+               title="Enrich Zabbix monitoring with additional data from Pingdom"
+               data-flattr-uid="tolleiv"
+               data-flattr-tags=""
+            data-flattr-button="compact"
+            data-flattr-category="text"
+            href="http://blog.tolleiv.de">
+            If you’re running your own monitoring system which has to observe services for global customers, you might have considered to spin up some monitoring slaves around the world to gather accurate availability data. Unfortunately bringing up these slaves is time consuming and expensive to some extend. On the other hand services like Pingdom provide global monitoring for low budget. But using these splits your monitoring infrastructure into two parts and brings drawbacks when it comes to reporting &hellip;
+            </a>
+        </div>
+        
+    </div>
+</hgroup>
+
+</header>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Enrich Zabbix Monitoring With Additional Data From Pingdom</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-11-17T08:43:33+01:00" pubdate data-updated="true">Nov 17<span>th</span>, 2015</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>If you’re running your own monitoring system which has to observe services for global customers, you might have considered to spin up some monitoring slaves around the world to gather accurate availability data. Unfortunately bringing up these slaves is time consuming and expensive to some extend. On the other hand services like Pingdom provide global monitoring for low budget. But using these splits your monitoring infrastructure into two parts and brings drawbacks when it comes to reporting and alerting. This blog post explains how to combine both, an internal monitoring system like Zabbix and external monitoring data from Pingdom in one place, to gather global availability data and keep alerting and event handling centralised.</p>
+
+<h2>Prerequisites:</h2>
+
+<p>Before data can be pulled from one service to the other both have to be working on it’s own. Therefore I assume that your webservice/website is running on one or more Linux* hosts which are already monitored with Zabbix <a href="#zabbix">[2]</a>. You should have access to the Zabbix server and the hosts. Along with that I also assume that you’ve access to Pingdom and it’s API <a href="#pingdom">[3]</a>, you should have a couple of checks configured already <a href="#pingdomcfg">[4]</a>. Furthermore I assume that you’re able to work on the Linux command line.
+In addition to all of that, I suggest that you open up a second browser tab with the Gist <a href="#gist">[1]</a> which holds all prepared scripts and configuration.</p>
+
+<h2>Understanding the data flow:</h2>
+
+<p>The first thing to dive into is the high level data flow. As described initially, data should be pulled from Pingdom through the API and pushed into Zabbix. Pulling the data from Pingdom is easy with a simple curl request against <code>https://api.pingdom.com/api/2.0/checks</code> which would then return the most recent monitoring data as JSON. When the data is available, the list has to be limited to the relevant information and mapped into a format which can be transferred to Zabbix. The <code>zabbix_sender</code> utility will then be used to actually push the data to Zabbix. Once this is done, Zabbix has to be prepared to receive the data within related monitoring items and triggers which need to be configured for alerting. But first things first &hellip;</p>
+
+<h2>Mapping and filtering data for Zabbix:</h2>
+
+<p>Pulling data from Pingdom with the <code>/checks</code> endpoint (see <a href="#pingdomapi">[5]</a> for full reference) might give you much more than you need, therefore I’d suggest that you add some tags to the Pingdom checks which you want to pull into Zabbix and then just fetch these with <code>/checks?tag=zabbix</code>. If you’re using Zabbix proxy systems along with the Zabbix server, you should then use one tag per proxy, so that each proxy is able to pull just their related checks**.</p>
+
+<p>You will get a response which looks like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>{ "checks": [
+</span><span class='line'>    {
+</span><span class='line'>      "hostname": "example.com",
+</span><span class='line'>      "id": 85975,
+</span><span class='line'>      "lasterrortime": 1297446423,
+</span><span class='line'>      "lastresponsetime": 355,
+</span><span class='line'>      "lasttesttime": 1300977363,
+</span><span class='line'>      "name": "example.com homepage",
+</span><span class='line'>      "resolution": 1,
+</span><span class='line'>      "status": "up",
+</span><span class='line'>      "type": "http",
+</span><span class='line'>      "tags": [{
+</span><span class='line'>        "name": "zabbix",
+</span><span class='line'>        "type": "au",
+</span><span class='line'>        "count": 2
+</span><span class='line'>      }]
+</span><span class='line'>     }
+</span><span class='line'>]}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now that you’re able to retrieve data, it has to be filtered and mapped to a format which zabbix_sender understands. This is done with the following steps:</p>
+
+<ul>
+<li>Splitting up the long checks array into multiple separated objects</li>
+<li>Filtering out the relevant fields from each object</li>
+<li>Transforming the timestamps from integer to string representations</li>
+<li>Mapping the status field into an integer &ndash; this will make it easier to define triggers in Zabbix later on</li>
+<li>Combining all fields of the object into an array with two event data strings</li>
+<li>Splitting up the array to have one zabbix_sender event per line</li>
+<li>Adding in some text block which relates to the Zabbix item key to have a fully defined zabbix_sender event</li>
+</ul>
+
+
+<p>All this is done with this small snippet***:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>echo "$json" \
+</span><span class='line'>  | jq -r '.checks[]' \
+</span><span class='line'>  | jq -r '{time:.lasttesttime, key:.name ,status:.status, responsetime:.lastresponsetime}' \
+</span><span class='line'>  | jq -r '.time=(.time | tostring)' \
+</span><span class='line'>  | jq -r '.responsetime=(.responsetime | tostring)' \
+</span><span class='line'>  | jq -r 'def mapping: {"up":"2","paused":"1","down":"0"};.status=mapping[.status]' \
+</span><span class='line'>  | jq -r '[.key + ",status] " + .time + " " + .status, .key + ",time] " + .time + " " + .responsetime]' \
+</span><span class='line'>  | jq -r '.[]' \
+</span><span class='line'>  | sed -e 's~ ~ pingdom.response[~1'</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As you might have guessed, the tool which is used mainly ‘jq’ is a powerful json processing tool which by itself is worth a long article. You’ll find the manual here <a href="#jq">[6]</a> and a great introduction within the well known &lsquo;7 command-line tools for data science’ article <a href="#dscl">[7]</a>.</p>
+
+<p>After the filtering is done, the result looks like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>example.com pingdom.response[homepage,status] 1300977363 2
+</span><span class='line'>example.com pingdom.response[homepage,time] 1300977363 355</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You see that this will report data for two Zabbix items with the keys <code>pingdom.response[homepage,status]</code> and <code>pingdom.response[homepage,time]</code>. If you’re just interested in the state but not the timings you could simplify the filtering command by 2 or 3 lines and have a much more straight forward flow.</p>
+
+<h2>Zabbix check discovery:</h2>
+
+<p>Once the script is ready and able to send valid data to Zabbix, you&rsquo;ve to make sure that Zabbix also associates it to a host and the related items. So you&rsquo;ve to bring up a template and configure the trapper items [8]. But in case you want to have more than one Pingdom check per host you run into issues with that straight forward approach. You’d either have to configure a new item by hand for every new Pingdom check or let the low level discovery (LLD) of Zabbix do that for you. With the LLD approach in place, Zabbix will be able to detect new checks on his own and create the related items or triggers automatically.</p>
+
+<p>The Zabbix low level discovery needs some input to know which checks exists. This is done with a JSON file on the related host:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>{
+</span><span class='line'>  "data":[
+</span><span class='line'>    { "{#NAME}":"homepage", "{#URL}":"http://example.org/" },
+</span><span class='line'>    { "{#NAME}":"newsletterform", "{#URL}":"http://example.org/newsletter.html" }
+</span><span class='line'>  ]
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Generating this JSON with a similar processing chain like above isn’t really hard and it helps Zabbix to pick up the data needed for low level discovery. Once the JSON file is in place it can be picked up with the Zabbix agent and the <code>vfs.file.contents[/etc/zabbix/pingdom_lld.json,UTF8]</code> discovery configuration. In order to retrieve data from the discovered checks, you’ll have to bring up some discovery items. As described before these should be Zabbix trapper items with the keys <code>pingdom.response[{#NAME},status]</code> and <code>pingdom.response[{#NAME},time]</code>.</p>
+
+<p>You’ll find a prepared Zabbix Template XML within my Gist <a href="#gistfile">[9]</a>.</p>
+
+<h2>Distribution when working with Zabbix-Proxy setups:</h2>
+
+<p>The steps described so far will give you nice results if you’re working with a single central Zabbix server. They might not work if you run your Zabbix installation with multiple Zabbix proxies instead. The reason for this is that the zabbix_sender is also supposed to send the data to the Zabbix proxy which was configured for the monitored host. Therefore the script which pulls the data from Pingdom should run on each Zabbix proxy and just pull the data for the relevant hosts. To avoid that each proxy pulls all the data and then fails to send it to Zabbix the call to the Pingdom API should be limited. This can be done with a slight modification to the API call. Instead of having a single tag for all checks which relate to Zabbix, checks should be tagged related to their proxy e.g. with <code>/checks?tag=zabbix_dc1</code> vs. <code>/checks?tag=zabbix_dc2</code>.</p>
+
+<h2>Putting it all together:</h2>
+
+<p>Once all your script and configuration is in place you’ll receive Pingdom monitoring data within Zabbix and you’ll be able to configure triggers and relate other monitoring data to it.</p>
+
+<p>In case you use some sort of provisioning tool (Puppet, Check, Cfengine, Ansible, Salt, …) you should also consider to move the definition of the Pingdom checks into that tool and roll out all the configuration from a central spot.</p>
+
+<p>Last but not least, it would be great if you’d leave a comment and whether you think this approach is of any use for you or not. In case you use a similar approach with other vendors like Sentry <a href="#sentry">[10]</a> or Port-Monitor <a href="#portmonitor">[11]</a> I’d love to see how you pull the data in. Also feel free to leave questions in the comments below, share the link on Twitter or Facebook or Flattr it.</p>
+
+<hr />
+
+<h3>Remarks &amp; references:</h3>
+
+<p>* the introduced setup is not limited to Linux hosts, but so far the related Zabbix Template is not ready to be used with Windows &ndash; but that should not be a big problem as long as you have your Zabbix Proxy/Server running on Linux.</p>
+
+<p>** this comes from a limitation in the zabbix_sender with binds the sender to the Zabbix proxy</p>
+
+<p>*** readable simplifications welcome</p>
+
+<ul>
+<li><a name="gist">[ 1] &ndash; <a href="https://gist.github.com/tolleiv/2f49a7711e3040f2b25b">gist.github.com/tolleiv/2f49a7711e3040f2b25b</a></a></li>
+<li><a name="zabbix">[ 2] &ndash; <a href="http://www.zabbix.com/">www.zabbix.com/</a></a></li>
+<li><a name="pingdom">[ 3] &ndash; <a href="http://pingdom.com/">pingdom.com/</a></a></li>
+<li><a name="pingdomcfg">[ 4] &ndash; <a href="https://www.pingdom.com/resources/tutorials/how-to-add-check">www.pingdom.com/resources/tutorials/how-to-add-check</a></a></li>
+<li><a name="pingdomapi">[ 5] &ndash; <a href="https://www.pingdom.com/resources/api#MethodGet+Check+List">www.pingdom.com/resources/api#MethodGet+Check+List</a></a></li>
+<li><a name="jq">[ 6] &ndash; <a href="https://stedolan.github.io/jq/manual/">stedolan.github.io/jq/manual/</a></a></li>
+<li><a name="dscl">[ 7] &ndash; <a href="http://jeroenjanssens.com/2013/09/19/seven-command-line-tools-for-data-science.html">jeroenjanssens.com/2013/09/19/seven-command-line-tools-for-data-science.html</a></a></li>
+<li><a name="zabbixtrapper">[ 8] &ndash; <a href="https://www.zabbix.com/documentation/2.4/manual/config/items/itemtypes/trapper">www.zabbix.com/documentation/2.4/manual/config/items/itemtypes/trapper</a></a></li>
+<li><a name="gistfile">[ 9] &ndash; <a href="https://gist.github.com/tolleiv/2f49a7711e3040f2b25b#file-zbx_template-xml">gist.github.com/tolleiv/2f49a7711e3040f2b25b#file-zbx_template-xml</a></a></li>
+<li><a name="sentry">[10] &ndash; <a href="https://getsentry.com">getsentry.com</a></a></li>
+<li><a name="portmonitor">[11] &ndash; <a href="https://www.port-monitor.com/">www.port-monitor.com/</a></a></li>
+</ul>
+
+</div>
+
+<div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.tolleiv.de/2015/11/enrich-zabbix-monitoring-with-additional-data-from-pingdom/" data-via="tolleiv" data-counturl="http://blog.tolleiv.de/2015/11/enrich-zabbix-monitoring-with-additional-data-from-pingdom/" >Tweet</a>
+  
+  
+    <a class="FlattrButton" style="display:none;"
+    title="Enrich Zabbix monitoring with additional data from Pingdom"
+    data-flattr-uid="tolleiv"
+    data-flattr-tags=""
+    data-flattr-button="compact"
+    data-flattr-category="text"
+    href="http://blog.tolleiv.de/2015/11/enrich-zabbix-monitoring-with-additional-data-from-pingdom/">
+    If you’re running your own monitoring system which has to observe services for global customers, you might have considered to spin up some monitoring slaves around the world to gather accurate availability data. Unfortunately bringing up these slaves is time consuming and expensive to some extend. On the other hand services like Pingdom provide global monitoring for low budget. But using these splits your monitoring infrastructure into two parts and brings drawbacks when it comes to reporting &hellip;
+</a>
+
+  
+  
+  
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Tolleiv Nietsch</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-11-17T08:43:33+01:00" pubdate data-updated="true">Nov 17<span>th</span>, 2015</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.tolleiv.de/2015/11/enrich-zabbix-monitoring-with-additional-data-from-pingdom/" data-via="tolleiv" data-counturl="http://blog.tolleiv.de/2015/11/enrich-zabbix-monitoring-with-additional-data-from-pingdom/" >Tweet</a>
+  
+  
+    <a class="FlattrButton" style="display:none;"
+    title="Enrich Zabbix monitoring with additional data from Pingdom"
+    data-flattr-uid="tolleiv"
+    data-flattr-tags=""
+    data-flattr-button="compact"
+    data-flattr-category="text"
+    href="http://blog.tolleiv.de/2015/11/enrich-zabbix-monitoring-with-additional-data-from-pingdom/">
+    If you’re running your own monitoring system which has to observe services for global customers, you might have considered to spin up some monitoring slaves around the world to gather accurate availability data. Unfortunately bringing up these slaves is time consuming and expensive to some extend. On the other hand services like Pingdom provide global monitoring for low budget. But using these splits your monitoring infrastructure into two parts and brings drawbacks when it comes to reporting &hellip;
+</a>
+
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2015/01/post-mortem-documentations-or-how-to-build-knowledge-during-failures/" title="Previous Post: Post mortem documentations or how to build knowledge during failures">&laquo; Post mortem documentations or how to build knowledge during failures</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <ul id="recent_posts">
+      <li class="post">
+      <a href="http://blog.tolleiv.de" alt="Home"><img src="/images/Home.png"></a>
+      <a href="http://blog.tolleiv.de/archives/" alt="Archives"><img src="/images/Calendar.png"></a>
+      <a href="mailto:" alt="E-Mail"><img src="/images/Envelope.png"></a>
+      <a href="http://blog.tolleiv.de/atom.xml" alt="subscribe feed"><img src="/images/rss_big.png"></a>
+      </li>
+  </ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2015/11/enrich-zabbix-monitoring-with-additional-data-from-pingdom/">Enrich Zabbix Monitoring With Additional Data From Pingdom</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2015/01/post-mortem-documentations-or-how-to-build-knowledge-during-failures/">Post Mortem Documentations or How to Build Knowledge During Failures</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/07/chef-cookbook-dependecy-visualization/">Chef Cookbook Dependecy Visualization</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/05/chef-qa-toolchain/">Chef QA Toolchain</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2014/05/socket-dot-io-within-concurrent-processes/">Socket.IO Within Concurrent Processes</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/tolleiv">@tolleiv</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'tolleiv',
+            count: 1,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Tolleiv Nietsch -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'tolleiv';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.tolleiv.de/2015/11/enrich-zabbix-monitoring-with-additional-data-from-pingdom/';
+        var disqus_url = 'http://blog.tolleiv.de/2015/11/enrich-zabbix-monitoring-with-additional-data-from-pingdom/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
