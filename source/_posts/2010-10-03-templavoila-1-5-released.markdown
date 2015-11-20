@@ -9,6 +9,8 @@ wordpress_id: 699
 tags:
 - templavoila
 - typo3
+alias:
+- /2010/10/templavoila-1-5-released/,
 ---
 
 The new version comes with many bugfixes,new features and a closer TYPO3 integration. Overall 95 issues have been resolved in the last 4 months to finalize this versions, some of the highlights are:
